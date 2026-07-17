@@ -1,29 +1,81 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Servizi</title>
-</head>
-<body>
-    
+
+<style>
+    .services-container {
+        max-width: 1200px;
+        margin: 40px auto;
+        padding: 20px;
+        text-align: center;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .services-container h2 {
+        color: #fff;
+        font-size: 2.5rem;
+        margin-bottom: 40px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+    }
+
+    .services-grid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 30px;
+    }
+
+    .service-card {
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 12px;
+        padding: 30px;
+        width: 300px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .service-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    .service-icon {
+        font-size: 3rem;
+        margin-bottom: 15px;
+    }
+
+    .service-card h3 {
+        color: #2c3e50;
+        font-size: 1.4rem;
+        margin-bottom: 12px;
+    }
+
+    .service-card p {
+        color: #555;
+        font-size: 1rem;
+        line-height: 1.6;
+    }
+</style>
+
+<div class="services-container">
     <h2>I nostri servizi</h2>
-    
-    <section>
-        <h4>Wi-Fi</h4>
-        <p>
-            Area Wi-Fi gratuita
-            Wi-fi interne nelle camere
-        </p>
-        <h4>Piscine</h4>
-        <p>
-            Piscine interne con idromassaggio
-            Piscine esterne ampie
-        </p>
-        <h4>Guida Turistica</h4>
-        <p>
-            Giro per i vari punti della città
-        </p>
+
+    <section class="services-grid">
+        
+        <article class="service-card">
+            <div class="service-icon">🌐</div>
+            <h3>Wi-Fi</h3>
+            <p>Area Wi-Fi gratuita e connessione ad alta velocità interna nelle camere.</p>
+        </article>
+
+        <article class="service-card">
+            <div class="service-icon">🏊‍♂️</div>
+            <h3>Piscine</h3>
+            <p>Piscine interne riscaldate con idromassaggio e ampie piscine esterne.</p>
+        </article>
+
+        <article class="service-card">
+            <div class="service-icon">🗺️</div>
+            <h3>Guida Turistica</h3>
+            <p>Giri turistici organizzati per scoprire i punti più suggestivi della città.</p>
+        </article>
+
     </section>
-</body>
-</html>
+</div>
