@@ -1,5 +1,7 @@
 package com.geak.hotel.Model;
 
+import java.sql.Date;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,20 +19,20 @@ public class Prenotazione {
 	private String COGNOME;
 	private String EMAIL;
 	private String TELEFONO;
-	private String DATANASCITA;
+	private Date DATANASCITA;
 	private long IDSTANZA;
 	private long IDSERVIZIO;
 	private double TOTALE;
 	private boolean SPA;
 	private String NOTE;
-	private String CHECK_IN;
-	private String CHECK_OUT;
+	private Date CHECK_IN;
+	private Date CHECK_OUT;
 	private String STATO;
 
 	public Prenotazione() {}
 
-	public Prenotazione(long IDPRE, String NOME, String COGNOME, String EMAIL, String TELEFONO, String DATANASCITA,
-			long IDSTANZA, long IDSERVIZIO, double TOTALE, boolean SPA, String NOTE, String CHECK_IN, String CHECK_OUT,
+	public Prenotazione(long IDPRE, String NOME, String COGNOME, String EMAIL, String TELEFONO, Date DATANASCITA,
+			long IDSTANZA, long IDSERVIZIO, double TOTALE, boolean SPA, String NOTE, Date CHECK_IN, Date CHECK_OUT,
 			String STATO) {
 		setIDPRE(IDPRE);
 		setNOME(COGNOME);
@@ -89,11 +91,11 @@ public class Prenotazione {
 		TELEFONO = tELEFONO;
 	}
 
-	public String getDATANASCITA() {
+	public Date getDATANASCITA() {
 		return DATANASCITA;
 	}
 
-	public void setDATANASCITA(String dATANASCITA) {
+	public void setDATANASCITA(Date dATANASCITA) {
 		DATANASCITA = dATANASCITA;
 	}
 
@@ -137,19 +139,19 @@ public class Prenotazione {
 		NOTE = nOTE;
 	}
 
-	public String getCHECK_IN() {
+	public Date getCHECK_IN() {
 		return CHECK_IN;
 	}
 
-	public void setCHECK_IN(String cHECK_IN) {
+	public void setCHECK_IN(Date cHECK_IN) {
 		CHECK_IN = cHECK_IN;
 	}
 
-	public String getCHECK_OUT() {
+	public Date getCHECK_OUT() {
 		return CHECK_OUT;
 	}
 
-	public void setCHECK_OUT(String cHECK_OUT) {
+	public void setCHECK_OUT(Date cHECK_OUT) {
 		CHECK_OUT = cHECK_OUT;
 	}
 
