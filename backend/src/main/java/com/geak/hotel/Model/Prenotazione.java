@@ -13,7 +13,7 @@ import jakarta.persistence.Table;
 public class Prenotazione {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long IDPRE;
 	private String NOME;
 	private String COGNOME;
