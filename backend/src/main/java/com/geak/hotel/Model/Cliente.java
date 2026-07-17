@@ -1,4 +1,6 @@
 package com.geak.hotel.Model;
+import java.time.LocalDate;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -8,66 +10,91 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name="CLIENTI")
 public class Cliente {
-	private String nome;
-	private String cognome;
-	private String email;
-	private String password;
-	private String telefono;
-	private String data_nascita;
-	
+	private String NOME;
+	private String COGNOME;
+	private String MAIL;
+	private String PASS;
+	private String TELEFONO;
+	private LocalDate DATANASCITA;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long IDCLIENTE;
 	
 	public Cliente () {}
 
-	public String getNome() {
-		return nome;
+	
+
+	public String getNOME() {
+		return NOME;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+
+
+	public void setNOME(String nOME) {
+		NOME = nOME;
 	}
 
-	public String getCognome() {
-		return cognome;
+
+
+	public String getCOGNOME() {
+		return COGNOME;
 	}
 
-	public void setCognome(String cognome) {
-		this.cognome = cognome;
+
+
+	public void setCOGNOME(String cOGNOME) {
+		COGNOME = cOGNOME;
 	}
 
-	public String getEmail() {
-		return email;
+
+
+	public String getMAIL() {
+		return MAIL;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+
+
+	public void setMAIL(String mAIL) {
+		MAIL = mAIL;
 	}
 
-	public String getPassword() {
-		return password;
+
+
+	public String getPASS() {
+		return PASS;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+
+
+	public void setPASS(String pASS) {
+		PASS = pASS;
 	}
 
-	public String getTelefono() {
-		return telefono;
+
+
+	public String getTELEFONO() {
+		return TELEFONO;
 	}
 
-	public void setTelefono(String telefono) {
-		this.telefono = telefono;
+
+
+	public void setTELEFONO(String tELEFONO) {
+		TELEFONO = tELEFONO;
 	}
 
-	public String getData_nascita() {
-		return data_nascita;
+
+
+	public LocalDate getDATANASCITA() {
+		return DATANASCITA;
 	}
 
-	public void setData_nascita(String data_nascita) {
-		this.data_nascita = data_nascita;
+
+
+	public void setDATANASCITA(LocalDate dATANASCITA) {
+		DATANASCITA = dATANASCITA;
 	}
+
+
 
 	public long getIDCLIENTE() {
 		return IDCLIENTE;
