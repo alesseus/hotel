@@ -2,9 +2,10 @@ package com.geak.hotel.Services;
 import java.util.List;
 import com.geak.hotel.Repository.StaffRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.geak.hotel.Model.Cliente;
+import org.springframework.stereotype.Service;
 import com.geak.hotel.Model.Staff;
 
+@Service
 public class StaffSrv {
 	@Autowired
 	private StaffRepo stfrepo;
