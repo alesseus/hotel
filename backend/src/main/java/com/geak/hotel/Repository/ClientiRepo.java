@@ -1,5 +1,4 @@
 package com.geak.hotel.Repository;
-import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import com.geak.hotel.Model.Cliente;
