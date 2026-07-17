@@ -32,7 +32,7 @@ public class ServizioController {
 	}
 	
 	// Aggiungo servizio
-	@PostMapping("elenco")
+	@PostMapping("aggiungi")
 	public ServiziSrv add(Servizio agg) {
 		serv.addServizio(agg);
 		return serv;
