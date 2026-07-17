@@ -1,13 +1,57 @@
-<nav>
-  <a routerLink="">Servizi</a>
-  <a routerLink="">Storia</a>
-  <a routerLink="">Dove siamo</a>
-</nav>
+<!DOCTYPE html>
+<html lang="en">
 
-<main>
-  <router-outlet></router-outlet>
-</main>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HOTEL</title>
+    <style>
+        header {
+            position: relative;
+            text-align: center;
+            padding: 20px 0;
+        }
 
-<footer>
-  <a routerLink="">Contatti</a>
-</footer>
+        .btn-prenota {
+            position: absolute;
+            top: 25px;
+            right: 20px;
+            padding: 10px 20px;
+        }
+
+        nav {
+            margin-top: 15px;
+        }
+
+        nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: #333;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>HOTEL DA GASEMAK</h1>
+        
+        <nav>
+            <a routerLink="">Servizi</a>
+            <a routerLink="">Storia</a>
+            <a routerLink="">Dove siamo</a>
+        </nav>
+
+        <button class="btn-prenota">Prenota</button>
+    </header>
+
+
+    <main>
+        <router-outlet></router-outlet>
+    </main>
+
+    <footer align="center" style="margin-top: 30px;">
+        <a routerLink="">Contatti</a>
+    </footer>
+</body>
+
+</html>
