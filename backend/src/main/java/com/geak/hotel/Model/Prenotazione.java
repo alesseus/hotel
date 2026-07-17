@@ -9,11 +9,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "PRENOTAZIONE")
+@Table(name = "PRENOTAZIONI")
 public class Prenotazione {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long IDPRE;
 	private String NOME;
 	private String COGNOME;
