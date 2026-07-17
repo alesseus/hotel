@@ -9,77 +9,77 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "STANZE")
 public class Stanza {
-	private String note;
-	private String dimensione;
-	private int capacità;
-	private double costo;
-	private String descrizione;
-	private String stato;
+	private String NOTE;
+	private String DIMENSIONE;
+	private int CAPACITA;
+	private double COSTO;
+	private String DESCRIZIONE;
+	private String STATO;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long IDSTANZA;
 
-	public Stanza(String note, String dimensione, int capacità, double costo, String descrizione, String stato,
+	public Stanza(String NOTE, String DIMENSIONE, int CAPACITA, double COSTO, String DESCRIZIONE, String STATO,
 			long IDSTANZA) {
-		setNote(note);
-		setDimensione(dimensione);
-		setCapacità(capacità);
-		setCosto(costo);
-		setDescrizione(descrizione);
-		setStato(stato);
+		setNOTE(NOTE);
+		setDIMENSIONE(DIMENSIONE);
+		setCAPACITA(CAPACITA);
+		setCOSTO(COSTO);
+		setDESCRIZIONE(DESCRIZIONE);
+		setSTATO(STATO);
 		setIDSTANZA(IDSTANZA);
 	}
 
 	public Stanza() {
 	}
 
-	public String getNote() {
-		return note;
+	public String getNOTE() {
+		return NOTE;
 	}
 
-	public void setNote(String note) {
-		this.note = note;
+	public void setNOTE(String NOTE) {
+		this.NOTE = NOTE;
 	}
 
-	public String getDimensione() {
-		return dimensione;
+	public String getDIMENSIONE() {
+		return DIMENSIONE;
 	}
 
-	public void setDimensione(String dimensione) {
-		this.dimensione = dimensione;
+	public void setDIMENSIONE(String DIMENSIONE) {
+		this.DIMENSIONE = DIMENSIONE;
 	}
 
-	public int getCapacità() {
-		return capacità;
+	public int getCAPACITA() {
+		return CAPACITA;
 	}
 
-	public void setCapacità(int capacità) {
-		this.capacità = capacità;
+	public void setCAPACITA(int CAPACITA) {
+		this.CAPACITA = CAPACITA;
 	}
 
-	public double getCosto() {
-		return costo;
+	public double getCOSTO() {
+		return COSTO;
 	}
 
-	public void setCosto(double costo) {
-		this.costo = costo;
+	public void setCOSTO(double COSTO) {
+		this.COSTO = COSTO;
 	}
 
-	public String getDescrizione() {
-		return descrizione;
+	public String getDESCRIZIONE() {
+		return DESCRIZIONE;
 	}
 
-	public void setDescrizione(String descrizione) {
-		this.descrizione = descrizione;
+	public void setDESCRIZIONE(String DESCRIZIONE) {
+		this.DESCRIZIONE = DESCRIZIONE;
 	}
 
-	public String getStato() {
-		return stato;
+	public String getSTATO() {
+		return STATO;
 	}
 
-	public void setStato(String stato) {
-		this.stato = stato;
+	public void setSTATO(String STATO) {
+		this.STATO = STATO;
 	}
 
 	public long getIDSTANZA() {
