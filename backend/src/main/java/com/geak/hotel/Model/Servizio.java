@@ -9,16 +9,16 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name="SERVIZI")
 public class Servizio {
-	private String note;
-	private double costo;
+	private String NOTE;
+	private double COSTO;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long IDSERVIZIO;
 	
-	public Servizio(String note,double costo,long IDSERVIZIO) {
-		setNote(note);
-		setCosto(costo);
+	public Servizio(String NOTE,double COSTO,long IDSERVIZIO) {
+		setNOTE(NOTE);
+		setCOSTO(COSTO);
 		setIDSERVIZIO(IDSERVIZIO);
 	}
 	
@@ -26,20 +26,20 @@ public class Servizio {
 		
 	}
 
-	public String getNote() {
-		return note;
+	public String getNOTE() {
+		return NOTE;
 	}
 
-	public void setNote(String note) {
-		this.note = note;
+	public void setNOTE(String NOTE) {
+		this.NOTE = NOTE;
 	}
 
-	public double getCosto() {
-		return costo;
+	public double getCOSTO() {
+		return COSTO;
 	}
 
-	public void setCosto(double costo) {
-		this.costo = costo;
+	public void setCOSTO(double COSTO) {
+		this.COSTO = COSTO;
 	}
 
 	public long getIDSERVIZIO() {
