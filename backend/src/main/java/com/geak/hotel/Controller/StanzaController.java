@@ -33,7 +33,7 @@ public class StanzaController {
 	}
 	
 	// Inserimento nuova stanza
-	@PostMapping("elenco")
+	@PostMapping("add")
 	public List<Stanza> inserisci(@RequestBody Stanza nuova){
 		camera.addStanza(nuova);
 		return camera.getAllStanza();
