@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.geak.hotel.Services.ClientiSrv;
 import com.geak.hotel.Model.Cliente;
@@ -20,6 +21,7 @@ public class ClienteController {
 	ClientiSrv dipendenzacli;
 
 	@GetMapping("lista")
+	@ResponseBody
 	public List<Cliente> listaClienti() {
 		return dipendenzacli.mostraClienti();
 	}
