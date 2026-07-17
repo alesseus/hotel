@@ -14,17 +14,15 @@ public class StanzeSrv {
 	@Autowired
 	private StanzeRepo stanzaRepo;
 	
+	// lista stanze
 	public List<Stanza> getAllStanza(){
 		return stanzaRepo.findAll();
 	}
 	
+	// aggiungi stanza
 	public void addStanza(Stanza nuovaStanza) {
 		stanzaRepo.save(nuovaStanza);
 	}
 	
-	public Optional<Stanza> vediStanza(Long idVedi){
-		Optional<Stanza> stanzaV = stanzaRepo.findById(idVedi);
-		return stanzaV;
-	}
 
 }
