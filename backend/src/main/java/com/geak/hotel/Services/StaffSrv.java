@@ -1,5 +1,35 @@
 package com.geak.hotel.Services;
+import java.util.List;
+import com.geak.hotel.Repository.StaffRepo;
+import org.springframework.beans.factory.annotation.Autowired;
+import com.geak.hotel.Model.Cliente;
+import com.geak.hotel.Model.Staff;
 
 public class StaffSrv {
+	@Autowired
+	private StaffRepo stfrepo;
+
+	// funzione che fa select dello staff
+	
+		public List<Staff> mostraStaff() {
+			return stfrepo.findAll();
+		}
+
+		// aggiungi uno allo staff
+
+		public Staff addStaff(Staff newStaff) {
+			return stfrepo.save(newStaff);
+		}
+
+		// aggiorna uno delll staff
+
+		public Staff aggStaff(Staff updStaff) {
+			return stfrepo.save(updStaff);
+		}
+
+		// cancella uno dello staff
+		public void delStaff(Long id_staff_canc) {
+			stfrepo.deleteById(id_staff_canc);
+		}
 
 }
