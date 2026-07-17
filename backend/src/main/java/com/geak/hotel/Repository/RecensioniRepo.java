@@ -2,6 +2,8 @@ package com.geak.hotel.Repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface RecensionniRepo extends JpaRepository<Recensioni, Long>{
+import com.geak.hotel.Model.Recensione;
+
+public interface RecensioniRepo extends JpaRepository<Recensione, Long>{
 
 }
