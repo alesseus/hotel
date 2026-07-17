@@ -17,7 +17,7 @@ public class Cliente {
 	private String TELEFONO;
 	private LocalDate DATANASCITA;
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long IDCLIENTE;
 	
 	public Cliente () {}
