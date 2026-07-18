@@ -1,0 +1,119 @@
+/* ==========================================================
+   Dove siamo — stile card mappa
+   ========================================================== */
+
+body {
+    margin: 0;
+    padding: 40px 20px;
+    background: #f4f2ee;
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.mappa-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.mappa-card {
+    width: 100%;
+    max-width: 560px;
+    background: #ffffff;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.03),
+                0 10px 30px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.mappa-card:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05),
+                0 16px 40px rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px);
+}
+
+.mappa-header {
+    padding: 24px 28px 18px;
+    border-bottom: 1px solid #f0eee9;
+}
+
+.mappa-header h2 {
+    margin: 0 0 6px;
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: #1a1a1a;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.mappa-header h2::before {
+    content: "📍";
+    font-size: 20px;
+}
+
+.mappa-header p {
+    margin: 0;
+    font-size: 14.5px;
+    color: #767268;
+    line-height: 1.4;
+}
+
+.mappa-card iframe {
+    width: 100%;
+    display: block;
+    filter: grayscale(6%) contrast(102%);
+}
+
+.mappa-footer {
+    padding: 16px 28px;
+    background: #faf9f6;
+    border-top: 1px solid #f0eee9;
+    text-align: right;
+}
+
+.mappa-footer a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #b5651d;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 999px;
+    background: #fdf0e4;
+    transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.mappa-footer a::after {
+    content: "↗";
+    font-size: 13px;
+    transition: transform 0.2s ease;
+}
+
+.mappa-footer a:hover {
+    background: #b5651d;
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+
+.mappa-footer a:hover::after {
+    transform: translate(2px, -2px);
+}
+
+@media (max-width: 480px) {
+    .mappa-header {
+        padding: 20px 20px 14px;
+    }
+    .mappa-header h2 {
+        font-size: 19px;
+    }
+    .mappa-footer {
+        padding: 14px 20px;
+        text-align: center;
+    }
+}
