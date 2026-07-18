@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Prenota una Stanza</title>
+</head>
+
+<body>
+    <div align="center">
+        <h1>Prenota una Stanza</h1>
+
+        <form action="/prenotazioni" method="POST">
+
+            <h2>Dati Personali</h2>
+
+            <label for="nome">Nome:</label>
+            <input type="text" id="nome" name="nome" required maxlength="100">
+            <br>
+
+            <label for="cognome">Cognome:</label>
+            <input type="text" id="cognome" name="cognome" required maxlength="100">
+            <br>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required maxlength="150">
+            <br>
+
+            <label for="telefono">Telefono:</label>
+            <input type="tel" id="telefono" name="telefono" maxlength="20">
+            <br>
+
+            <label for="datanascita">Data di Nascita:</label>
+            <input type="date" id="datanascita" name="datanascita">
+            <br>
+
+            <h2>Dettagli Prenotazione</h2>
+
+            <label for="idstanza">Stanza:</label>
+            <select id="idstanza" name="idstanza" required>
+                <option value="">-- Seleziona una stanza --</option>
+
+            </select>
+            <br>
+
+            <label for="check_in">Data Check-in:</label>
+            <input type="date" id="check_in" name="check_in" required>
+            <br>
+
+            <label for="check_out">Data Check-out:</label>
+            <input type="date" id="check_out" name="check_out" required>
+            <br>
+
+            <label for="idservizio">Servizio Aggiuntivo:</label>
+            <select id="idservizio" name="idservizio">
+                <option value="">-- Nessun servizio --</option>
+
+            </select>
+            <br>
+
+            <label for="spa">Includi SPA:</label>
+            <input type="checkbox" id="spa" name="spa" value="1">
+            <br>
+
+            <label for="note">Note:</label>
+            <textarea id="note" name="note" rows="4" cols="50"></textarea>
+            <br>
+
+            <h2>Riepilogo</h2>
+
+            <p>Totale : <span id="totale">--</span></p>
+            <input type="hidden" id="totale_hidden" name="totale">
+
+            <br>
+            <button type="submit">Conferma Prenotazione</button>
+            <button type="reset">Annulla</button>
+
+        </form>
+    </div>
+
+
+</body>
+
+</html>

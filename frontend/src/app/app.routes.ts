@@ -1,8 +1,8 @@
 import { Routes } from '@angular/router';
-
 import { Servizi } from './servizi/servizi';
 import { Storia } from './storia/storia';
 import { Dovesiamo } from './dovesiamo/dovesiamo';
+import { Prenotazione } from './prenotazione/prenotazione';
 
 export const routes: Routes = [
     {
@@ -17,5 +17,13 @@ export const routes: Routes = [
         path: 'dovesiamo',
         component: Dovesiamo,
     },
+
+     {
+        path: 'prenotazione',
+        component: Prenotazione,
+    },
+
+    
+
 
 ];
