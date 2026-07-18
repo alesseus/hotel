@@ -1,0 +1,26 @@
+.dashboard {
+  display: flex;
+  flex-direction: row;
+  /* rimuovi flex-wrap */
+  gap: 60px;
+  padding: 150px;
+  min-height: 40vh;
+}
+
+.card {
+  flex: 1 1 0;    
+  text-align: center;          /* ← tutte uguali, non vanno a capo */
+  background-color: coral;
+  color: white;
+  padding: 20px;
+  padding-top: 120px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  min-height: 150px;
+  min-width: 0;             /* ← evita overflow */
+}
+
+.card:hover {
+  background-color: chocolate;
+}
