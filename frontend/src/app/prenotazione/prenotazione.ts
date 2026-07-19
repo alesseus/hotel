@@ -11,5 +11,5 @@ import { prenotazione } from './interfacce/prenotazione_i';
 export class Prenotazione {
    constructor(private _PrenotazioneServices:PrenotazioneServices){}
 
-  listaRecensioni = signal(<Array<prenotazione>>[]);
+  listaPrenotazioni = signal(<Array<prenotazione>>[]);
 }
