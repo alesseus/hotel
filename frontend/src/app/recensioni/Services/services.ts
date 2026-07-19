@@ -29,7 +29,4 @@ export class RecensioneServices {
   postUtente(nuovaRecensione: Recensione): any {
     return this.http.post(this.url, nuovaRecensione, this.httpOptions);
   }
-
-
-
 }
