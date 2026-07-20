@@ -47,7 +47,29 @@
 .service-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-2); border-color: var(--navy-200); }
 .service-card:hover::before { transform: scaleX(1); }
 
-.service-icon { font-size: 2.4rem; display: block; margin-bottom: 18px; line-height: 1; }
+.service-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  margin-bottom: 20px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--navy-50) 0%, var(--navy-100) 100%);
+  transition: background var(--med);
+}
+.service-card:hover .service-icon {
+  background: linear-gradient(135deg, var(--navy-100) 0%, var(--gold-100) 100%);
+}
+.service-icon svg {
+  width: 28px;
+  height: 28px;
+  fill: none;
+  stroke: var(--navy-700);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
 .service-card h3 { font-size: 1.2rem; color: var(--navy-900); margin-bottom: 10px; }
 .service-card p  { font-size: 0.88rem; line-height: 1.7; }
 
