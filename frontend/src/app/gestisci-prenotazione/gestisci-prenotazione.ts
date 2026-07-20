@@ -5,10 +5,11 @@ import { GestisciPrenotazioneServices } from './Services/services';
 import { prenotazione } from '../prenotazione/interfacce/prenotazione_i';
 import { stanza } from '../gestisci-stanza/interfacce/stanza_i';
 import { servizio } from './interfacce/servizio_i';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-gestisci-prenotazione',
-  imports: [RouterLink, FormsModule],
+  imports: [RouterLink, FormsModule, DecimalPipe],
   templateUrl: './gestisci-prenotazione.html',
   styleUrl: './gestisci-prenotazione.css',
   providers: [GestisciPrenotazioneServices]
