@@ -50,7 +50,7 @@ export class Prenotazione implements OnInit {
   }
 
   caricaStanze(): void {
-    this.http.get<stanza[]>(`${this.API}/stanza/lista`).subscribe({
+    this.http.get<stanza[]>(`${this.API}/stanza/elenco`).subscribe({
       next:  (data) => this.stanzeDisponibili.set(data),
       error: (err)  => console.error('Errore caricamento stanze', err)
     });
@@ -65,10 +65,9 @@ export class Prenotazione implements OnInit {
 
   // ── Wizard methods ────────────────────────────────────────────
   scegliTipo(tipo: 'spa' | 'stanza'): void {
-    this.tipoPrenotazione = tipo;
-    // SPA-only → salta la scelta stanza, vai ai servizi
-    this.step = tipo === 'spa' ? 2 : 1;
-  }
+  this.tipoPrenotazione = tipo;
+  this.step = tipo === 'spa' ? 3 : 1;  // SPA → step 3 diretto
+}
 
   selezionaStanza(s: stanza): void {
     this.stanzaSelezionata = s;
