@@ -1,11 +1,5 @@
 import { Component } from '@angular/core';
-<<<<<<< Updated upstream
 import { RouterLink } from '@angular/router';
-
-@Component({
-  selector: 'app-gestisci-prenotazione',
-  imports: [RouterLink],
-=======
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -19,8 +13,7 @@ interface Prenotazione {
 
 @Component({
   selector: 'app-gestisci-prenotazione',
-  imports: [CommonModule, FormsModule],
->>>>>>> Stashed changes
+  imports: [RouterLink, CommonModule, FormsModule],
   templateUrl: './gestisci-prenotazione.html',
   styleUrl: './gestisci-prenotazione.css',
 })
