@@ -146,12 +146,18 @@
 }
 .modal-close:hover { color: var(--navy-900); }
 
+/* Il <form> eredita l'altezza dal modal-box e distribuisce spazio ai figli */
+.modal-box > form {
+  display: flex; flex-direction: column;
+  flex: 1 1 auto; min-height: 0; overflow: hidden;
+}
+
 /* Il body scrolla internamente — il footer rimane fisso in basso */
 .modal-body {
   padding: 20px 28px;
   overflow-y: auto;
   flex: 1 1 auto;
-  min-height: 0;         /* fondamentale: senza questo il flex item ignora max-height del padre */
+  min-height: 0;
 }
 
 /* ── Form grid: 2 colonne uguali ── */
