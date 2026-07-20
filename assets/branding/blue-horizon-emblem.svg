@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400" role="img" aria-labelledby="title2 desc2">
+  <title id="title2">Blue Horizon - Emblem</title>
+  <desc id="desc2">Emblema circolare con onda stilizzata e linea d'orizzonte, blu su sfondo bianco.</desc>
+  <rect width="100%" height="100%" fill="#FFFFFF"/>
+  <g transform="translate(200,200)">
+    <circle r="160" fill="#FFFFFF" stroke="#0B63B8" stroke-width="10"/>
+    <!-- Sun/horizon -->
+    <circle cx="0" cy="-40" r="28" fill="#0B63B8" />
+    <rect x="-150" y="0" width="300" height="6" rx="3" fill="#0B63B8" />
+    <!-- Wave shapes -->
+    <path d="M-140,40 C-100,0 -60,0 -20,40 C20,80 60,80 100,40" fill="none" stroke="#0B63B8" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M-120,70 C-80,40 -40,40 0,70 C40,100 80,100 120,70" fill="none" stroke="#0B63B8" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>
