@@ -18,19 +18,19 @@ export class GestisciPrenotazione implements OnInit {
 
   private readonly srv = inject(GestisciPrenotazioneServices);
 
-  // ── Dati ──────────────────────────────────────────────────────
+  // ── Dati (signal → change detection automatico) ───────────────
   prenotazioni = signal<prenotazione[]>([]);
   stanze       = signal<stanza[]>([]);
   servizi      = signal<servizio[]>([]);
 
-  caricamento       = true;
-  erroreCaricamento = '';
+  caricamento        = signal(true);
+  erroreCaricamento  = signal('');
 
   // ── Ricerca ───────────────────────────────────────────────────
-  ricerca = '';
+  ricerca = signal('');
 
   get prenotazioniFiltrate(): prenotazione[] {
-    const q = this.ricerca.trim().toLowerCase();
+    const q = this.ricerca().trim().toLowerCase();
     if (!q) return this.prenotazioni();
     return this.prenotazioni().filter(p =>
       (p.NOME    ?? '').toLowerCase().includes(q) ||
@@ -41,33 +41,33 @@ export class GestisciPrenotazione implements OnInit {
   }
 
   // ── Modale form (crea / modifica) ─────────────────────────────
-  modaleAperto = false;
-  modalita: 'crea' | 'modifica' = 'crea';
-  formError = '';
-  invio     = false;
+  modaleAperto = signal(false);
+  modalita     = signal<'crea' | 'modifica'>('crea');
+  formError    = signal('');
+  invio        = signal(false);
 
   form: Partial<prenotazione> = this.vuota();
 
-  stanzaSelezionata:   stanza   | null = null;
-  servizioSelezionato: servizio | null = null;
+  stanzaSelezionata   = signal<stanza   | null>(null);
+  servizioSelezionato = signal<servizio | null>(null);
 
   // ── Modale conferma elimina ───────────────────────────────────
-  eliminaTarget: prenotazione | null = null;
-  eliminaInCorso = false;
+  eliminaTarget  = signal<prenotazione | null>(null);
+  eliminaInCorso = signal(false);
 
   // ─────────────────────────────────────────────────────────────
   ngOnInit(): void { this.caricaTutto(); }
 
   caricaTutto(): void {
-    this.caricamento = true;
-    this.erroreCaricamento = '';
+    this.caricamento.set(true);
+    this.erroreCaricamento.set('');
 
     this.srv.getPrenotazioni().subscribe({
-      next:  (data) => { this.prenotazioni.set(data); this.caricamento = false; },
+      next:  (data) => { this.prenotazioni.set(data); this.caricamento.set(false); },
       error: (err)  => {
         console.error('Errore caricamento prenotazioni', err);
-        this.erroreCaricamento = 'Impossibile caricare le prenotazioni. Riprova più tardi.';
-        this.caricamento = false;
+        this.erroreCaricamento.set('Impossibile caricare le prenotazioni. Riprova più tardi.');
+        this.caricamento.set(false);
       }
     });
 
@@ -84,99 +84,99 @@ export class GestisciPrenotazione implements OnInit {
 
   // ── Dropdown helpers ──────────────────────────────────────────
   onStanzaChange(id: number | null): void {
-    this.stanzaSelezionata = id
-      ? (this.stanze().find(s => s.IDSTANZA === +id) ?? null)
-      : null;
+    this.stanzaSelezionata.set(
+      id ? (this.stanze().find(s => s.IDSTANZA === +id) ?? null) : null
+    );
   }
 
   onServizioChange(id: number | null): void {
-    this.servizioSelezionato = id
-      ? (this.servizi().find(s => s.IDSERVIZIO === +id) ?? null)
-      : null;
+    this.servizioSelezionato.set(
+      id ? (this.servizi().find(s => s.IDSERVIZIO === +id) ?? null) : null
+    );
   }
 
   // ── Apertura modali ───────────────────────────────────────────
   apriModaleCreazione(): void {
-    this.modalita = 'crea';
+    this.modalita.set('crea');
     this.form = this.vuota();
-    this.stanzaSelezionata   = null;
-    this.servizioSelezionato = null;
-    this.formError = '';
-    this.modaleAperto = true;
+    this.stanzaSelezionata.set(null);
+    this.servizioSelezionato.set(null);
+    this.formError.set('');
+    this.modaleAperto.set(true);
   }
 
   apriModaleModifica(p: prenotazione): void {
-    this.modalita = 'modifica';
-    // Copia tutti i campi (incluse le date come stringhe ISO per i date input)
+    this.modalita.set('modifica');
     this.form = {
       ...p,
       DATANASCITA: this.toDateInputString(p.DATANASCITA),
       CHECK_IN:    this.toDateInputString(p.CHECK_IN),
       CHECK_OUT:   this.toDateInputString(p.CHECK_OUT),
     } as any;
-    this.stanzaSelezionata   = this.stanze().find(s => s.IDSTANZA === p.IDSTANZA) ?? null;
-    this.servizioSelezionato = this.servizi().find(s => s.IDSERVIZIO === p.IDSERVIZIO) ?? null;
-    this.formError = '';
-    this.modaleAperto = true;
+    this.stanzaSelezionata.set(this.stanze().find(s => s.IDSTANZA === p.IDSTANZA) ?? null);
+    this.servizioSelezionato.set(this.servizi().find(s => s.IDSERVIZIO === p.IDSERVIZIO) ?? null);
+    this.formError.set('');
+    this.modaleAperto.set(true);
   }
 
   chiudiModale(): void {
-    this.modaleAperto = false;
+    this.modaleAperto.set(false);
     this.form = this.vuota();
-    this.stanzaSelezionata   = null;
-    this.servizioSelezionato = null;
-    this.formError = '';
+    this.stanzaSelezionata.set(null);
+    this.servizioSelezionato.set(null);
+    this.formError.set('');
   }
 
   // ── Salva (crea o modifica) ───────────────────────────────────
   salva(ngForm: NgForm): void {
-    this.formError = '';
-    if (ngForm.invalid) { this.formError = 'Compila tutti i campi obbligatori.'; return; }
+    this.formError.set('');
+    if (ngForm.invalid) { this.formError.set('Compila tutti i campi obbligatori.'); return; }
 
-    this.invio = true;
+    this.invio.set(true);
 
-    const obs = this.modalita === 'crea'
+    const obs = this.modalita() === 'crea'
       ? this.srv.addPrenotazione(this.form)
       : this.srv.cambiaPrenotazione(this.form as prenotazione);
 
     obs.subscribe({
       next: () => {
-        this.invio = false;
+        this.invio.set(false);
         this.chiudiModale();
         this.caricaTutto();
       },
       error: (err) => {
         console.error('Errore salvataggio', err);
-        this.formError = 'Errore durante il salvataggio. Riprova.';
-        this.invio = false;
+        this.formError.set('Errore durante il salvataggio. Riprova.');
+        this.invio.set(false);
       }
     });
   }
 
   // ── Elimina ───────────────────────────────────────────────────
   apriConfermaEliminazione(p: prenotazione): void {
-    this.eliminaTarget = p;
+    this.eliminaTarget.set(p);
   }
 
   annullaEliminazione(): void {
-    this.eliminaTarget = null;
+    this.eliminaTarget.set(null);
   }
 
   confermaEliminazione(): void {
-    if (!this.eliminaTarget) return;
-    this.eliminaInCorso = true;
+    const target = this.eliminaTarget();
+    if (!target) return;
+    this.eliminaInCorso.set(true);
 
-    this.srv.cancellaPrenotazione(this.eliminaTarget.IDPRE).subscribe({
+    this.srv.cancellaPrenotazione(target.IDPRE).subscribe({
       next: () => {
-        this.eliminaInCorso = false;
-        this.eliminaTarget = null;
+        this.eliminaInCorso.set(false);
+        this.eliminaTarget.set(null);
         this.caricaTutto();
       },
       error: (err) => {
         console.error('Errore eliminazione', err);
-        this.eliminaInCorso = false;
-        this.eliminaTarget = null;
-        this.erroreCaricamento = 'Errore durante l\'eliminazione. Riprova.';
+        this.eliminaInCorso.set(false);
+        this.eliminaTarget.set(null);
+        this.erroreCaricamento.set('Errore durante l\'eliminazione. Riprova.');
       }
     });
   }
@@ -198,7 +198,6 @@ export class GestisciPrenotazione implements OnInit {
     return new Date(d).toLocaleDateString('it-IT');
   }
 
-  /** Converte una data ISO (es. "2026-08-01T00:00:00.000Z") in "YYYY-MM-DD" per <input type="date"> */
   private toDateInputString(d: string | Date | undefined): string {
     if (!d) return '';
     return new Date(d).toISOString().slice(0, 10);
