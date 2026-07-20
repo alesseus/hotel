@@ -14,9 +14,9 @@ public class Servizio {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long IDSERVIZIO;
+	private Long IDSERVIZIO;
 	
-	public Servizio(String NOTE,double COSTO,long IDSERVIZIO) {
+	public Servizio(String NOTE,double COSTO,Long IDSERVIZIO) {
 		setNOTE(NOTE);
 		setCOSTO(COSTO);
 		setIDSERVIZIO(IDSERVIZIO);
@@ -42,11 +42,11 @@ public class Servizio {
 		this.COSTO = COSTO;
 	}
 
-	public long getIDSERVIZIO() {
+	public Long getIDSERVIZIO() {
 		return IDSERVIZIO;
 	}
 
-	public void setIDSERVIZIO(long iDSERVIZIO) {
+	public void setIDSERVIZIO(Long iDSERVIZIO) {
 		IDSERVIZIO = iDSERVIZIO;
 	}
 	
