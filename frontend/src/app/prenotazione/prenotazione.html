@@ -1,96 +1,262 @@
+<!-- WIZARD PRENOTAZIONE — Angular 22 / sintassi moderna @if / @for -->
 <div class="prenota-page">
 
-  <!-- Hero band -->
+  <!-- ── Hero + Progress ── -->
   <div class="prenota-hero">
     <h1>Prenota il tuo soggiorno</h1>
     <div class="divider-gold"></div>
-    <p>Compila il modulo per riservare la camera perfetta per te.</p>
+
+    <div class="progress-bar">
+      <div class="progress-step" [class.done]="step > 0" [class.active]="step === 0">
+        <span class="step-num">1</span>
+        <span class="step-lbl">Tipo</span>
+      </div>
+      <div class="progress-line"></div>
+
+      @if (tipoPrenotazione !== 'spa') {
+        <div class="progress-step" [class.done]="step > 1" [class.active]="step === 1">
+          <span class="step-num">2</span>
+          <span class="step-lbl">Stanza</span>
+        </div>
+        <div class="progress-line"></div>
+      }
+
+      <div class="progress-step" [class.done]="step > 2" [class.active]="step === 2">
+        <span class="step-num">3</span>
+        <span class="step-lbl">Servizi</span>
+      </div>
+      <div class="progress-line"></div>
+
+      <div class="progress-step" [class.active]="step === 3">
+        <span class="step-num">4</span>
+        <span class="step-lbl">Conferma</span>
+      </div>
+    </div>
   </div>
 
-  <!-- Form card -->
-  <div class="prenota-body">
-    <form class="prenota-card">
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <!-- STEP 0 — Scelta tipo                                       -->
+  <!-- ══════════════════════════════════════════════════════════ -->
+  @if (step === 0) {
+    <div class="step-panel">
+      <div class="tipo-wrapper">
+        <h2>Come vuoi prenotare?</h2>
+        <p>Scegli il tipo di soggiorno che desideri</p>
 
-      <!-- Dati personali -->
-      <div class="form-section">
-        <h3 class="form-section-title"><span>👤</span> Dati personali</h3>
+        <div class="tipo-cards">
 
-        <div class="fields-2">
-          <div>
-            <label for="nome">Nome</label>
-            <input type="text" id="nome" name="nome" required maxlength="100" placeholder="Mario">
+          <div class="tipo-card" (click)="scegliTipo('spa')">
+            <span class="tipo-icon">💆</span>
+            <h3>Solo S.P.A.</h3>
+            <p>Accesso al centro benessere senza pernottamento</p>
+            <button class="secondary" type="button">Seleziona</button>
           </div>
-          <div>
-            <label for="cognome">Cognome</label>
-            <input type="text" id="cognome" name="cognome" required maxlength="100" placeholder="Rossi">
-          </div>
-        </div>
 
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" required maxlength="150" placeholder="mario.rossi@email.com">
+          <div class="tipo-card tipo-card--featured" (click)="scegliTipo('stanza')">
+            <span class="tipo-badge">Più scelto</span>
+            <span class="tipo-icon">🏨</span>
+            <h3>Prenota Stanza</h3>
+            <p>Pernottamento con eventuale SPA inclusa</p>
+            <button class="primary" type="button">Seleziona</button>
+          </div>
 
-        <div class="fields-2">
-          <div>
-            <label for="telefono">Telefono</label>
-            <input type="tel" id="telefono" name="telefono" maxlength="20" placeholder="+39 000 0000000">
-          </div>
-          <div>
-            <label for="datanascita">Data di nascita</label>
-            <input type="date" id="datanascita" name="datanascita">
-          </div>
         </div>
       </div>
+    </div>
+  }
 
-      <!-- Dettagli prenotazione -->
-      <div class="form-section">
-        <h3 class="form-section-title"><span>🏨</span> Dettagli prenotazione</h3>
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <!-- STEP 1 — Scelta stanza                                     -->
+  <!-- ══════════════════════════════════════════════════════════ -->
+  @if (step === 1) {
+    <div class="step-panel">
+      <div class="scelta-wrapper">
+        <div class="scelta-header">
+          <h2>Scelta stanza</h2>
+          <p>Seleziona la stanza più adatta alle tue esigenze</p>
+        </div>
 
-        <label for="idstanza">Stanza</label>
-        <select id="idstanza" name="idstanza" required>
-          <option value="">— Seleziona una stanza —</option>
-        </select>
+        <div class="stanze-grid">
+          @for (s of stanzeDisponibili(); track s.IDSTANZA) {
+            <div class="stanza-card" (click)="selezionaStanza(s)"
+                 [class.stanza-selected]="stanzaSelezionata?.IDSTANZA === s.IDSTANZA">
+              <div class="stanza-img-placeholder"></div>
+              <div class="stanza-info">
+                <h4>{{ s.DESCRIZIONE || s.DIMENSIONE || 'Stanza ' + s.IDSTANZA }}</h4>
+                <p>Capienza: {{ s.CAPACITA }} · Stato: {{ s.STATO }}</p>
+                <div class="stanza-price">€{{ s.COSTO }}<span>/notte</span></div>
+              </div>
+              <div class="stanza-select-btn">Scegli</div>
+            </div>
+          } @empty {
+            <div class="list-empty">
+              <span>🏨</span>
+              <p>Caricamento stanze in corso...</p>
+            </div>
+          }
+        </div>
 
-        <div class="fields-2">
-          <div>
-            <label for="check_in">Check-in</label>
-            <input type="date" id="check_in" name="check_in" required>
+        <div class="step-nav">
+          <button class="secondary" type="button" (click)="step = 0">← Indietro</button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <!-- STEP 2 — Scelta servizi                                    -->
+  <!-- ══════════════════════════════════════════════════════════ -->
+  @if (step === 2) {
+    <div class="step-panel">
+      <div class="scelta-wrapper">
+        <div class="scelta-header">
+          <h2>Servizi aggiuntivi</h2>
+          <p>Aggiungi i servizi che desideri al tuo soggiorno</p>
+        </div>
+
+        <div class="servizi-list">
+          @for (s of serviziDisponibili(); track s.IDSERVIZIO) {
+            <label class="servizio-row" [class.checked]="isServizioSelezionato(s)">
+              <input type="checkbox"
+                     [checked]="isServizioSelezionato(s)"
+                     (change)="toggleServizio(s)">
+              <div class="servizio-info">
+                <span class="servizio-nome">Servizio #{{ s.IDSERVIZIO }}</span>
+                <span class="servizio-desc">{{ s.NOTE }}</span>
+              </div>
+              <span class="servizio-price">€{{ s.COSTO }}</span>
+            </label>
+          } @empty {
+            <div class="list-empty">
+              <span>⭐</span>
+              <p>Nessun servizio aggiuntivo disponibile</p>
+            </div>
+          }
+        </div>
+
+        <div class="step-nav">
+          <button class="secondary" type="button" (click)="step = tipoPrenotazione === 'spa' ? 0 : 1">
+            ← Indietro
+          </button>
+          <button class="primary" type="button" (click)="step = 3">
+            Continua →
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <!-- STEP 3 — Dati personali + Riepilogo                        -->
+  <!-- ══════════════════════════════════════════════════════════ -->
+  @if (step === 3) {
+    <div class="step-panel">
+      <form class="confirm-wrapper" (ngSubmit)="confermaPrenotazione()">
+
+        <!-- Colonna sx: Dati personali -->
+        <div class="confirm-form">
+          <h3>Dati personali</h3>
+
+          <div class="fields-2">
+            <div>
+              <label for="nome">Nome</label>
+              <input type="text" id="nome" name="nome"
+                     [(ngModel)]="nome" required placeholder="Mario">
+            </div>
+            <div>
+              <label for="cognome">Cognome</label>
+              <input type="text" id="cognome" name="cognome"
+                     [(ngModel)]="cognome" required placeholder="Rossi">
+            </div>
           </div>
-          <div>
-            <label for="check_out">Check-out</label>
-            <input type="date" id="check_out" name="check_out" required>
+
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email"
+                 [(ngModel)]="email" required placeholder="mario.rossi@email.com">
+
+          <label for="telefono">Telefono</label>
+          <input type="tel" id="telefono" name="telefono"
+                 [(ngModel)]="telefono" placeholder="+39 000 0000000">
+
+          <label for="dataNascita">Data di nascita</label>
+          <input type="date" id="dataNascita" name="dataNascita"
+                 [(ngModel)]="dataNascita">
+
+          <div class="fields-2">
+            <div>
+              <label for="checkIn">Check-in</label>
+              <input type="date" id="checkIn" name="checkIn"
+                     [(ngModel)]="checkIn" required>
+            </div>
+            <div>
+              <label for="checkOut">Check-out</label>
+              <input type="date" id="checkOut" name="checkOut"
+                     [(ngModel)]="checkOut" required>
+            </div>
+          </div>
+
+          <label for="note">Note</label>
+          <textarea id="note" name="note" rows="3"
+                    [(ngModel)]="note" placeholder="Richieste particolari..."></textarea>
+        </div>
+
+        <!-- Colonna dx: Riepilogo -->
+        <div class="confirm-riepilogo">
+          <h3>Riepilogo</h3>
+
+          <div class="riepilogo-box">
+
+            <div class="riepilogo-row">
+              <span>Tipo</span>
+              <span>{{ tipoPrenotazione === 'spa' ? 'Solo SPA' : 'Soggiorno' }}</span>
+            </div>
+
+            @if (stanzaSelezionata) {
+              <div class="riepilogo-row">
+                <span>Stanza</span>
+                <span>{{ stanzaSelezionata.DESCRIZIONE || stanzaSelezionata.DIMENSIONE }}</span>
+              </div>
+              <div class="riepilogo-row">
+                <span>Costo stanza</span>
+                <span>€{{ stanzaSelezionata.COSTO }}</span>
+              </div>
+            }
+
+            <div class="riepilogo-row">
+              <span>Check-in</span>
+              <span>{{ checkIn || '—' }}</span>
+            </div>
+            <div class="riepilogo-row">
+              <span>Check-out</span>
+              <span>{{ checkOut || '—' }}</span>
+            </div>
+
+            @if (serviziSelezionati.length > 0) {
+              <div class="riepilogo-row">
+                <span>Servizi extra</span>
+                <span>+€{{ serviziSelezionati.reduce((a,s) => a + s.COSTO, 0) }}</span>
+              </div>
+            }
+
+            <div class="riepilogo-divider"></div>
+            <div class="riepilogo-total">
+              <span>Totale</span>
+              <span>€{{ totale }}</span>
+            </div>
+          </div>
+
+          <div class="confirm-actions">
+            <button type="submit" class="primary confirm-btn">
+              Conferma prenotazione
+            </button>
+            <button type="button" class="secondary" (click)="step = 2">
+              ← Modifica
+            </button>
           </div>
         </div>
 
-        <label for="idservizio">Servizio aggiuntivo</label>
-        <select id="idservizio" name="idservizio">
-          <option value="">— Nessun servizio —</option>
-        </select>
+      </form>
+    </div>
+  }
 
-        <div class="checkbox-row">
-          <input type="checkbox" id="spa" name="spa" value="1">
-          <label for="spa">Includi accesso SPA & Benessere</label>
-        </div>
-
-        <label for="note">Note e richieste speciali</label>
-        <textarea id="note" name="note" rows="3" placeholder="Es. camera silenziosa, piano alto, culla..."></textarea>
-      </div>
-
-      <!-- Riepilogo -->
-      <div class="form-section">
-        <h3 class="form-section-title"><span>💳</span> Riepilogo</h3>
-        <div class="riepilogo">
-          <span class="riepilogo-label">Totale stimato</span>
-          <span class="riepilogo-price" id="totale">--</span>
-          <input type="hidden" id="totale_hidden" name="totale">
-        </div>
-      </div>
-
-      <!-- Azioni -->
-      <div class="form-actions">
-        <button type="submit">Conferma prenotazione</button>
-        <button type="reset">Annulla</button>
-      </div>
-
-    </form>
-  </div>
 </div>

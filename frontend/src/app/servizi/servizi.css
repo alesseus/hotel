@@ -1,48 +1,33 @@
-/* ── SERVIZI ──────────────────────────────────────────────────── */
+/* ── SERVIZI (+ Recensioni in fondo) ─────────────────────────── */
 :host { display: block; }
 
-/* Hero */
+/* Hero band */
 .servizi-hero {
   background: linear-gradient(135deg, var(--navy-950) 0%, var(--navy-800) 100%);
-  padding: 72px 40px 64px;
+  padding: 64px 40px 56px;
   text-align: center;
 }
 .servizi-hero h2 { color: var(--white); margin-bottom: 12px; }
-.servizi-hero .divider-gold { margin: 0 auto 16px; }
-.servizi-hero p { color: var(--navy-200); max-width: 500px; margin: 0 auto; }
+.servizi-hero .divider-gold { margin: 0 auto 18px; }
+.servizi-hero p { color: var(--navy-200); max-width: 480px; margin: 0 auto; }
 
-/* Grid */
+/* Griglia servizi */
 .services-container {
-  max-width: 1100px;
+  max-width: 1080px;
   margin: 0 auto;
-  padding: 64px 40px 80px;
+  padding: 60px 40px 56px;
 }
-
-.services-eyebrow {
-  text-align: center;
-  font-size: 0.70rem;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--navy-600);
-  margin-bottom: 12px;
-}
-.services-container h2 {
-  text-align: center;
-  margin-bottom: 10px;
-}
-.services-divider { margin: 0 auto 56px; }
 
 .services-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 24px;
+  gap: 22px;
 }
 
 .service-card {
   background: var(--white);
   border-radius: var(--r-lg);
-  padding: 40px 30px;
+  padding: 36px 28px;
   border: 1px solid var(--navy-100);
   box-shadow: var(--shadow-1);
   transition: transform var(--med), box-shadow var(--med), border-color var(--fast);
@@ -54,48 +39,66 @@
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 3px;
-  background: linear-gradient(90deg, var(--navy-600), var(--navy-300));
+  background: linear-gradient(90deg, var(--navy-700), var(--navy-400));
   transform: scaleX(0);
   transform-origin: left;
   transition: transform var(--med);
 }
-.service-card:hover {
-  transform: translateY(-6px);
-  box-shadow: var(--shadow-2);
-  border-color: var(--navy-200);
-}
+.service-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-2); border-color: var(--navy-200); }
 .service-card:hover::before { transform: scaleX(1); }
 
-.service-icon {
-  font-size: 2.6rem;
-  display: block;
-  margin-bottom: 20px;
-  line-height: 1;
-}
-.service-card h3 {
-  font-size: 1.25rem;
-  color: var(--navy-900);
-  margin-bottom: 12px;
-}
-.service-card p {
-  font-size: 0.88rem;
-  line-height: 1.7;
-  color: var(--ink-soft);
-}
+.service-icon { font-size: 2.4rem; display: block; margin-bottom: 18px; line-height: 1; }
+.service-card h3 { font-size: 1.2rem; color: var(--navy-900); margin-bottom: 10px; }
+.service-card p  { font-size: 0.88rem; line-height: 1.7; }
 
-/* CTA band */
-.services-cta {
-  background: var(--navy-50);
-  border-top: 1px solid var(--navy-100);
-  padding: 52px 40px;
+/* ── Sezione Recensioni ─────────────────────────────────────── */
+.recensioni-strip {
+  background: linear-gradient(135deg, var(--navy-900) 0%, var(--navy-950) 100%);
+  padding: 72px 40px 80px;
+}
+.recensioni-strip-inner {
+  max-width: 1080px;
+  margin: 0 auto;
   text-align: center;
 }
-.services-cta h3 { margin-bottom: 14px; }
-.services-cta p { max-width: 440px; margin: 0 auto 28px; }
+.recensioni-strip h2 { color: var(--white); margin-bottom: 10px; }
+.recensioni-strip .divider-gold { margin: 0 auto 48px; }
+
+.rec-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  text-align: left;
+}
+
+.rec-card {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: var(--r-lg);
+  padding: 28px;
+  transition: background var(--fast), transform var(--med);
+}
+.rec-card:hover { background: rgba(255,255,255,0.10); transform: translateY(-4px); }
+
+.rec-stars { color: var(--gold-500); font-size: 1rem; letter-spacing: 2px; margin-bottom: 12px; }
+.rec-card p {
+  font-size: 0.90rem;
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.78);
+  line-height: 1.72;
+  margin-bottom: 14px;
+}
+.rec-author {
+  font-size: 0.73rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--navy-300);
+}
 
 @media (max-width: 768px) {
-  .servizi-hero { padding: 52px 20px 48px; }
-  .services-container { padding: 48px 20px 60px; }
+  .servizi-hero { padding: 52px 20px 44px; }
+  .services-container { padding: 44px 20px 48px; }
   .services-grid { grid-template-columns: 1fr; }
-  .services-cta { padding: 40px 20px; }
+  .recensioni-strip { padding: 52px 20px 60px; }
 }

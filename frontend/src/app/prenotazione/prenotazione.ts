@@ -1,15 +1,122 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 import { PrenotazioneServices } from './Services/services';
 import { prenotazione } from './interfacce/prenotazione_i';
+import { stanza } from '../gestisci-stanza/interfacce/stanza_i';
+import { servizio } from '../servizi/interfacce/servizio_i';
+
 @Component({
   selector: 'app-prenotazione',
-  imports: [],
+  imports: [FormsModule],
   templateUrl: './prenotazione.html',
   styleUrl: './prenotazione.css',
-   providers:[PrenotazioneServices]
+  providers: [PrenotazioneServices]
 })
-export class Prenotazione {
-   constructor(private _PrenotazioneServices:PrenotazioneServices){}
+export class Prenotazione implements OnInit {
 
-  listaPrenotazioni = signal(<Array<prenotazione>>[]);
+  private readonly http = inject(HttpClient);
+  private readonly API = 'https://hotel-4n9x.onrender.com';
+
+  constructor(private _PrenotazioneServices: PrenotazioneServices) {}
+
+  // ── Wizard ────────────────────────────────────────────────────
+  step = 0;
+  tipoPrenotazione: 'spa' | 'stanza' | '' = '';
+
+  // ── Dati remoti ───────────────────────────────────────────────
+  stanzeDisponibili = signal<stanza[]>([]);
+  serviziDisponibili = signal<servizio[]>([]);
+  listaPrenotazioni = signal<prenotazione[]>([]);
+
+  // ── Selezioni ────────────────────────────────────────────────
+  stanzaSelezionata: stanza | null = null;
+  serviziSelezionati: servizio[] = [];
+
+  // ── Form dati ─────────────────────────────────────────────────
+  nome       = '';
+  cognome    = '';
+  email      = '';
+  telefono   = '';
+  dataNascita = '';
+  checkIn    = '';
+  checkOut   = '';
+  note       = '';
+
+  // ─────────────────────────────────────────────────────────────
+  ngOnInit(): void {
+    this.caricaStanze();
+    this.caricaServizi();
+  }
+
+  caricaStanze(): void {
+    this.http.get<stanza[]>(`${this.API}/stanza/lista`).subscribe({
+      next:  (data) => this.stanzeDisponibili.set(data),
+      error: (err)  => console.error('Errore caricamento stanze', err)
+    });
+  }
+
+  caricaServizi(): void {
+    this.http.get<servizio[]>(`${this.API}/servizio/lista`).subscribe({
+      next:  (data) => this.serviziDisponibili.set(data),
+      error: (err)  => console.error('Errore caricamento servizi', err)
+    });
+  }
+
+  // ── Wizard methods ────────────────────────────────────────────
+  scegliTipo(tipo: 'spa' | 'stanza'): void {
+    this.tipoPrenotazione = tipo;
+    // SPA-only → salta la scelta stanza, vai ai servizi
+    this.step = tipo === 'spa' ? 2 : 1;
+  }
+
+  selezionaStanza(s: stanza): void {
+    this.stanzaSelezionata = s;
+    this.step = 2;
+  }
+
+  toggleServizio(s: servizio): void {
+    const idx = this.serviziSelezionati.findIndex(x => x.IDSERVIZIO === s.IDSERVIZIO);
+    if (idx >= 0) {
+      this.serviziSelezionati.splice(idx, 1);
+    } else {
+      this.serviziSelezionati.push(s);
+    }
+  }
+
+  isServizioSelezionato(s: servizio): boolean {
+    return this.serviziSelezionati.some(x => x.IDSERVIZIO === s.IDSERVIZIO);
+  }
+
+  // ── Calcolo totale ────────────────────────────────────────────
+  get totale(): number {
+    const costoStanza   = this.stanzaSelezionata ? this.stanzaSelezionata.COSTO : 0;
+    const costoServizi  = this.serviziSelezionati.reduce((sum, s) => sum + s.COSTO, 0);
+    return costoStanza + costoServizi;
+  }
+
+  // ── Submit ────────────────────────────────────────────────────
+  confermaPrenotazione(): void {
+    const nuova: prenotazione = {
+      IDPRE:       0,
+      NOME:        this.nome,
+      COGNOME:     this.cognome,
+      EMAIL:       this.email,
+      TELEFONO:    this.telefono,
+      DATANASCITA: new Date(this.dataNascita),
+      IDSTANZA:    this.stanzaSelezionata?.IDSTANZA ?? 0,
+      IDSERVIZIO:  this.serviziSelezionati[0]?.IDSERVIZIO ?? 0,
+      TOTALE:      this.totale,
+      SPA:         this.tipoPrenotazione === 'spa',
+      NOTE:        this.note,
+      CHECK_IN:    new Date(this.checkIn),
+      CHECK_OUT:   new Date(this.checkOut),
+      STATO:       'In attesa'
+    };
+
+    this._PrenotazioneServices.postUtente(nuova).subscribe({
+      next:  () => { alert('Prenotazione confermata!'); this.step = 0; },
+      error: (err: any) => console.error('Errore conferma prenotazione', err)
+    });
+  }
 }

@@ -1,63 +1,92 @@
-/* ── DOVE SIAMO ───────────────────────────────────────────────── */
+/* ── COME RAGGIUNGERCI ── 2 colonne: info sx + mappa dx ────────── */
 :host { display: block; }
 
-.dovesiamo-page {
-  background: var(--bg);
-}
+.dovesiamo-page { background: var(--bg); }
 
 /* Hero */
 .dove-hero {
   background: linear-gradient(135deg, var(--navy-950) 0%, var(--navy-800) 100%);
-  padding: 64px 40px 56px;
+  padding: 60px 40px 52px;
   text-align: center;
 }
 .dove-hero h1 { color: var(--white); margin-bottom: 12px; }
 .dove-hero .divider-gold { margin: 0 auto; }
 
-/* Layout */
+/* Layout 2 colonne */
 .dove-body {
-  max-width: 1020px;
-  margin: 0 auto;
-  padding: 64px 40px 80px;
   display: grid;
-  grid-template-columns: 1fr 400px;
-  gap: 56px;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 60px 40px 80px;
   align-items: start;
 }
 
-/* Mappa */
+/* ── Come arrivare ── */
+.dove-info h2 { margin-bottom: 6px; }
+.dove-info .divider { margin: 14px 0 28px; }
+
+.arrive-list { display: flex; flex-direction: column; gap: 6px; margin-bottom: 32px; }
+
+.arrive-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 16px 18px;
+  background: var(--white);
+  border-radius: var(--r-md);
+  border: 1px solid var(--navy-100);
+  transition: border-color var(--fast), box-shadow var(--fast);
+}
+.arrive-item:hover { border-color: var(--navy-300); box-shadow: var(--shadow-1); }
+
+.arrive-icon {
+  font-size: 1.5rem;
+  width: 40px; height: 40px;
+  background: var(--navy-50);
+  border-radius: var(--r-sm);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.arrive-item h4 { font-size: 0.88rem; font-weight: 600; color: var(--navy-900); margin-bottom: 4px; }
+.arrive-item p { font-size: 0.84rem; color: var(--ink-soft); margin: 0; line-height: 1.55; }
+
+/* Indirizzo */
+.dove-address {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: linear-gradient(135deg, var(--navy-800), var(--navy-900));
+  border-radius: var(--r-md);
+  padding: 18px 22px;
+  font-size: 1.4rem;
+}
+.dove-address div strong { display: block; color: var(--white); font-size: 0.92rem; margin-bottom: 4px; }
+.dove-address div p { color: var(--navy-300); font-size: 0.84rem; margin: 0; }
+
+/* ── Mappa ── */
 .mappa-card {
   background: var(--white);
   border-radius: var(--r-xl);
   overflow: hidden;
   box-shadow: var(--shadow-2);
   border: 1px solid var(--navy-100);
-  transition: box-shadow var(--med);
+  position: sticky;
+  top: 80px;
 }
-.mappa-card:hover { box-shadow: var(--shadow-3); }
-
 .mappa-card iframe {
   width: 100%;
-  height: 380px;
   display: block;
   filter: saturate(0.80) hue-rotate(-5deg);
 }
-
-.mappa-footer {
-  padding: 18px 24px;
+.mappa-footer-bar {
+  padding: 14px 20px;
   background: var(--navy-50);
   border-top: 1px solid var(--navy-100);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
+  text-align: right;
 }
-.mappa-address {
-  font-size: 0.84rem;
-  font-weight: 500;
-  color: var(--ink-mid);
-}
-.mappa-footer a {
+.mappa-footer-bar a {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -71,44 +100,16 @@
   border-radius: var(--r-pill);
   transition: background var(--fast), transform var(--fast), box-shadow var(--fast);
 }
-.mappa-footer a:hover {
+.mappa-footer-bar a:hover {
   background: var(--navy-700);
   transform: translateY(-1px);
   box-shadow: var(--shadow-navy);
   color: var(--white);
 }
 
-/* Info sidebar */
-.dove-info { display: flex; flex-direction: column; gap: 20px; }
-
-.info-card {
-  background: var(--white);
-  border-radius: var(--r-lg);
-  padding: 26px;
-  border: 1px solid var(--navy-100);
-  box-shadow: var(--shadow-1);
-  display: flex;
-  gap: 18px;
-  align-items: flex-start;
-  transition: transform var(--fast), box-shadow var(--fast);
-}
-.info-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-2); }
-
-.info-icon {
-  width: 44px; height: 44px;
-  border-radius: var(--r-sm);
-  background: var(--navy-50);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.3rem;
-  flex-shrink: 0;
-}
-.info-content h4 { margin-bottom: 4px; font-size: 0.9rem; color: var(--navy-900); }
-.info-content p { font-size: 0.84rem; margin: 0; }
-
 @media (max-width: 768px) {
-  .dove-hero { padding: 52px 20px 44px; }
-  .dove-body { grid-template-columns: 1fr; padding: 44px 20px 60px; gap: 32px; }
+  .dove-hero { padding: 48px 20px 40px; }
+  .dove-body { grid-template-columns: 1fr; gap: 32px; padding: 44px 20px 60px; }
+  .mappa-card { position: static; }
   .mappa-card iframe { height: 280px; }
 }

@@ -1,3 +1,4 @@
+<!-- Wireframe: colonna sx = "Varie foto" (carousel), colonna dx = "La nostra storia" testo -->
 <div class="storia-page">
 
   <!-- Hero -->
@@ -6,54 +7,59 @@
     <div class="divider-gold"></div>
   </div>
 
-  <!-- Content -->
-  <div class="storia-wrapper">
+  <!-- Layout 2 colonne: foto sx, testo dx -->
+  <div class="storia-layout">
 
-    <!-- Quote fondatore -->
-    <blockquote class="storia-quote">
-      <p>Ho fondato il Blue Horizon con un sogno: creare un luogo dove ogni ospite si senta a casa, avvolto dall'eleganza senza tempo di Roma.</p>
-      <cite>— Marco Ferretti, Fondatore</cite>
-    </blockquote>
-
-    <!-- Timeline -->
-    <div class="storia-timeline">
-
-      <div class="storia-entry">
-        <div class="storia-dot"></div>
-        <div class="storia-year">1987 · Le origini</div>
-        <div class="storia-card">
-          <h3>La nascita del Blue Horizon</h3>
-          <p>Il Blue Horizon Hotel nasce nel cuore di Roma con una visione semplice: offrire un rifugio di eleganza e tranquillità in una delle città più vivaci del mondo.</p>
+    <!-- Colonna sx: galleria foto -->
+    <div class="storia-gallery">
+      <div class="gallery-frame">
+        <!-- Immagine principale carousel -->
+        <img src="assets/images/sfondo_home.avif" alt="Blue Horizon Hotel" class="gallery-main-img">
+        <div class="gallery-controls">
+          <button class="gal-btn" aria-label="Foto precedente">&#8592;</button>
+          <span class="gal-label">Varie foto</span>
+          <button class="gal-btn" aria-label="Foto successiva">&#8594;</button>
         </div>
       </div>
 
-      <div class="storia-entry">
-        <div class="storia-dot"></div>
-        <div class="storia-year">1998 · Espansione</div>
-        <div class="storia-card">
-          <h3>La grande ristrutturazione</h3>
-          <p>Dopo oltre dieci anni di successi, l'hotel viene ampliato con la nuova ala est e il centro benessere, raddoppiando la capacità ricettiva.</p>
-        </div>
+      <!-- Thumbnails -->
+      <div class="gallery-thumbs">
+        <div class="gallery-thumb active"></div>
+        <div class="gallery-thumb"></div>
+        <div class="gallery-thumb"></div>
+        <div class="gallery-thumb"></div>
       </div>
-
-      <div class="storia-entry">
-        <div class="storia-dot"></div>
-        <div class="storia-year">2010 · Riconoscimenti</div>
-        <div class="storia-card">
-          <h3>Premio eccellenza turistica</h3>
-          <p>Il Blue Horizon riceve per la prima volta il premio "Miglior Hotel di Lusso" dalla Camera di Commercio di Roma, confermando il suo status di riferimento nel settore.</p>
-        </div>
-      </div>
-
-      <div class="storia-entry">
-        <div class="storia-dot"></div>
-        <div class="storia-year">Oggi · Il futuro</div>
-        <div class="storia-card">
-          <h3>Una tradizione che continua</h3>
-          <p>Oggi il Blue Horizon unisce l'architettura classica italiana ai comfort più moderni. Ogni dettaglio è curato con cura per creare un'esperienza unica e indimenticabile.</p>
-        </div>
-      </div>
-
     </div>
+
+    <!-- Colonna dx: testo storia -->
+    <div class="storia-content">
+      <p class="storia-eyebrow">Dal 1987</p>
+      <h2>Una tradizione di eccellenza</h2>
+      <div class="divider"></div>
+
+      <p>Il Blue Horizon Hotel nasce nel cuore di Roma con una visione semplice: offrire un rifugio di eleganza e tranquillità in una delle città più vivaci del mondo.</p>
+
+      <p>Fondato con passione per l'ospitalità autentica, il nostro hotel unisce l'architettura classica italiana ai comfort più moderni, creando un'esperienza unica per ogni ospite.</p>
+
+      <p>Nel corso degli anni abbiamo accolto ospiti da tutto il mondo, crescendo senza mai perdere l'attenzione al dettaglio che ci ha sempre contraddistinti.</p>
+
+      <p>Oggi il Blue Horizon è il luogo dove il viaggio diventa un ricordo indelebile.</p>
+
+      <div class="storia-milestone">
+        <div class="milestone-item">
+          <span class="milestone-year">1987</span>
+          <span class="milestone-text">Fondazione</span>
+        </div>
+        <div class="milestone-item">
+          <span class="milestone-year">1998</span>
+          <span class="milestone-text">Grande espansione</span>
+        </div>
+        <div class="milestone-item">
+          <span class="milestone-year">2010</span>
+          <span class="milestone-text">Premio eccellenza</span>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>

@@ -1,15 +1,16 @@
 <header>
-  <img src="assets/images/light_logo.png" alt="Blue Horizon Hotel" class="logo">
+  <!-- Logo: usa logo.png con filtro CSS per renderlo bianco su sfondo scuro -->
+  <a routerLink="/home" class="logo-link">
+    <img src="assets/images/logo.png" alt="Blue Horizon Hotel" class="logo">
+  </a>
 
   <nav>
-    <a routerLink="/home"      routerLinkActive="active">Home</a>
     <a routerLink="/servizi"   routerLinkActive="active">Servizi</a>
     <a routerLink="/storia"    routerLinkActive="active">Storia</a>
-    <a routerLink="/dovesiamo" routerLinkActive="active">Dove siamo</a>
-    <a routerLink="/recensioni" routerLinkActive="active">Recensioni</a>
+    <a routerLink="/dovesiamo" routerLinkActive="active">Come raggiungerci</a>
   </nav>
 
-  <button class="btn-prenota" routerLink="/prenotazione">Prenota ora</button>
+  <button class="btn-prenota" routerLink="/prenotazione">Prenota</button>
 </header>
 
 <main>
@@ -19,19 +20,8 @@
 
 <footer>
   <div class="footer-inner">
-    <div class="footer-brand">
-      <img src="assets/images/light_logo.png" alt="Blue Horizon Hotel" class="footer-logo">
-      <span class="footer-name">Blue Horizon Hotel</span>
-    </div>
-
-    <div class="footer-links">
-      <a routerLink="/servizi">Servizi</a>
-      <a routerLink="/storia">Storia</a>
-      <a routerLink="/dovesiamo">Dove siamo</a>
-      <a routerLink="/recensioni">Recensioni</a>
-      <a routerLink="/prenotazione">Prenota</a>
-    </div>
-
+    <a routerLink="/contatti">Contatti</a>
+    <span class="footer-sep">·</span>
     <span class="footer-copy">© 2025 Blue Horizon Hotel · Roma</span>
   </div>
 </footer>

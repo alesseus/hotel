@@ -1,72 +1,87 @@
+<!-- Wireframe COME RAGGIUNGERCI: sx = "Come arrivare" bullet list, dx = Mappa -->
 <div class="dovesiamo-page">
 
   <!-- Hero -->
   <div class="dove-hero">
-    <h1>Dove siamo</h1>
+    <h1>Come raggiungerci</h1>
     <div class="divider-gold"></div>
   </div>
 
-  <!-- Body -->
+  <!-- Layout 2 colonne: info sx + mappa dx -->
   <div class="dove-body">
 
-    <!-- Mappa -->
-    <div class="mappa-card">
-      <iframe
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2970.1!2d12.4822!3d41.8956!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x132f6049eb4b3c61%3A0x400b1e90e1738a0!2sPiazza%20Venezia%2C%20Roma%20RM!5e0!3m2!1sit!2sit!4v1700000000000"
-        width="100%" height="380"
-        style="border: none; display: block;"
-        allowfullscreen loading="lazy"
-        referrerpolicy="no-referrer-when-downgrade"
-        title="Posizione Blue Horizon Hotel su Google Maps">
-      </iframe>
-      <div class="mappa-footer">
-        <span class="mappa-address">📍 Piazza Venezia, 1 – 00186 Roma</span>
-        <a href="https://maps.google.com/?q=Piazza+Venezia+Roma" target="_blank">
-          Apri in Maps ↗
-        </a>
+    <!-- Come arrivare (colonna sx) -->
+    <div class="dove-info">
+      <h2>Come arrivare</h2>
+      <div class="divider"></div>
+
+      <div class="arrive-list">
+
+        <div class="arrive-item">
+          <div class="arrive-icon">🚇</div>
+          <div>
+            <h4>Metro</h4>
+            <p>Linea B · Fermata Colosseo (5 min a piedi)</p>
+          </div>
+        </div>
+
+        <div class="arrive-item">
+          <div class="arrive-icon">✈️</div>
+          <div>
+            <h4>Aeroporto</h4>
+            <p>Roma Fiumicino (FCO) – 40 min in taxi<br>Roma Ciampino (CIA) – 25 min</p>
+          </div>
+        </div>
+
+        <div class="arrive-item">
+          <div class="arrive-icon">🚗</div>
+          <div>
+            <h4>In auto</h4>
+            <p>Parcheggio privato con valet parking incluso per tutti gli ospiti</p>
+          </div>
+        </div>
+
+        <div class="arrive-item">
+          <div class="arrive-icon">🚌</div>
+          <div>
+            <h4>Autobus</h4>
+            <p>Linee 40, 64, 70 · Fermata Piazza Venezia</p>
+          </div>
+        </div>
+
+        <div class="arrive-item">
+          <div class="arrive-icon">📞</div>
+          <div>
+            <h4>Contatto diretto</h4>
+            <p>+39 06 1234 5678<br>info&#64;bluehorizonhotel.it</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="dove-address">
+        <span>📍</span>
+        <div>
+          <strong>Blue Horizon Hotel</strong>
+          <p>Piazza Venezia, 1 – 00186 Roma RM</p>
+        </div>
       </div>
     </div>
 
-    <!-- Info cards -->
-    <div class="dove-info">
-      <div class="info-card">
-        <div class="info-icon">🚇</div>
-        <div class="info-content">
-          <h4>Metro</h4>
-          <p>Linea B · Fermata Colosseo (5 min a piedi)</p>
-        </div>
-      </div>
-
-      <div class="info-card">
-        <div class="info-icon">✈️</div>
-        <div class="info-content">
-          <h4>Aeroporto</h4>
-          <p>Roma Fiumicino FCO – 40 min in taxi<br>Roma Ciampino CIA – 25 min</p>
-        </div>
-      </div>
-
-      <div class="info-card">
-        <div class="info-icon">🚗</div>
-        <div class="info-content">
-          <h4>In auto</h4>
-          <p>Parcheggio privato con valet parking incluso per tutti gli ospiti</p>
-        </div>
-      </div>
-
-      <div class="info-card">
-        <div class="info-icon">📞</div>
-        <div class="info-content">
-          <h4>Contatti</h4>
-          <p>+39 06 1234 5678<br>info&#64;bluehorizonhotel.it</p>
-        </div>
-      </div>
-
-      <div class="info-card">
-        <div class="info-icon">🕐</div>
-        <div class="info-content">
-          <h4>Orari</h4>
-          <p>Check-in: dalle 14:00<br>Check-out: entro le 12:00</p>
-        </div>
+    <!-- Mappa (colonna dx) -->
+    <div class="mappa-card">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2970.1!2d12.4822!3d41.8956!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x132f6049eb4b3c61%3A0x400b1e90e1738a0!2sPiazza%20Venezia%2C%20Roma%20RM!5e0!3m2!1sit!2sit!4v1700000000000"
+        width="100%" height="420"
+        style="border:none; display:block;"
+        allowfullscreen loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        title="Posizione Blue Horizon Hotel">
+      </iframe>
+      <div class="mappa-footer-bar">
+        <a href="https://maps.google.com/?q=Piazza+Venezia+Roma" target="_blank">
+          Apri in Google Maps ↗
+        </a>
       </div>
     </div>
 
