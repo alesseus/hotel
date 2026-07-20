@@ -50,7 +50,7 @@ export class Prenotazione implements OnInit {
   }
 
   caricaStanze(): void {
-    this.http.get<stanza[]>(`${this.API}/stanza/lista`).subscribe({
+    this.http.get<stanza[]>(`${this.API}/stanza/elenco`).subscribe({
       next:  (data) => this.stanzeDisponibili.set(data),
       error: (err)  => console.error('Errore caricamento stanze', err)
     });
