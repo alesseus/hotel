@@ -101,21 +101,34 @@ export class Prenotazione implements OnInit {
     const n = Math.round(diff / (1000 * 60 * 60 * 24));
     return n > 0 ? n : 0;
   }
- 
+
   get costoStanza(): number {
     if (!this.stanzaSelezionata || this.tipoPrenotazione !== 'stanza') return 0;
     return this.stanzaSelezionata.COSTO * this.notti;
   }
- 
+
   get costoServizi(): number {
     return this.serviziSelezionati.reduce((sum, s) => sum + s.COSTO, 0);
   }
- 
+
+  // ── Servizio SPA 
+  get spaServizio(): servizio | undefined {
+    return this.serviziDisponibili().find(s =>
+      s.NOTE?.toUpperCase().replace(/\./g, '') === 'SPA'
+    );
+  }
+
+  get costoSpa(): number {
+    return this.spaServizio?.COSTO ?? 0;
+  }
+
   get totale(): number {
+    if (this.tipoPrenotazione === 'spa') {
+      return this.costoSpa;
+    }
     return this.costoStanza + this.costoServizi;
   }
- 
-  // Caparra 10% del totale, sempre dovuta (pagamento online obbligatorio)
+
   get caparra(): number {
     return +(this.totale * 0.10).toFixed(2);
   }
@@ -129,12 +142,12 @@ export class Prenotazione implements OnInit {
       return;
     }
 
-    
+
     if (this.tipoPrenotazione === 'stanza' && this.notti <= 0) {
       this.formError = 'La data di check-out deve essere successiva al check-in.';
       return;
     }
- 
+
     const nuova: prenotazione = {
       IDPRE: 0,
       NOME: this.nome,
@@ -143,7 +156,9 @@ export class Prenotazione implements OnInit {
       TELEFONO: this.telefono,
       DATANASCITA: new Date(this.dataNascita),
       IDSTANZA: this.stanzaSelezionata?.IDSTANZA ?? 0,
-      IDSERVIZIO: this.serviziSelezionati[0]?.IDSERVIZIO ?? 0,
+      IDSERVIZIO: this.tipoPrenotazione === 'spa'
+        ? (this.spaServizio?.IDSERVIZIO ?? 0)
+        : (this.serviziSelezionati[0]?.IDSERVIZIO ?? 0),
       TOTALE: this.totale,
       CAPARRA: this.caparra,
       SPA: this.tipoPrenotazione === 'spa',
@@ -152,9 +167,9 @@ export class Prenotazione implements OnInit {
       CHECK_OUT: new Date(this.checkOut),
       STATO: 'In attesa'
     };
- 
+
     this.invio = true;
- 
+
     this._PrenotazioneServices.postUtente(nuova).subscribe({
       next: () => {
         this.invio = false;
