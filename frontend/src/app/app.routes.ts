@@ -9,6 +9,7 @@ import { GestisciStanza } from './gestisci-stanza/gestisci-stanza';
 import {GestisciPrenotazione } from './gestisci-prenotazione/gestisci-prenotazione';
 import { GestisciServizi } from './gestisci-servizi/gestisci-servizi';
 import {Home} from './home/home';
+import { Contatti } from './contatti/contatti';
 import { Login } from './login/login';
 import { Register } from './registrazione/register';
 
@@ -20,6 +21,7 @@ export const routes: Routes = [
   { path: 'login', component: Login },
   { path: 'registrazione', component: Register},
   { path: '', component: Home },
+  { path: 'contatti', component: Contatti },
   {
     path: 'amministrazione',
     children: [
