@@ -12,5 +12,6 @@ export interface prenotazione {
     "NOTE": string,
     "CHECK_IN": Date,
     "CHECK_OUT": Date,
-    "STATO": string
+    "STATO": string,
+    "CAPARRA": number
 }
