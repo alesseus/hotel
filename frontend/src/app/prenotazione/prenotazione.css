@@ -70,10 +70,8 @@
 
 /* ── Step panels ── */
 .step-panel {
-  display: none;
   animation: fadeUp 0.4s var(--ease) both;
 }
-.step-panel.active { display: block; }
 
 /* ── STEP 0: Scelta tipo ── */
 .tipo-wrapper {
