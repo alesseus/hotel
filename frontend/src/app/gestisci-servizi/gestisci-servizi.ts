@@ -3,7 +3,7 @@ import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-gestisci-  servizi',
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './gestisci-servizi.html',
   styleUrl: './gestisci-servizi.css',
 })
