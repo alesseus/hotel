@@ -54,44 +54,6 @@
 
         </div>
 
-<<<<<<< Updated upstream
-        <div class="field-group">
-          <label for="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            [(ngModel)]="password"
-            required
-            minlength="6"
-            placeholder="••••••••"
-            #passwordField="ngModel"
-            [class.invalid]="passwordField.invalid && passwordField.touched"
-          >
-          @if (passwordField.invalid && passwordField.touched) {
-            <span class="field-error">La password deve contenere almeno 6 caratteri</span>
-          }
-        </div>
-
-        @if (errorMessage) {
-          <div class="login-error">{{ errorMessage }}</div>
-        }
-
-        <button type="submit" [disabled]="loginForm.invalid || loading">
-          @if (loading) {
-            Accesso in corso…
-          } @else {
-            Accedi
-          }
-        </button>
-
-      </form>
-
-      <a class="forgot-link" href="#">Hai dimenticato la password?</a>
-      <a class="forgot-link" [routerLink]="['../registrazione/register.html']" routerLinkActive="router-link-active"     >Non hai un account? Registrati qui!</a>
-
-=======
->>>>>>> Stashed changes
     </div>
 
 </div>
