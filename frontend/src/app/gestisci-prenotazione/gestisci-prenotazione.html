@@ -21,7 +21,7 @@
         </div>
       </div>
       <div class="actions-bar-right">
-        <button class="btn-add">+ Nuova prenotazione</button>
+        <button class="btn-add" (click)="apriModale()">+ Nuova prenotazione</button>
       </div>
     </div>
 
@@ -44,6 +44,86 @@
           <!-- Le righe vengono inserite dinamicamente da Angular -->
         </tbody>
       </table>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── MODALE NUOVA PRENOTAZIONE ── -->
+<div class="modal-backdrop" *ngIf="mostraMod" (click)="chiudiModale()">
+  <div class="modal-box" (click)="$event.stopPropagation()">
+
+    <div class="modal-header">
+      <h3>Nuova prenotazione</h3>
+      <button class="modal-close" (click)="chiudiModale()">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Nome</label>
+          <input type="text" [(ngModel)]="nuova.NOME" placeholder="Mario">
+        </div>
+        <div class="form-group">
+          <label>Cognome</label>
+          <input type="text" [(ngModel)]="nuova.COGNOME" placeholder="Rossi">
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" [(ngModel)]="nuova.EMAIL" placeholder="mario@email.com">
+        </div>
+        <div class="form-group">
+          <label>Telefono</label>
+          <input type="tel" [(ngModel)]="nuova.TELEFONO" placeholder="+39 000 0000000">
+        </div>
+        <div class="form-group">
+          <label>Data di nascita</label>
+          <input type="date" [(ngModel)]="nuova.DATANASCITA">
+        </div>
+        <div class="form-group">
+          <label>ID Stanza</label>
+          <input type="number" [(ngModel)]="nuova.IDSTANZA" placeholder="1">
+        </div>
+        <div class="form-group">
+          <label>ID Servizio</label>
+          <input type="number" [(ngModel)]="nuova.IDSERVIZIO" placeholder="1">
+        </div>
+        <div class="form-group">
+          <label>Totale (€)</label>
+          <input type="number" [(ngModel)]="nuova.TOTALE" placeholder="0.00" step="0.01">
+        </div>
+        <div class="form-group">
+          <label>Check-in</label>
+          <input type="date" [(ngModel)]="nuova.CHECK_IN">
+        </div>
+        <div class="form-group">
+          <label>Check-out</label>
+          <input type="date" [(ngModel)]="nuova.CHECK_OUT">
+        </div>
+        <div class="form-group">
+          <label>Stato</label>
+          <select [(ngModel)]="nuova.STATO">
+            <option value="">-- Seleziona --</option>
+            <option value="confermata">Confermata</option>
+            <option value="in attesa">In attesa</option>
+            <option value="cancellata">Cancellata</option>
+          </select>
+        </div>
+        <div class="form-group form-check">
+          <label class="check-label">
+            <input type="checkbox" [(ngModel)]="nuova.SPA"> SPA inclusa
+          </label>
+        </div>
+        <div class="form-group full-width">
+          <label>Note</label>
+          <textarea [(ngModel)]="nuova.NOTE" rows="3" placeholder="Note aggiuntive..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-cancel" (click)="chiudiModale()">Annulla</button>
+      <button class="btn-save" (click)="salvaPrenotazione()">Salva</button>
     </div>
 
   </div>
