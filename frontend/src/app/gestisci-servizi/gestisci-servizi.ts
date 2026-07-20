@@ -66,7 +66,7 @@ export class GestisciServizi implements OnInit {
   // ── Apertura modale ───────────────────────────────────────────
   apriModaleCreazione(): void {
     this.modaleModalita = 'crea';
-    this.servizioForm = { NOTE: '', COSTO: undefined };
+    this.servizioForm = { NOTE: '', COSTO: 0 };
     this.formError = '';
     this.modaleAperto = true;
   }
