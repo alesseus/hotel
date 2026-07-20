@@ -11,7 +11,7 @@
 /* ── Header ── */
 .login-header {
   background: linear-gradient(135deg, var(--navy-950) 0%, var(--navy-800) 100%);
-  padding: 56px 40px 48px;
+  padding: 16px 40px 48px;
   text-align: center;
   color: var(--white);
 }
@@ -51,7 +51,7 @@
   border-radius: var(--r-xl);
   border: 1px solid var(--navy-100);
   box-shadow: var(--shadow-2);
-  padding: 44px 44px 36px;
+  padding: 94px 36px 96px;
   width: 100%;
   max-width: 420px;
   animation: fadeUp 0.45s var(--ease) both;
