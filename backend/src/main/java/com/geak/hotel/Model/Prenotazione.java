@@ -35,7 +35,7 @@ public class Prenotazione {
 			long IDSTANZA, long IDSERVIZIO, double TOTALE, boolean SPA, String NOTE, Date CHECK_IN, Date CHECK_OUT,
 			String STATO) {
 		setIDPRE(IDPRE);
-		setNOME(COGNOME);
+		setNOME(NOME);
 		setCOGNOME(COGNOME);
 		setEMAIL(EMAIL);
 		setTELEFONO(TELEFONO);

@@ -6,63 +6,65 @@
     <h1>Prenota il tuo soggiorno</h1>
     <div class="divider-gold"></div>
 
-    <div class="progress-bar">
+    @if (!confermata) {
+      <div class="progress-bar">
 
-      <!-- Step 1: Tipo — sempre visibile -->
-      <div class="progress-step" [class.done]="step > 0" [class.active]="step === 0">
-        <span class="step-num">1</span>
-        <span class="step-lbl">Tipo</span>
+        <!-- Step 1: Tipo — sempre visibile -->
+        <div class="progress-step" [class.done]="step > 0" [class.active]="step === 0">
+          <span class="step-num">1</span>
+          <span class="step-lbl">Tipo</span>
+        </div>
+        <div class="progress-line"></div>
+
+        @if (tipoPrenotazione === '') {
+          <div class="progress-step">
+            <span class="step-num">2</span>
+            <span class="step-lbl">Stanza</span>
+          </div>
+          <div class="progress-line"></div>
+          <div class="progress-step">
+            <span class="step-num">3</span>
+            <span class="step-lbl">Servizi</span>
+          </div>
+          <div class="progress-line"></div>
+          <div class="progress-step">
+            <span class="step-num">4</span>
+            <span class="step-lbl">Conferma</span>
+          </div>
+        }
+
+        @if (tipoPrenotazione === 'stanza') {
+          <div class="progress-step" [class.done]="step > 1" [class.active]="step === 1">
+            <span class="step-num">2</span>
+            <span class="step-lbl">Stanza</span>
+          </div>
+          <div class="progress-line"></div>
+          <div class="progress-step" [class.done]="step > 2" [class.active]="step === 2">
+            <span class="step-num">3</span>
+            <span class="step-lbl">Servizi</span>
+          </div>
+          <div class="progress-line"></div>
+          <div class="progress-step" [class.active]="step === 3">
+            <span class="step-num">4</span>
+            <span class="step-lbl">Conferma</span>
+          </div>
+        }
+
+        @if (tipoPrenotazione === 'spa') {
+          <div class="progress-step" [class.active]="step === 3">
+            <span class="step-num">2</span>
+            <span class="step-lbl">Conferma</span>
+          </div>
+        }
+
       </div>
-      <div class="progress-line"></div>
-
-      @if (tipoPrenotazione === '') {
-        <div class="progress-step">
-          <span class="step-num">2</span>
-          <span class="step-lbl">Stanza</span>
-        </div>
-        <div class="progress-line"></div>
-        <div class="progress-step">
-          <span class="step-num">3</span>
-          <span class="step-lbl">Servizi</span>
-        </div>
-        <div class="progress-line"></div>
-        <div class="progress-step">
-          <span class="step-num">4</span>
-          <span class="step-lbl">Conferma</span>
-        </div>
-      }
-
-      @if (tipoPrenotazione === 'stanza') {
-        <div class="progress-step" [class.done]="step > 1" [class.active]="step === 1">
-          <span class="step-num">2</span>
-          <span class="step-lbl">Stanza</span>
-        </div>
-        <div class="progress-line"></div>
-        <div class="progress-step" [class.done]="step > 2" [class.active]="step === 2">
-          <span class="step-num">3</span>
-          <span class="step-lbl">Servizi</span>
-        </div>
-        <div class="progress-line"></div>
-        <div class="progress-step" [class.active]="step === 3">
-          <span class="step-num">4</span>
-          <span class="step-lbl">Conferma</span>
-        </div>
-      }
-
-      @if (tipoPrenotazione === 'spa') {
-        <div class="progress-step" [class.active]="step === 3">
-          <span class="step-num">2</span>
-          <span class="step-lbl">Conferma</span>
-        </div>
-      }
-
-    </div>
+    }
   </div>
 
   <!-- ══════════════════════════════════════════════════════════ -->
   <!-- STEP 0 — Scelta tipo                                       -->
   <!-- ══════════════════════════════════════════════════════════ -->
-  @if (step === 0) {
+  @if (step === 0 && !confermata) {
     <div class="step-panel">
       <div class="tipo-wrapper">
         <h2>Come vuoi prenotare?</h2>
@@ -93,7 +95,7 @@
   <!-- ══════════════════════════════════════════════════════════ -->
   <!-- STEP 1 — Scelta stanza                                     -->
   <!-- ══════════════════════════════════════════════════════════ -->
-  @if (step === 1) {
+  @if (step === 1 && !confermata) {
     <div class="step-panel">
       <div class="scelta-wrapper">
         <div class="scelta-header">
@@ -131,7 +133,7 @@
   <!-- ══════════════════════════════════════════════════════════ -->
   <!-- STEP 2 — Scelta servizi                                    -->
   <!-- ══════════════════════════════════════════════════════════ -->
-  @if (step === 2) {
+  @if (step === 2 && !confermata) {
     <div class="step-panel">
       <div class="scelta-wrapper">
         <div class="scelta-header">
@@ -174,7 +176,7 @@
   <!-- ══════════════════════════════════════════════════════════ -->
   <!-- STEP 3 — Dati personali + Riepilogo                        -->
   <!-- ══════════════════════════════════════════════════════════ -->
-  @if (step === 3) {
+  @if (step === 3 && !confermata) {
     <div class="step-panel">
       <form class="confirm-wrapper" #datiForm="ngForm" (ngSubmit)="confermaPrenotazione(datiForm)">
 
@@ -290,8 +292,8 @@
           }
 
           <div class="confirm-actions">
-            <button type="submit" class="primary confirm-btn">
-              Conferma prenotazione
+            <button type="submit" class="primary confirm-btn" [disabled]="invio">
+              {{ invio ? 'Invio in corso...' : 'Conferma prenotazione' }}
             </button>
             <button type="button" class="secondary" (click)="step = tipoPrenotazione === 'spa' ? 0 : 2">
               ← Modifica
@@ -300,6 +302,20 @@
         </div>
 
       </form>
+    </div>
+  }
+
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <!-- CONFERMA — schermata di successo in-page                   -->
+  <!-- ══════════════════════════════════════════════════════════ -->
+  @if (confermata) {
+    <div class="step-panel">
+      <div class="success-wrapper">
+        <div class="success-icon">✓</div>
+        <h2>Prenotazione confermata!</h2>
+        <p>Ti abbiamo inviato una email di conferma a <strong>{{ email }}</strong>.</p>
+        <p class="success-redirect">Verrai reindirizzato alla home tra pochi secondi...</p>
+      </div>
     </div>
   }
 
