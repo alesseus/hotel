@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { PrenotazioneServices } from './Services/services';
 import { prenotazione } from './interfacce/prenotazione_i';
 import { stanza } from '../gestisci-stanza/interfacce/stanza_i';
@@ -23,6 +23,7 @@ export class Prenotazione implements OnInit {
   // ── Wizard ────────────────────────────────────────────────────
   step = 0;
   tipoPrenotazione: 'spa' | 'stanza' | '' = '';
+  formError = '';
 
   // ── Dati remoti ───────────────────────────────────────────────
   stanzeDisponibili = signal<stanza[]>([]);
@@ -65,9 +66,9 @@ export class Prenotazione implements OnInit {
 
   // ── Wizard methods ────────────────────────────────────────────
   scegliTipo(tipo: 'spa' | 'stanza'): void {
-  this.tipoPrenotazione = tipo;
-  this.step = tipo === 'spa' ? 3 : 1;  // SPA → step 3 diretto
-}
+    this.tipoPrenotazione = tipo;
+    this.step = tipo === 'spa' ? 3 : 1;  // SPA → step 3 diretto
+  }
 
   selezionaStanza(s: stanza): void {
     this.stanzaSelezionata = s;
@@ -95,7 +96,14 @@ export class Prenotazione implements OnInit {
   }
 
   // ── Submit ────────────────────────────────────────────────────
-  confermaPrenotazione(): void {
+  confermaPrenotazione(form: NgForm): void {
+    this.formError = '';
+
+    if (form.invalid) {
+      this.formError = 'Compila tutti i campi obbligatori prima di confermare.';
+      return;
+    }
+
     const nuova: prenotazione = {
       IDPRE:       0,
       NOME:        this.nome,
@@ -114,8 +122,18 @@ export class Prenotazione implements OnInit {
     };
 
     this._PrenotazioneServices.postUtente(nuova).subscribe({
-      next:  () => { alert('Prenotazione confermata!'); this.step = 0; },
-      error: (err: any) => console.error('Errore conferma prenotazione', err)
+      next:  () => {
+        alert('Prenotazione confermata!');
+        this.step = 0;
+        this.tipoPrenotazione = '';
+        this.stanzaSelezionata = null;
+        this.serviziSelezionati = [];
+        form.resetForm();
+      },
+      error: (err: any) => {
+        console.error('Errore conferma prenotazione', err);
+        this.formError = 'Errore durante l\'invio della prenotazione. Riprova.';
+      }
     });
   }
 }

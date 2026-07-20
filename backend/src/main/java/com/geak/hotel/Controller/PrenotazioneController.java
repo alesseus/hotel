@@ -37,10 +37,10 @@ public class PrenotazioneController {
 		return PrenotazioneDependency;
 	}
 	
-	@RequestMapping("add")
-	public PrenotazioniSrv add(Prenotazione nuova) {
-		PrenotazioneDependency.addPrenotazione(nuova);
-		return PrenotazioneDependency;
+	@RequestMapping(value = "add", method = RequestMethod.POST)
+	public PrenotazioniSrv add(@RequestBody Prenotazione nuova) {
+  		PrenotazioneDependency.addPrenotazione(nuova);
+   		return PrenotazioneDependency;
 	}
 	
 	@RequestMapping(value = "cambia", method = RequestMethod.PUT)

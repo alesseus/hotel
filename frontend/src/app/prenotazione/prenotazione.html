@@ -176,7 +176,7 @@
   <!-- ══════════════════════════════════════════════════════════ -->
   @if (step === 3) {
     <div class="step-panel">
-      <form class="confirm-wrapper" (ngSubmit)="confermaPrenotazione()">
+      <form class="confirm-wrapper" #datiForm="ngForm" (ngSubmit)="confermaPrenotazione(datiForm)">
 
         <!-- Colonna sx: Dati personali -->
         <div class="confirm-form">
@@ -186,18 +186,27 @@
             <div>
               <label for="nome">Nome</label>
               <input type="text" id="nome" name="nome"
-                     [(ngModel)]="nome" required placeholder="Mario">
+                     [(ngModel)]="nome" #nomeField="ngModel" required placeholder="Mario">
+              @if (nomeField.invalid && (nomeField.touched || datiForm.submitted)) {
+                <small class="field-error">Il nome è obbligatorio</small>
+              }
             </div>
             <div>
               <label for="cognome">Cognome</label>
               <input type="text" id="cognome" name="cognome"
-                     [(ngModel)]="cognome" required placeholder="Rossi">
+                     [(ngModel)]="cognome" #cognomeField="ngModel" required placeholder="Rossi">
+              @if (cognomeField.invalid && (cognomeField.touched || datiForm.submitted)) {
+                <small class="field-error">Il cognome è obbligatorio</small>
+              }
             </div>
           </div>
 
           <label for="email">Email</label>
           <input type="email" id="email" name="email"
-                 [(ngModel)]="email" required placeholder="mario.rossi@email.com">
+                 [(ngModel)]="email" #emailField="ngModel" required placeholder="mario.rossi@email.com">
+          @if (emailField.invalid && (emailField.touched || datiForm.submitted)) {
+            <small class="field-error">Inserisci un'email valida</small>
+          }
 
           <label for="telefono">Telefono</label>
           <input type="tel" id="telefono" name="telefono"
@@ -211,12 +220,18 @@
             <div>
               <label for="checkIn">Check-in</label>
               <input type="date" id="checkIn" name="checkIn"
-                     [(ngModel)]="checkIn" required>
+                     [(ngModel)]="checkIn" #checkInField="ngModel" required>
+              @if (checkInField.invalid && (checkInField.touched || datiForm.submitted)) {
+                <small class="field-error">Seleziona la data di check-in</small>
+              }
             </div>
             <div>
               <label for="checkOut">Check-out</label>
               <input type="date" id="checkOut" name="checkOut"
-                     [(ngModel)]="checkOut" required>
+                     [(ngModel)]="checkOut" #checkOutField="ngModel" required>
+              @if (checkOutField.invalid && (checkOutField.touched || datiForm.submitted)) {
+                <small class="field-error">Seleziona la data di check-out</small>
+              }
             </div>
           </div>
 
@@ -270,8 +285,12 @@
             </div>
           </div>
 
+          @if (formError) {
+            <div class="form-error-banner">{{ formError }}</div>
+          }
+
           <div class="confirm-actions">
-            <button type="submit" class="primary confirm-btn" (click)="confermaPrenotazione()">
+            <button type="submit" class="primary confirm-btn">
               Conferma prenotazione
             </button>
             <button type="button" class="secondary" (click)="step = tipoPrenotazione === 'spa' ? 0 : 2">

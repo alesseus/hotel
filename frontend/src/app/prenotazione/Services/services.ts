@@ -10,8 +10,7 @@ import { prenotazione } from "../interfacce/prenotazione_i";
 
 export class PrenotazioneServices {
 
-
-  private url: string = "https://hotel-4n9x.onrender.com/prenotazione/lista"
+  private readonly API = "https://hotel-4n9x.onrender.com/prenotazione";
 
   private readonly http = inject(HttpClient);
 
@@ -21,10 +20,10 @@ export class PrenotazioneServices {
     })
   }
   getUtenti(): Observable<Array<prenotazione>> {
-    return this.http.get<Array<prenotazione>>(this.url);
+    return this.http.get<Array<prenotazione>>(`${this.API}/lista`);
   }
 
-  postUtente(nuovaPrenotazione: prenotazione): any {
-    return this.http.post(this.url, nuovaPrenotazione, this.httpOptions);
+  postUtente(nuovaPrenotazione: prenotazione): Observable<any> {
+    return this.http.post(`${this.API}/add`, nuovaPrenotazione, this.httpOptions);
   }
 }
