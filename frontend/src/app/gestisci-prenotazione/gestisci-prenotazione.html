@@ -7,25 +7,27 @@
       <div class="divider-gold"></div>
       <p>Visualizza e gestisci tutte le prenotazioni degli ospiti</p>
     </div>
-    <button class="back-link" routerLink="/amministrazione">← Pannello admin</button>
+    <button class="back-link" routerLink="/amministrazione">Pannello admin</button>
   </div>
 
   <!-- Body -->
   <div class="gestisci-wrapper">
 
-    <!-- Toolbar -->
     <div class="actions-bar">
       <div class="actions-bar-left">
         <div class="search-input">
-          <input type="search" placeholder="Cerca prenotazione...">
+          <input type="search" placeholder="Cerca prenotazione..." [(ngModel)]="ricerca">
         </div>
       </div>
       <div class="actions-bar-right">
-        <button class="btn-add" (click)="apriModale()">+ Nuova prenotazione</button>
+        <button class="btn-add" type="button" (click)="apriModaleCreazione()">+ Nuova prenotazione</button>
       </div>
     </div>
 
-    <!-- Tabella -->
+    @if (erroreCaricamento) {
+      <div class="form-error-banner">{{ erroreCaricamento }}</div>
+    }
+
     <div class="table-wrapper">
       <table>
         <thead>
@@ -41,7 +43,41 @@
           </tr>
         </thead>
         <tbody>
-          <!-- Le righe vengono inserite dinamicamente da Angular -->
+          @if (caricamento) {
+            <tr><td colspan="8" class="table-empty">Caricamento prenotazioni in corso...</td></tr>
+          } @else if (prenotazioniFiltrate.length === 0) {
+            <tr>
+              <td colspan="8">
+                <div class="empty-state">
+                  <span>🛎️</span>
+                  <p>Nessuna prenotazione trovata.</p>
+                </div>
+              </td>
+            </tr>
+          } @else {
+            @for (p of prenotazioniFiltrate; track p.IDPRE) {
+              <tr>
+                <td>{{ p.IDPRE }}</td>
+                <td>{{ p.NOME }} {{ p.COGNOME }}</td>
+                <td>Stanza #{{ p.IDSTANZA }}</td>
+                <td>{{ formatData(p.CHECK_IN) }}</td>
+                <td>{{ formatData(p.CHECK_OUT) }}</td>
+                <td>€ {{ p.TOTALE | number:'1.2-2' }}</td>
+                <td>
+                  <span class="badge-stato"
+                        [class.stato-confermata]="p.STATO?.toLowerCase() === 'confermata'"
+                        [class.stato-in-attesa]="p.STATO?.toLowerCase() === 'in attesa'"
+                        [class.stato-cancellata]="p.STATO?.toLowerCase() === 'cancellata'">
+                    {{ p.STATO }}
+                  </span>
+                </td>
+                <td class="actions-cell">
+                  <button class="btn-edit" type="button" (click)="apriModaleModifica(p)">Modifica</button>
+                  <button class="btn-delete" type="button" (click)="apriConfermaEliminazione(p)">Elimina</button>
+                </td>
+              </tr>
+            }
+          }
         </tbody>
       </table>
     </div>
@@ -49,82 +85,238 @@
   </div>
 </div>
 
-<!-- ── MODALE NUOVA PRENOTAZIONE ── -->
-<div class="modal-backdrop" *ngIf="mostraMod" (click)="chiudiModale()">
-  <div class="modal-box" (click)="$event.stopPropagation()">
+<!-- ══════════════════════════════════════════════════════
+     MODALE CREA / MODIFICA
+     ══════════════════════════════════════════════════════ -->
+@if (modaleAperto) {
+  <div class="modal-backdrop" (click)="chiudiModale()">
+    <div class="modal-box" (click)="$event.stopPropagation()">
 
-    <div class="modal-header">
-      <h3>Nuova prenotazione</h3>
-      <button class="modal-close" (click)="chiudiModale()">✕</button>
+      <div class="modal-header">
+        <h3>{{ modalita === 'crea' ? 'Nuova prenotazione' : 'Modifica prenotazione' }}</h3>
+        <button class="modal-close" type="button" (click)="chiudiModale()">✕</button>
+      </div>
+
+      <form #prenotazioneForm="ngForm" (ngSubmit)="salva(prenotazioneForm)">
+        <div class="modal-body">
+
+          @if (formError) {
+            <div class="form-error-banner">{{ formError }}</div>
+          }
+
+          <div class="form-grid">
+
+            <!-- Nome -->
+            <div class="form-group">
+              <label for="f-nome">Nome <span class="required">*</span></label>
+              <input id="f-nome" type="text" name="NOME"
+                     [(ngModel)]="form.NOME" required placeholder="Mario">
+            </div>
+
+            <!-- Cognome -->
+            <div class="form-group">
+              <label for="f-cognome">Cognome <span class="required">*</span></label>
+              <input id="f-cognome" type="text" name="COGNOME"
+                     [(ngModel)]="form.COGNOME" required placeholder="Rossi">
+            </div>
+
+            <!-- Email -->
+            <div class="form-group">
+              <label for="f-email">Email <span class="required">*</span></label>
+              <input id="f-email" type="email" name="EMAIL"
+                     [(ngModel)]="form.EMAIL" required placeholder="mario@email.com">
+            </div>
+
+            <!-- Telefono -->
+            <div class="form-group">
+              <label for="f-tel">Telefono</label>
+              <input id="f-tel" type="tel" name="TELEFONO"
+                     [(ngModel)]="form.TELEFONO" placeholder="+39 000 0000000">
+            </div>
+
+            <!-- Data di nascita -->
+            <div class="form-group">
+              <label for="f-nascita">Data di nascita</label>
+              <input id="f-nascita" type="date" name="DATANASCITA"
+                     [(ngModel)]="form.DATANASCITA">
+            </div>
+
+            <!-- Stanza — dropdown dal DB -->
+            <div class="form-group">
+              <label for="f-stanza">Stanza <span class="required">*</span></label>
+              <select id="f-stanza" name="IDSTANZA"
+                      [(ngModel)]="form.IDSTANZA"
+                      (ngModelChange)="onStanzaChange($event)"
+                      required>
+                <option [ngValue]="null">-- Seleziona stanza --</option>
+                @for (s of stanze(); track s.IDSTANZA) {
+                  <option [ngValue]="s.IDSTANZA">
+                    #{{ s.IDSTANZA }} — {{ s.DIMENSIONE }} | {{ s.CAPACITA }} posti | €{{ s.COSTO }}/notte | {{ s.STATO }}
+                  </option>
+                }
+              </select>
+              @if (stanzaSelezionata) {
+                <div class="detail-card">
+                  <div class="detail-row">
+                    <span class="detail-label">Dimensione</span>
+                    <span>{{ stanzaSelezionata.DIMENSIONE }}</span>
+                  </div>
+                  <div class="detail-row">
+                    <span class="detail-label">Capacità</span>
+                    <span>{{ stanzaSelezionata.CAPACITA }} persone</span>
+                  </div>
+                  <div class="detail-row">
+                    <span class="detail-label">Costo</span>
+                    <span>€ {{ stanzaSelezionata.COSTO | number:'1.2-2' }} / notte</span>
+                  </div>
+                  <div class="detail-row">
+                    <span class="detail-label">Stato</span>
+                    <span class="badge-stato"
+                          [class.stato-disponibile]="stanzaSelezionata.STATO?.toLowerCase() === 'libera'"
+                          [class.stato-occupata]="stanzaSelezionata.STATO?.toLowerCase() === 'occupata'">
+                      {{ stanzaSelezionata.STATO }}
+                    </span>
+                  </div>
+                  @if (stanzaSelezionata.DESCRIZIONE) {
+                    <div class="detail-row">
+                      <span class="detail-label">Descrizione</span>
+                      <span>{{ stanzaSelezionata.DESCRIZIONE }}</span>
+                    </div>
+                  }
+                  @if (stanzaSelezionata.NOTE) {
+                    <div class="detail-row">
+                      <span class="detail-label">Note</span>
+                      <span>{{ stanzaSelezionata.NOTE }}</span>
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+
+            <!-- Servizio — dropdown dal DB -->
+            <div class="form-group">
+              <label for="f-servizio">Servizio <span class="required">*</span></label>
+              <select id="f-servizio" name="IDSERVIZIO"
+                      [(ngModel)]="form.IDSERVIZIO"
+                      (ngModelChange)="onServizioChange($event)"
+                      required>
+                <option [ngValue]="null">-- Seleziona servizio --</option>
+                @for (sv of servizi(); track sv.IDSERVIZIO) {
+                  <option [ngValue]="sv.IDSERVIZIO">
+                    #{{ sv.IDSERVIZIO }} — {{ sv.NOTE }} | €{{ sv.COSTO }}
+                  </option>
+                }
+              </select>
+              @if (servizioSelezionato) {
+                <div class="detail-card">
+                  <div class="detail-row">
+                    <span class="detail-label">Note</span>
+                    <span>{{ servizioSelezionato.NOTE }}</span>
+                  </div>
+                  <div class="detail-row">
+                    <span class="detail-label">Costo</span>
+                    <span>€ {{ servizioSelezionato.COSTO | number:'1.2-2' }}</span>
+                  </div>
+                </div>
+              }
+            </div>
+
+            <!-- Totale -->
+            <div class="form-group">
+              <label for="f-totale">Totale (€) <span class="required">*</span></label>
+              <input id="f-totale" type="number" name="TOTALE"
+                     [(ngModel)]="form.TOTALE" required
+                     placeholder="0.00" step="0.01" min="0">
+            </div>
+
+            <!-- Check-in -->
+            <div class="form-group">
+              <label for="f-checkin">Check-in <span class="required">*</span></label>
+              <input id="f-checkin" type="date" name="CHECK_IN"
+                     [(ngModel)]="form.CHECK_IN" required>
+            </div>
+
+            <!-- Check-out -->
+            <div class="form-group">
+              <label for="f-checkout">Check-out <span class="required">*</span></label>
+              <input id="f-checkout" type="date" name="CHECK_OUT"
+                     [(ngModel)]="form.CHECK_OUT" required>
+            </div>
+
+            <!-- Stato prenotazione -->
+            <div class="form-group">
+              <label for="f-stato">Stato <span class="required">*</span></label>
+              <select id="f-stato" name="STATO" [(ngModel)]="form.STATO" required>
+                <option value="">-- Seleziona --</option>
+                <option value="confermata">Confermata</option>
+                <option value="in attesa">In attesa</option>
+                <option value="cancellata">Cancellata</option>
+              </select>
+            </div>
+
+            <!-- SPA -->
+            <div class="form-group form-check">
+              <label class="check-label">
+                <input type="checkbox" name="SPA" [(ngModel)]="form.SPA"> SPA inclusa
+              </label>
+            </div>
+
+            <!-- Note -->
+            <div class="form-group full-width">
+              <label for="f-note">Note</label>
+              <textarea id="f-note" name="NOTE"
+                        [(ngModel)]="form.NOTE"
+                        rows="3" placeholder="Note aggiuntive..."></textarea>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn-cancel" type="button" (click)="chiudiModale()">Annulla</button>
+          <button class="btn-save" type="submit" [disabled]="invio">
+            {{ invio ? 'Salvataggio...' : (modalita === 'crea' ? 'Salva' : 'Aggiorna') }}
+          </button>
+        </div>
+      </form>
+
     </div>
+  </div>
+}
 
-    <div class="modal-body">
-      <div class="form-grid">
-        <div class="form-group">
-          <label>Nome</label>
-          <input type="text" [(ngModel)]="nuova.NOME" placeholder="Mario">
-        </div>
-        <div class="form-group">
-          <label>Cognome</label>
-          <input type="text" [(ngModel)]="nuova.COGNOME" placeholder="Rossi">
-        </div>
-        <div class="form-group">
-          <label>Email</label>
-          <input type="email" [(ngModel)]="nuova.EMAIL" placeholder="mario@email.com">
-        </div>
-        <div class="form-group">
-          <label>Telefono</label>
-          <input type="tel" [(ngModel)]="nuova.TELEFONO" placeholder="+39 000 0000000">
-        </div>
-        <div class="form-group">
-          <label>Data di nascita</label>
-          <input type="date" [(ngModel)]="nuova.DATANASCITA">
-        </div>
-        <div class="form-group">
-          <label>ID Stanza</label>
-          <input type="number" [(ngModel)]="nuova.IDSTANZA" placeholder="1">
-        </div>
-        <div class="form-group">
-          <label>ID Servizio</label>
-          <input type="number" [(ngModel)]="nuova.IDSERVIZIO" placeholder="1">
-        </div>
-        <div class="form-group">
-          <label>Totale (€)</label>
-          <input type="number" [(ngModel)]="nuova.TOTALE" placeholder="0.00" step="0.01">
-        </div>
-        <div class="form-group">
-          <label>Check-in</label>
-          <input type="date" [(ngModel)]="nuova.CHECK_IN">
-        </div>
-        <div class="form-group">
-          <label>Check-out</label>
-          <input type="date" [(ngModel)]="nuova.CHECK_OUT">
-        </div>
-        <div class="form-group">
-          <label>Stato</label>
-          <select [(ngModel)]="nuova.STATO">
-            <option value="">-- Seleziona --</option>
-            <option value="confermata">Confermata</option>
-            <option value="in attesa">In attesa</option>
-            <option value="cancellata">Cancellata</option>
-          </select>
-        </div>
-        <div class="form-group form-check">
-          <label class="check-label">
-            <input type="checkbox" [(ngModel)]="nuova.SPA"> SPA inclusa
-          </label>
-        </div>
-        <div class="form-group full-width">
-          <label>Note</label>
-          <textarea [(ngModel)]="nuova.NOTE" rows="3" placeholder="Note aggiuntive..."></textarea>
+<!-- ══════════════════════════════════════════════════════
+     MODALE CONFERMA ELIMINA
+     ══════════════════════════════════════════════════════ -->
+@if (eliminaTarget) {
+  <div class="modal-backdrop" (click)="annullaEliminazione()">
+    <div class="modal-box modal-box--sm" (click)="$event.stopPropagation()">
+
+      <div class="modal-header">
+        <h3>Conferma eliminazione</h3>
+        <button class="modal-close" type="button" (click)="annullaEliminazione()">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="confirm-body">
+          <div class="confirm-icon">🗑️</div>
+          <p class="confirm-text">
+            Sei sicuro di voler eliminare la prenotazione
+            <strong>#{{ eliminaTarget.IDPRE }}</strong> di
+            <strong>{{ eliminaTarget.NOME }} {{ eliminaTarget.COGNOME }}</strong>?
+          </p>
+          <p class="confirm-sub">Questa azione è irreversibile.</p>
         </div>
       </div>
-    </div>
 
-    <div class="modal-footer">
-      <button class="btn-cancel" (click)="chiudiModale()">Annulla</button>
-      <button class="btn-save" (click)="salvaPrenotazione()">Salva</button>
-    </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" type="button" (click)="annullaEliminazione()">Annulla</button>
+        <button class="btn-danger" type="button"
+                (click)="confermaEliminazione()"
+                [disabled]="eliminaInCorso">
+          {{ eliminaInCorso ? 'Eliminazione...' : 'Elimina' }}
+        </button>
+      </div>
 
+    </div>
   </div>
-</div>
+}

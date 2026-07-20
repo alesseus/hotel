@@ -3,11 +3,13 @@ package com.geak.hotel.Controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.geak.hotel.Model.Servizio;
@@ -16,31 +18,43 @@ import com.geak.hotel.Services.ServiziSrv;
 @RestController
 @RequestMapping("/servizio/")
 public class ServizioController {
+
 	@Autowired
 	private ServiziSrv serv;
-	
+
+	// GET /servizio/elenco
 	@GetMapping("elenco")
-	public List<Servizio> elencoServizio(){
+	public List<Servizio> elencoServizio() {
 		return serv.getAllServizi();
 	}
-	
+
+	// GET /servizio/elenco/{IDSERVIZIO}
 	@GetMapping("elenco/{IDSERVIZIO}")
 	public Servizio tornaServ(@PathVariable Long IDSERVIZIO) {
-		List<Servizio> sv = serv.getAllServizi();
-		return sv.stream().filter(
-				servLetto -> servLetto.getIDSERVIZIO() == IDSERVIZIO).findFirst().get();
-	}
-	
-	// Aggiungo servizio
-	@PostMapping("aggiungi")
-	public ServiziSrv add(Servizio agg) {
-		serv.addServizio(agg);
-		return serv;
-	}
-	
-	@RequestMapping(value = "cancella/{IDSERVIZIO}", method = RequestMethod.DELETE)
-	public void cancella(@PathVariable Long idServCanc) {
-		serv.delServ(idServCanc);
+		return serv.getAllServizi().stream()
+				.filter(s -> s.getIDSERVIZIO().equals(IDSERVIZIO))
+				.findFirst()
+				.get();
 	}
 
+	// POST /servizio/add ← era "aggiungi"
+	@PostMapping("add")
+	public List<Servizio> add(@RequestBody Servizio agg) {
+		serv.addServizio(agg);
+		return serv.getAllServizi();
+	}
+
+	// PUT /servizio/aggiorna
+	@PutMapping("aggiorna")
+	public List<Servizio> aggiorna(@RequestBody Servizio aggiornato) {
+		serv.aggServizio(aggiornato); // ← era cambiaServizio, non esiste
+		return serv.getAllServizi();
+	}
+
+	// DELETE /servizio/elimina/{id} ← era "cancella/{IDSERVIZIO}"
+	@DeleteMapping("elimina/{id}")
+	public List<Servizio> elimina(@PathVariable Long id) {
+		serv.delServ(id);
+		return serv.getAllServizi();
+	}
 }
