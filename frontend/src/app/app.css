@@ -99,6 +99,35 @@ nav a:hover::after { transform: scaleX(1); }
 }
 .btn-prenota:active { transform: translateY(0); }
 
+
+.btn-hero-ghost {
+  font-family: var(--font-body);
+  font-size: 0.72rem;                /* uguale a .btn-prenota */
+  font-weight: 700;                  /* uguale a .btn-prenota */
+  letter-spacing: 0.08em;            /* uguale a .btn-prenota */
+  text-transform: uppercase;
+  background: rgba(255,255,255,0.10);
+  color: var(--white);
+  border: 1.5px solid rgba(255,255,255,0.32);
+  border-radius: var(--r-pill);
+  padding: 9px 24px;                 /* uguale a .btn-prenota */
+  cursor: pointer;
+  white-space: nowrap;
+  backdrop-filter: blur(6px);
+  transition: background var(--fast), border-color var(--fast), transform var(--fast), box-shadow var(--fast);
+}
+
+.btn-hero-ghost:hover {
+  background: rgba(255,255,255,0.18);
+  border-color: rgba(255,255,255,0.55);
+  transform: translateY(-1px);       /* stesso spostamento di .btn-prenota */
+  box-shadow: 0 6px 20px rgba(0,0,0,0.12); /* ombra più sottile adatta al ghost */
+}
+
+.btn-hero-ghost:active {
+  transform: translateY(0);
+}
+
 /* ── Footer ── */
 footer {
   background: var(--navy-900);
