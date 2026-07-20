@@ -10,7 +10,7 @@ import { Router, RouterLink } from '@angular/router';
 })
 export class Login {
 
-  codice    = '';
+  email    = '';
   password = '';
   loading  = false;
   errorMessage = '';
@@ -27,7 +27,7 @@ export class Login {
     setTimeout(() => {
       this.loading = false;
 
-      if (this.codice === 'admin@bluehorizon.it' && this.password === 'admin123') {
+      if (this.email === 'admin@bluehorizon.it' && this.password === 'admin123') {
         this.router.navigate(['/amministrazione']);
       } else {
         this.errorMessage = 'Credenziali non valide. Riprova.';
