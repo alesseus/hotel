@@ -1,5 +1,1 @@
-export interface servizio {
-  IDSERVIZIO: number;
-  NOTE: string | null;
-  COSTO: number;
-}
+export interface servizio { IDSERVIZIO: number; NOTE: string | null; COSTO: number; }

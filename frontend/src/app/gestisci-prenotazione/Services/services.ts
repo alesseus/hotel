@@ -8,8 +8,8 @@ import { servizio } from "../interfacce/servizio_i";
 @Injectable({ providedIn: 'root' })
 export class GestisciPrenotazioneServices {
 
-  private readonly API_PRE     = 'https://hotel-4n9x.onrender.com/prenotazione';
-  private readonly API_STANZA  = 'https://hotel-4n9x.onrender.com/stanza';
+  private readonly API_PRE      = 'https://hotel-4n9x.onrender.com/prenotazione';
+  private readonly API_STANZA   = 'https://hotel-4n9x.onrender.com/stanza';
   private readonly API_SERVIZIO = 'https://hotel-4n9x.onrender.com/servizio';
 
   private readonly http = inject(HttpClient);
@@ -22,8 +22,16 @@ export class GestisciPrenotazioneServices {
     return this.http.get<prenotazione[]>(`${this.API_PRE}/lista`);
   }
 
-  addPrenotazione(nuova: Partial<prenotazione>): Observable<prenotazione[]> {
-    return this.http.post<prenotazione[]>(`${this.API_PRE}/add`, nuova, this.httpOptions);
+  addPrenotazione(nuova: Partial<prenotazione>): Observable<any> {
+    return this.http.post<any>(`${this.API_PRE}/add`, nuova, this.httpOptions);
+  }
+
+  cambiaPrenotazione(aggiornata: prenotazione): Observable<any> {
+    return this.http.put<any>(`${this.API_PRE}/cambia`, aggiornata, this.httpOptions);
+  }
+
+  cancellaPrenotazione(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.API_PRE}/cancella/${id}`);
   }
 
   getStanze(): Observable<stanza[]> {

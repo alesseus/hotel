@@ -13,7 +13,6 @@
   <!-- Body -->
   <div class="gestisci-wrapper">
 
-    <!-- Toolbar -->
     <div class="actions-bar">
       <div class="actions-bar-left">
         <div class="search-input">
@@ -21,7 +20,7 @@
         </div>
       </div>
       <div class="actions-bar-right">
-        <button class="btn-add" type="button" (click)="apriModale()">+ Nuova prenotazione</button>
+        <button class="btn-add" type="button" (click)="apriModaleCreazione()">+ Nuova prenotazione</button>
       </div>
     </div>
 
@@ -29,7 +28,6 @@
       <div class="form-error-banner">{{ erroreCaricamento }}</div>
     }
 
-    <!-- Tabella -->
     <div class="table-wrapper">
       <table>
         <thead>
@@ -46,9 +44,7 @@
         </thead>
         <tbody>
           @if (caricamento) {
-            <tr>
-              <td colspan="8" class="table-empty">Caricamento prenotazioni in corso...</td>
-            </tr>
+            <tr><td colspan="8" class="table-empty">Caricamento prenotazioni in corso...</td></tr>
           } @else if (prenotazioniFiltrate.length === 0) {
             <tr>
               <td colspan="8">
@@ -76,8 +72,8 @@
                   </span>
                 </td>
                 <td class="actions-cell">
-                  <button class="btn-edit" type="button">Modifica</button>
-                  <button class="btn-delete" type="button">Elimina</button>
+                  <button class="btn-edit" type="button" (click)="apriModaleModifica(p)">Modifica</button>
+                  <button class="btn-delete" type="button" (click)="apriConfermaEliminazione(p)">Elimina</button>
                 </td>
               </tr>
             }
@@ -89,17 +85,19 @@
   </div>
 </div>
 
-<!-- ── MODALE NUOVA PRENOTAZIONE ── -->
+<!-- ══════════════════════════════════════════════════════
+     MODALE CREA / MODIFICA
+     ══════════════════════════════════════════════════════ -->
 @if (modaleAperto) {
   <div class="modal-backdrop" (click)="chiudiModale()">
     <div class="modal-box" (click)="$event.stopPropagation()">
 
       <div class="modal-header">
-        <h3>Nuova prenotazione</h3>
+        <h3>{{ modalita === 'crea' ? 'Nuova prenotazione' : 'Modifica prenotazione' }}</h3>
         <button class="modal-close" type="button" (click)="chiudiModale()">✕</button>
       </div>
 
-      <form #prenotazioneForm="ngForm" (ngSubmit)="salvaPrenotazione(prenotazioneForm)">
+      <form #prenotazioneForm="ngForm" (ngSubmit)="salva(prenotazioneForm)">
         <div class="modal-body">
 
           @if (formError) {
@@ -110,54 +108,53 @@
 
             <!-- Nome -->
             <div class="form-group">
-              <label for="nome">Nome <span class="required">*</span></label>
-              <input id="nome" type="text" name="NOME"
-                     [(ngModel)]="nuova.NOME" required placeholder="Mario">
+              <label for="f-nome">Nome <span class="required">*</span></label>
+              <input id="f-nome" type="text" name="NOME"
+                     [(ngModel)]="form.NOME" required placeholder="Mario">
             </div>
 
             <!-- Cognome -->
             <div class="form-group">
-              <label for="cognome">Cognome <span class="required">*</span></label>
-              <input id="cognome" type="text" name="COGNOME"
-                     [(ngModel)]="nuova.COGNOME" required placeholder="Rossi">
+              <label for="f-cognome">Cognome <span class="required">*</span></label>
+              <input id="f-cognome" type="text" name="COGNOME"
+                     [(ngModel)]="form.COGNOME" required placeholder="Rossi">
             </div>
 
             <!-- Email -->
             <div class="form-group">
-              <label for="email">Email <span class="required">*</span></label>
-              <input id="email" type="email" name="EMAIL"
-                     [(ngModel)]="nuova.EMAIL" required placeholder="mario@email.com">
+              <label for="f-email">Email <span class="required">*</span></label>
+              <input id="f-email" type="email" name="EMAIL"
+                     [(ngModel)]="form.EMAIL" required placeholder="mario@email.com">
             </div>
 
             <!-- Telefono -->
             <div class="form-group">
-              <label for="telefono">Telefono</label>
-              <input id="telefono" type="tel" name="TELEFONO"
-                     [(ngModel)]="nuova.TELEFONO" placeholder="+39 000 0000000">
+              <label for="f-tel">Telefono</label>
+              <input id="f-tel" type="tel" name="TELEFONO"
+                     [(ngModel)]="form.TELEFONO" placeholder="+39 000 0000000">
             </div>
 
             <!-- Data di nascita -->
             <div class="form-group">
-              <label for="datanascita">Data di nascita</label>
-              <input id="datanascita" type="date" name="DATANASCITA"
-                     [(ngModel)]="nuova.DATANASCITA">
+              <label for="f-nascita">Data di nascita</label>
+              <input id="f-nascita" type="date" name="DATANASCITA"
+                     [(ngModel)]="form.DATANASCITA">
             </div>
 
             <!-- Stanza — dropdown dal DB -->
             <div class="form-group">
-              <label for="stanza">Stanza <span class="required">*</span></label>
-              <select id="stanza" name="IDSTANZA"
-                      [(ngModel)]="nuova.IDSTANZA"
+              <label for="f-stanza">Stanza <span class="required">*</span></label>
+              <select id="f-stanza" name="IDSTANZA"
+                      [(ngModel)]="form.IDSTANZA"
                       (ngModelChange)="onStanzaChange($event)"
                       required>
-                <option [ngValue]="undefined">-- Seleziona stanza --</option>
+                <option [ngValue]="null">-- Seleziona stanza --</option>
                 @for (s of stanze(); track s.IDSTANZA) {
                   <option [ngValue]="s.IDSTANZA">
                     #{{ s.IDSTANZA }} — {{ s.DIMENSIONE }} | {{ s.CAPACITA }} posti | €{{ s.COSTO }}/notte | {{ s.STATO }}
                   </option>
                 }
               </select>
-              <!-- Dettaglio stanza selezionata -->
               @if (stanzaSelezionata) {
                 <div class="detail-card">
                   <div class="detail-row">
@@ -198,19 +195,18 @@
 
             <!-- Servizio — dropdown dal DB -->
             <div class="form-group">
-              <label for="servizio">Servizio <span class="required">*</span></label>
-              <select id="servizio" name="IDSERVIZIO"
-                      [(ngModel)]="nuova.IDSERVIZIO"
+              <label for="f-servizio">Servizio <span class="required">*</span></label>
+              <select id="f-servizio" name="IDSERVIZIO"
+                      [(ngModel)]="form.IDSERVIZIO"
                       (ngModelChange)="onServizioChange($event)"
                       required>
-                <option [ngValue]="undefined">-- Seleziona servizio --</option>
+                <option [ngValue]="null">-- Seleziona servizio --</option>
                 @for (sv of servizi(); track sv.IDSERVIZIO) {
                   <option [ngValue]="sv.IDSERVIZIO">
                     #{{ sv.IDSERVIZIO }} — {{ sv.NOTE }} | €{{ sv.COSTO }}
                   </option>
                 }
               </select>
-              <!-- Dettaglio servizio selezionato -->
               @if (servizioSelezionato) {
                 <div class="detail-card">
                   <div class="detail-row">
@@ -227,31 +223,30 @@
 
             <!-- Totale -->
             <div class="form-group">
-              <label for="totale">Totale (€) <span class="required">*</span></label>
-              <input id="totale" type="number" name="TOTALE"
-                     [(ngModel)]="nuova.TOTALE" required
+              <label for="f-totale">Totale (€) <span class="required">*</span></label>
+              <input id="f-totale" type="number" name="TOTALE"
+                     [(ngModel)]="form.TOTALE" required
                      placeholder="0.00" step="0.01" min="0">
             </div>
 
             <!-- Check-in -->
             <div class="form-group">
-              <label for="checkin">Check-in <span class="required">*</span></label>
-              <input id="checkin" type="date" name="CHECK_IN"
-                     [(ngModel)]="nuova.CHECK_IN" required>
+              <label for="f-checkin">Check-in <span class="required">*</span></label>
+              <input id="f-checkin" type="date" name="CHECK_IN"
+                     [(ngModel)]="form.CHECK_IN" required>
             </div>
 
             <!-- Check-out -->
             <div class="form-group">
-              <label for="checkout">Check-out <span class="required">*</span></label>
-              <input id="checkout" type="date" name="CHECK_OUT"
-                     [(ngModel)]="nuova.CHECK_OUT" required>
+              <label for="f-checkout">Check-out <span class="required">*</span></label>
+              <input id="f-checkout" type="date" name="CHECK_OUT"
+                     [(ngModel)]="form.CHECK_OUT" required>
             </div>
 
             <!-- Stato prenotazione -->
             <div class="form-group">
-              <label for="stato">Stato <span class="required">*</span></label>
-              <select id="stato" name="STATO"
-                      [(ngModel)]="nuova.STATO" required>
+              <label for="f-stato">Stato <span class="required">*</span></label>
+              <select id="f-stato" name="STATO" [(ngModel)]="form.STATO" required>
                 <option value="">-- Seleziona --</option>
                 <option value="confermata">Confermata</option>
                 <option value="in attesa">In attesa</option>
@@ -262,15 +257,15 @@
             <!-- SPA -->
             <div class="form-group form-check">
               <label class="check-label">
-                <input type="checkbox" name="SPA" [(ngModel)]="nuova.SPA"> SPA inclusa
+                <input type="checkbox" name="SPA" [(ngModel)]="form.SPA"> SPA inclusa
               </label>
             </div>
 
-            <!-- Note prenotazione -->
+            <!-- Note -->
             <div class="form-group full-width">
-              <label for="note">Note</label>
-              <textarea id="note" name="NOTE"
-                        [(ngModel)]="nuova.NOTE"
+              <label for="f-note">Note</label>
+              <textarea id="f-note" name="NOTE"
+                        [(ngModel)]="form.NOTE"
                         rows="3" placeholder="Note aggiuntive..."></textarea>
             </div>
 
@@ -280,10 +275,47 @@
         <div class="modal-footer">
           <button class="btn-cancel" type="button" (click)="chiudiModale()">Annulla</button>
           <button class="btn-save" type="submit" [disabled]="invio">
-            {{ invio ? 'Salvataggio...' : 'Salva' }}
+            {{ invio ? 'Salvataggio...' : (modalita === 'crea' ? 'Salva' : 'Aggiorna') }}
           </button>
         </div>
       </form>
+
+    </div>
+  </div>
+}
+
+<!-- ══════════════════════════════════════════════════════
+     MODALE CONFERMA ELIMINA
+     ══════════════════════════════════════════════════════ -->
+@if (eliminaTarget) {
+  <div class="modal-backdrop" (click)="annullaEliminazione()">
+    <div class="modal-box modal-box--sm" (click)="$event.stopPropagation()">
+
+      <div class="modal-header">
+        <h3>Conferma eliminazione</h3>
+        <button class="modal-close" type="button" (click)="annullaEliminazione()">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="confirm-body">
+          <div class="confirm-icon">🗑️</div>
+          <p class="confirm-text">
+            Sei sicuro di voler eliminare la prenotazione
+            <strong>#{{ eliminaTarget.IDPRE }}</strong> di
+            <strong>{{ eliminaTarget.NOME }} {{ eliminaTarget.COGNOME }}</strong>?
+          </p>
+          <p class="confirm-sub">Questa azione è irreversibile.</p>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-cancel" type="button" (click)="annullaEliminazione()">Annulla</button>
+        <button class="btn-danger" type="button"
+                (click)="confermaEliminazione()"
+                [disabled]="eliminaInCorso">
+          {{ eliminaInCorso ? 'Eliminazione...' : 'Elimina' }}
+        </button>
+      </div>
 
     </div>
   </div>
