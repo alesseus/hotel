@@ -1,244 +1,177 @@
-<!-- Hero header — stesso pattern della pagina login -->
-<section class="page-hero">
-  <h1 class="page-hero__title">Registrati</h1>
-  <p class="page-hero__subtitle">Crea il tuo account per accedere all'area riservata</p>
-</section>
+<div class="register-page">
 
-<!-- Corpo pagina -->
-<div class="page-body">
-  <div class="register-card">
-
-    <!-- Logo Blue Horizon (stesso della login card) -->
-    <div class="card-logo">
-      <img src="assets/images/logo.png" alt="Blue Horizon Hotel" />
+    <!-- Header — struttura identica a login -->
+    <div class="register-header">
+        <h1>Registrati</h1>
+        <div class="divider-gold"></div>
+        <p>Crea il tuo account per accedere all'area riservata</p>
     </div>
 
-    <!-- Alert successo -->
-    @if (successMessage) {
-      <div class="alert alert--success" role="alert">
-        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"
-          stroke-linecap="round" stroke-linejoin="round">
-          <path d="M17 4L8 15l-5-5"/>
-        </svg>
-        {{ successMessage }}
-      </div>
-    }
+    <!-- Corpo -->
+    <div class="register-body">
+        <div class="register-card">
 
-    <!-- Alert errore -->
-    @if (errorMessage) {
-      <div class="alert alert--error" role="alert">
-        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"
-          stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="10" cy="10" r="9"/>
-          <line x1="10" y1="6" x2="10" y2="10"/>
-          <line x1="10" y1="14" x2="10" y2="14"/>
-        </svg>
-        {{ errorMessage }}
-      </div>
-    }
+            <div class="register-logo">
+                <img src="assets/images/logo.png" height="90" width="auto" alt="Blue Horizon Hotel">
+            </div>
 
-    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" novalidate>
+            <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" novalidate>
 
-      <!-- Riga: Nome + Cognome -->
-      <div class="form-row">
-        <div class="form-group" [class.form-group--error]="isInvalid('nome')">
-          <label for="nome" class="form-label">Nome</label>
-          <input
-            id="nome"
-            type="text"
-            class="form-control"
-            formControlName="nome"
-            placeholder="Mario"
-            autocomplete="given-name"
-          />
-          @if (isInvalid('nome')) {
-            <span class="form-error-msg">
-              @if (f['nome'].errors?.['required']) { Campo obbligatorio. }
-              @else if (f['nome'].errors?.['minlength']) { Minimo 2 caratteri. }
-              @else if (f['nome'].errors?.['pattern']) { Solo lettere consentite. }
-            </span>
-          }
+                <!-- Nome + Cognome -->
+                <div class="field-row">
+                    <div class="field-group">
+                        <label for="nome">Nome</label>
+                        <input type="text" id="nome" formControlName="nome"
+                            placeholder="Mario"
+                            autocomplete="given-name"
+                            [class.invalid]="isInvalid('nome')">
+                        @if (isInvalid('nome')) {
+                            <span class="field-error">
+                                @if (f['nome'].errors?.['required']) { Campo obbligatorio. }
+                                @else if (f['nome'].errors?.['minlength']) { Minimo 2 caratteri. }
+                                @else if (f['nome'].errors?.['pattern']) { Solo lettere consentite. }
+                            </span>
+                        }
+                    </div>
+
+                    <div class="field-group">
+                        <label for="cognome">Cognome</label>
+                        <input type="text" id="cognome" formControlName="cognome"
+                            placeholder="Rossi"
+                            autocomplete="family-name"
+                            [class.invalid]="isInvalid('cognome')">
+                        @if (isInvalid('cognome')) {
+                            <span class="field-error">
+                                @if (f['cognome'].errors?.['required']) { Campo obbligatorio. }
+                                @else if (f['cognome'].errors?.['minlength']) { Minimo 2 caratteri. }
+                                @else if (f['cognome'].errors?.['pattern']) { Solo lettere consentite. }
+                            </span>
+                        }
+                    </div>
+                </div>
+
+                <!-- Email -->
+                <div class="field-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" formControlName="email"
+                        placeholder="mario.rossi@email.com"
+                        autocomplete="email"
+                        [class.invalid]="isInvalid('email')">
+                    @if (isInvalid('email')) {
+                        <span class="field-error">
+                            @if (f['email'].errors?.['required']) { Campo obbligatorio. }
+                            @else if (f['email'].errors?.['email']) { Inserisci un indirizzo email valido. }
+                        </span>
+                    }
+                </div>
+
+                <!-- Password -->
+                <div class="field-group">
+                    <label for="password">Password</label>
+                    <div class="input-with-toggle">
+                        <input [type]="showPassword ? 'text' : 'password'"
+                            id="password" formControlName="password"
+                            placeholder="••••••••"
+                            autocomplete="new-password"
+                            [class.invalid]="isInvalid('password')">
+                        <button type="button" class="toggle-eye" (click)="togglePassword()"
+                            [attr.aria-label]="showPassword ? 'Nascondi' : 'Mostra'">
+                            @if (showPassword) {
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                            } @else {
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                            }
+                        </button>
+                    </div>
+                    <span class="field-hint">Min. 8 caratteri, una maiuscola, un numero e un simbolo.</span>
+                    @if (isInvalid('password')) {
+                        <span class="field-error">
+                            @if (f['password'].errors?.['required']) { Campo obbligatorio. }
+                            @else if (f['password'].errors?.['minlength']) { Minimo 8 caratteri. }
+                            @else if (f['password'].errors?.['pattern']) { Deve contenere maiuscola, minuscola, numero e simbolo. }
+                        </span>
+                    }
+                </div>
+
+                <!-- Conferma Password -->
+                <div class="field-group">
+                    <label for="confermaPassword">Conferma Password</label>
+                    <div class="input-with-toggle">
+                        <input [type]="showConfermaPassword ? 'text' : 'password'"
+                            id="confermaPassword" formControlName="confermaPassword"
+                            placeholder="••••••••"
+                            autocomplete="new-password"
+                            [class.invalid]="isInvalid('confermaPassword') || (registerForm.errors?.['passwordMismatch'] && registerForm.get('confermaPassword')?.dirty)">
+                        <button type="button" class="toggle-eye" (click)="toggleConfermaPassword()"
+                            [attr.aria-label]="showConfermaPassword ? 'Nascondi' : 'Mostra'">
+                            @if (showConfermaPassword) {
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                            } @else {
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                            }
+                        </button>
+                    </div>
+                    @if (isInvalid('confermaPassword')) {
+                        <span class="field-error">Campo obbligatorio.</span>
+                    } @else if (registerForm.errors?.['passwordMismatch'] && registerForm.get('confermaPassword')?.dirty) {
+                        <span class="field-error">Le password non coincidono.</span>
+                    }
+                </div>
+
+                <!-- Telefono + Data di nascita -->
+                <div class="field-row">
+                    <div class="field-group">
+                        <label for="telefono">Telefono</label>
+                        <input type="tel" id="telefono" formControlName="telefono"
+                            placeholder="+39 333 123 4567"
+                            autocomplete="tel"
+                            [class.invalid]="isInvalid('telefono')">
+                        @if (isInvalid('telefono')) {
+                            <span class="field-error">
+                                @if (f['telefono'].errors?.['required']) { Campo obbligatorio. }
+                                @else if (f['telefono'].errors?.['pattern']) { Numero non valido. }
+                            </span>
+                        }
+                    </div>
+
+                    <div class="field-group">
+                        <label for="dataNascita">Data di Nascita</label>
+                        <input type="date" id="dataNascita" formControlName="dataNascita"
+                            [max]="maxDate"
+                            autocomplete="bday"
+                            [class.invalid]="isInvalid('dataNascita')">
+                        @if (isInvalid('dataNascita')) {
+                            <span class="field-error">
+                                @if (f['dataNascita'].errors?.['required']) { Campo obbligatorio. }
+                                @else if (f['dataNascita'].errors?.['etaMinima']) { Devi avere almeno 18 anni. }
+                            </span>
+                        }
+                    </div>
+                </div>
+
+                <!-- Errore globale -->
+                @if (errorMessage) {
+                    <div class="register-error">{{ errorMessage }}</div>
+                }
+
+                <!-- Successo -->
+                @if (successMessage) {
+                    <div class="register-success">{{ successMessage }}</div>
+                }
+
+                <button type="submit" [disabled]="isLoading">
+                    @if (isLoading) {
+                        Registrazione in corso…
+                    } @else {
+                        Crea Account
+                    }
+                </button>
+
+            </form>
+
+            <a class="forgot-link" routerLink="/login">Hai già un account? Accedi</a>
+
         </div>
+    </div>
 
-        <div class="form-group" [class.form-group--error]="isInvalid('cognome')">
-          <label for="cognome" class="form-label">Cognome</label>
-          <input
-            id="cognome"
-            type="text"
-            class="form-control"
-            formControlName="cognome"
-            placeholder="Rossi"
-            autocomplete="family-name"
-          />
-          @if (isInvalid('cognome')) {
-            <span class="form-error-msg">
-              @if (f['cognome'].errors?.['required']) { Campo obbligatorio. }
-              @else if (f['cognome'].errors?.['minlength']) { Minimo 2 caratteri. }
-              @else if (f['cognome'].errors?.['pattern']) { Solo lettere consentite. }
-            </span>
-          }
-        </div>
-      </div>
-
-      <!-- Email -->
-      <div class="form-group" [class.form-group--error]="isInvalid('email')">
-        <label for="email" class="form-label">Email</label>
-        <input
-          id="email"
-          type="email"
-          class="form-control"
-          formControlName="email"
-          placeholder="mario.rossi@email.it"
-          autocomplete="email"
-        />
-        @if (isInvalid('email')) {
-          <span class="form-error-msg">
-            @if (f['email'].errors?.['required']) { Campo obbligatorio. }
-            @else if (f['email'].errors?.['email']) { Inserisci un indirizzo email valido. }
-          </span>
-        }
-      </div>
-
-      <!-- Password -->
-      <div class="form-group" [class.form-group--error]="isInvalid('password')">
-        <label for="password" class="form-label">Password</label>
-        <div class="input-wrapper">
-          <input
-            id="password"
-            [type]="showPassword ? 'text' : 'password'"
-            class="form-control form-control--has-toggle"
-            formControlName="password"
-            placeholder="Min. 8 caratteri"
-            autocomplete="new-password"
-          />
-          <button
-            type="button"
-            class="toggle-btn"
-            (click)="togglePassword()"
-            [attr.aria-label]="showPassword ? 'Nascondi password' : 'Mostra password'">
-            @if (showPassword) {
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/>
-                <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/>
-                <line x1="1" y1="1" x2="23" y2="23"/>
-              </svg>
-            } @else {
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                <circle cx="12" cy="12" r="3"/>
-              </svg>
-            }
-          </button>
-        </div>
-        <span class="form-hint">Almeno 8 caratteri, una maiuscola, un numero e un simbolo.</span>
-        @if (isInvalid('password')) {
-          <span class="form-error-msg">
-            @if (f['password'].errors?.['required']) { Campo obbligatorio. }
-            @else if (f['password'].errors?.['minlength']) { Minimo 8 caratteri. }
-            @else if (f['password'].errors?.['pattern']) { Deve contenere maiuscola, minuscola, numero e simbolo. }
-          </span>
-        }
-      </div>
-
-      <!-- Conferma Password -->
-      <div class="form-group"
-        [class.form-group--error]="isInvalid('confermaPassword') || (registerForm.errors?.['passwordMismatch'] && registerForm.get('confermaPassword')?.dirty)">
-        <label for="confermaPassword" class="form-label">Conferma Password</label>
-        <div class="input-wrapper">
-          <input
-            id="confermaPassword"
-            [type]="showConfermaPassword ? 'text' : 'password'"
-            class="form-control form-control--has-toggle"
-            formControlName="confermaPassword"
-            placeholder="Ripeti la password"
-            autocomplete="new-password"
-          />
-          <button
-            type="button"
-            class="toggle-btn"
-            (click)="toggleConfermaPassword()"
-            [attr.aria-label]="showConfermaPassword ? 'Nascondi password' : 'Mostra password'">
-            @if (showConfermaPassword) {
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/>
-                <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/>
-                <line x1="1" y1="1" x2="23" y2="23"/>
-              </svg>
-            } @else {
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                <circle cx="12" cy="12" r="3"/>
-              </svg>
-            }
-          </button>
-        </div>
-        @if (isInvalid('confermaPassword')) {
-          <span class="form-error-msg">Campo obbligatorio.</span>
-        } @else if (registerForm.errors?.['passwordMismatch'] && registerForm.get('confermaPassword')?.dirty) {
-          <span class="form-error-msg">Le password non coincidono.</span>
-        }
-      </div>
-
-      <!-- Riga: Telefono + Data di nascita -->
-      <div class="form-row">
-        <div class="form-group" [class.form-group--error]="isInvalid('telefono')">
-          <label for="telefono" class="form-label">Telefono</label>
-          <input
-            id="telefono"
-            type="tel"
-            class="form-control"
-            formControlName="telefono"
-            placeholder="+39 333 123 4567"
-            autocomplete="tel"
-          />
-          @if (isInvalid('telefono')) {
-            <span class="form-error-msg">
-              @if (f['telefono'].errors?.['required']) { Campo obbligatorio. }
-              @else if (f['telefono'].errors?.['pattern']) { Numero non valido. }
-            </span>
-          }
-        </div>
-
-        <div class="form-group" [class.form-group--error]="isInvalid('dataNascita')">
-          <label for="dataNascita" class="form-label">Data di Nascita</label>
-          <input
-            id="dataNascita"
-            type="date"
-            class="form-control"
-            formControlName="dataNascita"
-            [max]="maxDate"
-            autocomplete="bday"
-          />
-          @if (isInvalid('dataNascita')) {
-            <span class="form-error-msg">
-              @if (f['dataNascita'].errors?.['required']) { Campo obbligatorio. }
-              @else if (f['dataNascita'].errors?.['etaMinima']) { Devi avere almeno 18 anni. }
-            </span>
-          }
-        </div>
-      </div>
-
-      <!-- Bottone submit -->
-      <button type="submit" class="btn-submit" [disabled]="isLoading">
-        @if (isLoading) {
-          <span class="spinner" aria-hidden="true"></span>
-          Registrazione in corso…
-        } @else {
-          Crea Account
-        }
-      </button>
-
-    </form>
-
-    <!-- Link login -->
-    <p class="card-footer-link">
-      Hai già un account?
-      <a routerLink="/login" class="card-footer-link__anchor">Accedi</a>
-    </p>
-
-  </div>
 </div>
