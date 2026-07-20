@@ -1,109 +1,158 @@
-/* ===================================================
-   Register Component – Stili standalone
-   Compatibile con Angular 22 (standalone component)
-   =================================================== */
+/* ================================================================
+   Register Component – Blue Horizon Hotel
+   Allineato al design system della pagina /login
+   Font richiesti nel global styles / index.html:
+   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+   ================================================================ */
 
-/* --- Wrapper centrato a schermo intero --- */
-.register-wrapper {
-  min-height: 100vh;
+/* ----------------------------------------------------------------
+   Variabili del design system Blue Horizon
+   ---------------------------------------------------------------- */
+:host {
+  --navy:          #0B2140;
+  --navy-light:    #0f2d55;
+  --gold:          #C9A46A;
+  --gold-hover:    #b8913a;
+  --white:         #ffffff;
+  --body-bg:       #f0f4f8;
+  --card-shadow:   0 4px 24px rgba(11, 33, 64, 0.10);
+
+  /* Campi */
+  --input-bg:      #e8eef6;
+  --input-border:  #9aafc5;
+  --input-focus:   #0B2140;
+  --input-radius:  6px;
+
+  /* Testi */
+  --text-primary:  #0B2140;
+  --text-muted:    #6b7c93;
+  --text-error:    #b94040;
+
+  /* Pulsante */
+  --btn-bg:        #0B2140;
+  --btn-hover:     #0f2d55;
+
+  display: block;
+}
+
+/* ----------------------------------------------------------------
+   Hero header (uguale alla login page)
+   ---------------------------------------------------------------- */
+.page-hero {
+  background-color: var(--navy);
+  padding: 3rem 1.5rem 3.25rem;
+  text-align: center;
+}
+
+.page-hero__title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-style: italic;
+  font-size: 3rem;
+  font-weight: 400;
+  color: var(--white);
+  margin: 0 0 0.6rem;
+  letter-spacing: 0.01em;
+  line-height: 1.15;
+}
+
+/* Sottolineatura oro decorativa */
+.page-hero__title::after {
+  content: '';
+  display: block;
+  width: 48px;
+  height: 2px;
+  background-color: var(--gold);
+  margin: 0.75rem auto 0;
+}
+
+.page-hero__subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9375rem;
+  color: rgba(255, 255, 255, 0.72);
+  margin: 0;
+  font-weight: 300;
+  letter-spacing: 0.01em;
+}
+
+/* ----------------------------------------------------------------
+   Sfondo corpo pagina
+   ---------------------------------------------------------------- */
+.page-body {
+  background-color: var(--body-bg);
+  min-height: calc(100vh - 200px);
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  padding: 2rem 1rem;
-  background: linear-gradient(135deg, #f0f4ff 0%, #e8f0fe 50%, #f3e8ff 100%);
+  padding: 3rem 1.25rem 4rem;
 }
 
-/* --- Card principale --- */
+/* ----------------------------------------------------------------
+   Card (stessa della login page)
+   ---------------------------------------------------------------- */
 .register-card {
-  background: #ffffff;
-  border-radius: 1.25rem;
-  box-shadow:
-    0 4px 6px -1px rgba(0, 0, 0, 0.06),
-    0 20px 40px -8px rgba(0, 0, 0, 0.12);
-  padding: 2.5rem 2rem;
+  background: var(--white);
+  border-radius: 14px;
+  box-shadow: var(--card-shadow);
+  padding: 2.5rem 2.25rem 2rem;
   width: 100%;
-  max-width: 540px;
+  max-width: 560px;
 }
 
-/* --- Header --- */
-.register-header {
+/* ----------------------------------------------------------------
+   Logo in cima alla card
+   ---------------------------------------------------------------- */
+.card-logo {
   text-align: center;
   margin-bottom: 2rem;
 }
 
-.register-icon {
-  width: 56px;
+.card-logo img {
   height: 56px;
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
-  border-radius: 1rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 1rem;
-  box-shadow: 0 8px 20px rgba(99, 102, 241, 0.35);
+  width: auto;
+  display: inline-block;
 }
 
-.register-icon svg {
-  width: 28px;
-  height: 28px;
-  color: #ffffff;
-  stroke: #ffffff;
-}
-
-.register-title {
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: #111827;
-  margin: 0 0 0.35rem;
-  letter-spacing: -0.025em;
-}
-
-.register-subtitle {
-  font-size: 0.95rem;
-  color: #6b7280;
-  margin: 0;
-}
-
-/* --- Alert --- */
+/* ----------------------------------------------------------------
+   Alert
+   ---------------------------------------------------------------- */
 .alert {
   display: flex;
   align-items: flex-start;
-  gap: 0.6rem;
-  padding: 0.875rem 1rem;
-  border-radius: 0.75rem;
-  font-size: 0.9rem;
+  gap: 0.55rem;
+  padding: 0.8rem 1rem;
+  border-radius: 6px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.875rem;
   line-height: 1.5;
   margin-bottom: 1.5rem;
 }
 
 .alert svg {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   flex-shrink: 0;
-  margin-top: 1px;
+  margin-top: 2px;
 }
 
-.alert-success {
-  background: #f0fdf4;
-  border: 1px solid #bbf7d0;
-  color: #166534;
+.alert--success {
+  background: #edf7f0;
+  border: 1px solid #a8d5b5;
+  color: #2a6b3f;
 }
 
-.alert-success svg {
-  stroke: #16a34a;
+.alert--success svg { stroke: #2a6b3f; }
+
+.alert--error {
+  background: #fdf1f1;
+  border: 1px solid #e8b4b4;
+  color: var(--text-error);
 }
 
-.alert-error {
-  background: #fef2f2;
-  border: 1px solid #fecaca;
-  color: #991b1b;
-}
+.alert--error svg { stroke: var(--text-error); }
 
-.alert-error svg {
-  stroke: #dc2626;
-}
-
-/* --- Riga doppia (due campi affiancati) --- */
+/* ----------------------------------------------------------------
+   Form layout
+   ---------------------------------------------------------------- */
 .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -111,189 +160,168 @@
 }
 
 @media (max-width: 480px) {
-  .form-row {
-    grid-template-columns: 1fr;
-  }
+  .form-row { grid-template-columns: 1fr; }
 }
 
-/* --- Gruppo campo --- */
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
+  gap: 0.3rem;
   margin-bottom: 1.1rem;
 }
 
+/* ----------------------------------------------------------------
+   Label — UPPERCASE, come nel sito
+   ---------------------------------------------------------------- */
 .form-label {
-  font-size: 0.875rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.72rem;
   font-weight: 600;
-  color: #374151;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-primary);
 }
 
-.required {
-  color: #ef4444;
-  margin-left: 2px;
+/* ----------------------------------------------------------------
+   Input
+   ---------------------------------------------------------------- */
+.form-control {
+  width: 100%;
+  padding: 0.65rem 0.875rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9375rem;
+  color: var(--text-primary);
+  background-color: var(--input-bg);
+  border: 1.5px solid var(--input-border);
+  border-radius: var(--input-radius);
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
-/* --- Input con icona --- */
-.input-icon-wrapper {
+.form-control::placeholder {
+  color: #b0bec9;
+}
+
+.form-control:focus {
+  border-color: var(--input-focus);
+  background-color: var(--white);
+  box-shadow: 0 0 0 3px rgba(11, 33, 64, 0.08);
+}
+
+/* Stato errore */
+.form-group--error .form-control {
+  border-color: var(--text-error);
+  background-color: #fdf6f6;
+}
+
+.form-group--error .form-control:focus {
+  border-color: var(--text-error);
+  box-shadow: 0 0 0 3px rgba(185, 64, 64, 0.08);
+}
+
+/* Input con toggle visibilità */
+.form-control--has-toggle {
+  padding-right: 2.75rem;
+}
+
+/* ----------------------------------------------------------------
+   Wrapper per toggle password
+   ---------------------------------------------------------------- */
+.input-wrapper {
   position: relative;
   display: flex;
   align-items: center;
 }
 
-.input-icon {
-  position: absolute;
-  left: 0.875rem;
-  width: 16px;
-  height: 16px;
-  color: #9ca3af;
-  stroke: #9ca3af;
-  pointer-events: none;
-  flex-shrink: 0;
-}
-
-/* --- Input base --- */
-.form-control {
-  width: 100%;
-  padding: 0.65rem 0.875rem;
-  font-size: 0.9375rem;
-  color: #111827;
-  background: #f9fafb;
-  border: 1.5px solid #e5e7eb;
-  border-radius: 0.625rem;
-  transition:
-    border-color 0.18s ease,
-    background 0.18s ease,
-    box-shadow 0.18s ease;
-  outline: none;
-  box-sizing: border-box;
-  font-family: inherit;
-}
-
-.form-control.with-icon {
-  padding-left: 2.625rem;
-}
-
-.form-control.with-toggle {
-  padding-right: 2.75rem;
-}
-
-.form-control::placeholder {
-  color: #d1d5db;
-}
-
-.form-control:focus {
-  border-color: #6366f1;
-  background: #ffffff;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
-}
-
-/* --- Stato errore --- */
-.has-error .form-control {
-  border-color: #ef4444;
-  background: #fff8f8;
-}
-
-.has-error .form-control:focus {
-  border-color: #ef4444;
-  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
-}
-
-.has-error .input-icon {
-  stroke: #ef4444;
-}
-
-.form-error {
-  font-size: 0.8rem;
-  color: #dc2626;
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-}
-
-/* --- Suggerimento password --- */
-.form-hint {
-  font-size: 0.78rem;
-  color: #9ca3af;
-  margin: 0;
-  line-height: 1.4;
-}
-
-/* --- Toggle visibilità password --- */
-.toggle-visibility {
+.toggle-btn {
   position: absolute;
   right: 0.75rem;
   background: none;
   border: none;
   padding: 0;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  color: #9ca3af;
-  transition: color 0.15s;
+  color: var(--text-muted);
   line-height: 0;
+  transition: color 0.15s;
 }
 
-.toggle-visibility:hover {
-  color: #6366f1;
-}
+.toggle-btn:hover { color: var(--navy); }
 
-.toggle-visibility svg {
+.toggle-btn svg {
   width: 18px;
   height: 18px;
   stroke: currentColor;
 }
 
-/* --- Bottone submit --- */
+/* ----------------------------------------------------------------
+   Testi ausiliari
+   ---------------------------------------------------------------- */
+.form-hint {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.775rem;
+  color: var(--text-muted);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.form-error-msg {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.775rem;
+  color: var(--text-error);
+  line-height: 1.4;
+}
+
+/* ----------------------------------------------------------------
+   Bottone — pieno navy, uppercase, stessa larghezza della login
+   ---------------------------------------------------------------- */
 .btn-submit {
   width: 100%;
-  padding: 0.8rem 1.5rem;
-  font-size: 1rem;
+  padding: 0.8rem 1rem;
+  margin-top: 0.5rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8125rem;
   font-weight: 600;
-  color: #ffffff;
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--white);
+  background-color: var(--btn-bg);
   border: none;
-  border-radius: 0.75rem;
+  border-radius: var(--input-radius);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.6rem;
-  transition:
-    opacity 0.2s ease,
-    transform 0.15s ease,
-    box-shadow 0.2s ease;
-  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
-  margin-top: 0.5rem;
-  font-family: inherit;
+  transition: background-color 0.2s ease, transform 0.15s ease;
 }
 
 .btn-submit:hover:not(:disabled) {
-  opacity: 0.92;
-  transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+  background-color: var(--btn-hover);
 }
 
 .btn-submit:active:not(:disabled) {
-  transform: translateY(0);
-  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+  transform: translateY(1px);
 }
 
 .btn-submit:disabled {
-  opacity: 0.65;
+  opacity: 0.6;
   cursor: not-allowed;
 }
 
-/* --- Spinner di caricamento --- */
+/* ----------------------------------------------------------------
+   Spinner
+   ---------------------------------------------------------------- */
 .spinner {
-  width: 18px;
-  height: 18px;
-  border: 2.5px solid rgba(255, 255, 255, 0.35);
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
   border-top-color: #ffffff;
   border-radius: 50%;
   animation: spin 0.7s linear infinite;
-  display: inline-block;
   flex-shrink: 0;
 }
 
@@ -301,81 +329,37 @@
   to { transform: rotate(360deg); }
 }
 
-/* --- Footer link login --- */
-.register-footer {
-  text-align: center;
+/* ----------------------------------------------------------------
+   Link in fondo alla card — oro, come "Hai dimenticato la password?"
+   ---------------------------------------------------------------- */
+.card-footer-link {
+  font-family: 'Inter', sans-serif;
   font-size: 0.9rem;
-  color: #6b7280;
-  margin-top: 1.5rem;
-  margin-bottom: 0;
+  color: var(--text-muted);
+  text-align: center;
+  margin: 1.5rem 0 0;
 }
 
-.link {
-  color: #6366f1;
-  font-weight: 600;
+.card-footer-link__anchor {
+  color: var(--gold);
+  font-weight: 500;
   text-decoration: none;
   transition: color 0.15s;
 }
 
-.link:hover {
-  color: #4f46e5;
+.card-footer-link__anchor:hover {
+  color: var(--gold-hover);
   text-decoration: underline;
 }
 
-/* --- Responsive mobile --- */
-@media (max-width: 560px) {
-  .register-card {
-    padding: 2rem 1.25rem;
-    border-radius: 1rem;
-  }
-
-  .register-title {
-    font-size: 1.5rem;
-  }
-}
-
-/* --- Dark mode (opzionale, si attiva con prefers-color-scheme) --- */
-@media (prefers-color-scheme: dark) {
-  .register-wrapper {
-    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #1a1035 100%);
-  }
+/* ----------------------------------------------------------------
+   Responsive
+   ---------------------------------------------------------------- */
+@media (max-width: 600px) {
+  .page-hero__title { font-size: 2.25rem; }
 
   .register-card {
-    background: #1e2535;
-    box-shadow:
-      0 4px 6px -1px rgba(0, 0, 0, 0.3),
-      0 20px 40px -8px rgba(0, 0, 0, 0.5);
-  }
-
-  .register-title {
-    color: #f1f5f9;
-  }
-
-  .register-subtitle {
-    color: #94a3b8;
-  }
-
-  .form-label {
-    color: #cbd5e1;
-  }
-
-  .form-control {
-    background: #0f172a;
-    border-color: #334155;
-    color: #f1f5f9;
-  }
-
-  .form-control:focus {
-    background: #1e2535;
-    border-color: #818cf8;
-    box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.15);
-  }
-
-  .form-control::placeholder {
-    color: #475569;
-  }
-
-  .register-footer {
-    color: #94a3b8;
+    padding: 2rem 1.25rem 1.75rem;
+    border-radius: 10px;
   }
 }
