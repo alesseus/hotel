@@ -1,4 +1,4 @@
-package com.geak.hotel;  // stesso package di HotelApplication.java
+package com.geak.hotel;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,7 +15,7 @@ public class CorsConfig {
                 registry.addMapping("/**")
                         .allowedOrigins(
                             "http://localhost:4200",
-                            "https://hotel-theta-sooty-vercel.app"
+                            "https://hotel-theta-sooty.vercel.app"
                         )
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS");
             }
