@@ -1,25 +1,174 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
+/* ── App Shell ────────────────────────────────────────────────── */
+:host { display: flex; flex-direction: column; min-height: 100vh; }
+main { flex: 1; }
 
-  :host {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-  }
+/* ── Header ───────────────────────────────────────────────────── */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  gap: 36px;
+  padding: 0 48px;
+  height: 68px;
+  background: rgba(13, 27, 62, 0.96);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow: 0 2px 20px rgba(7, 15, 34, 0.4);
+  transition: background var(--fast);
+}
 
-  main {
-    flex: 1;
-  }
+/* Logo */
+.logo {
+  height: 44px;
+  width: auto;
+  flex-shrink: 0;
+  transition: opacity var(--fast), transform var(--fast);
+  /* usa light_logo su sfondo scuro */
+}
+.logo:hover { opacity: 0.88; transform: scale(1.02); }
 
-  nav,
-  footer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 30px;
-    background-color: coral;
-    padding: 20px;
+/* Nav */
+nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+
+nav a {
+  position: relative;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
+  padding: 6px 12px;
+  border-radius: var(--r-sm);
+  transition: color var(--fast), background var(--fast);
+}
+nav a::after {
+  content: '';
+  position: absolute;
+  left: 12px; right: 12px; bottom: 2px;
+  height: 1.5px;
+  background: var(--gold-500);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--med);
+  border-radius: 1px;
+}
+nav a:hover {
+  color: var(--white);
+  background: rgba(255, 255, 255, 0.06);
+}
+nav a:hover::after,
+nav a.active { color: var(--white); }
+nav a.active::after,
+nav a:hover::after { transform: scaleX(1); }
+
+/* CTA prenota */
+.btn-prenota {
+  margin-left: auto;
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--navy-900);
+  background: var(--gold-500);
+  border: none;
+  border-radius: var(--r-pill);
+  padding: 10px 26px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background var(--fast), transform var(--fast), box-shadow var(--fast);
+}
+.btn-prenota:hover {
+  background: var(--gold-400);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(201, 164, 76, 0.40);
+}
+.btn-prenota:active { transform: translateY(0); }
+
+/* ── Footer ───────────────────────────────────────────────────── */
+footer {
+  background: var(--navy-950);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28px 48px;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.footer-logo {
+  height: 36px;
+  width: auto;
+  opacity: 0.85;
+}
+.footer-name {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--white);
+  letter-spacing: 0.04em;
+}
+
+.footer-links {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+}
+.footer-links a {
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--navy-300);
+  transition: color var(--fast);
+}
+.footer-links a:hover { color: var(--gold-400); }
+
+.footer-copy {
+  font-size: 0.72rem;
+  color: var(--navy-300);
+  opacity: 0.6;
+}
+
+/* ── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  header { padding: 0 24px; gap: 20px; }
+  nav { gap: 2px; }
+  nav a { font-size: 0.68rem; padding: 6px 8px; }
+}
+@media (max-width: 768px) {
+  header {
+    height: auto;
+    padding: 14px 20px;
+    flex-wrap: wrap;
+    gap: 12px;
   }
+  .logo { height: 36px; }
+  nav {
+    order: 3;
+    width: 100%;
+    gap: 2px;
+    flex-wrap: wrap;
+    padding: 6px 0;
+  }
+  .btn-prenota { margin-left: 0; }
+  .footer-inner { padding: 22px 20px; flex-direction: column; align-items: flex-start; gap: 16px; }
+  .footer-links { gap: 20px; flex-wrap: wrap; }
+}

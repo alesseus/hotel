@@ -1,1 +1,50 @@
-<p>gestisci-prenotazione works!</p>
+<div class="gestisci-page">
+
+  <!-- Header -->
+  <div class="gestisci-header-band">
+    <div>
+      <h2>Gestione Prenotazioni</h2>
+      <div class="divider-gold"></div>
+      <p>Visualizza e gestisci tutte le prenotazioni degli ospiti</p>
+    </div>
+    <button class="back-link" routerLink="/amministrazione">← Pannello admin</button>
+  </div>
+
+  <!-- Body -->
+  <div class="gestisci-wrapper">
+
+    <!-- Toolbar -->
+    <div class="actions-bar">
+      <div class="actions-bar-left">
+        <div class="search-input">
+          <input type="search" placeholder="Cerca prenotazione...">
+        </div>
+      </div>
+      <div class="actions-bar-right">
+        <button class="btn-add">+ Nuova prenotazione</button>
+      </div>
+    </div>
+
+    <!-- Tabella -->
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Ospite</th>
+            <th>Stanza</th>
+            <th>Check-in</th>
+            <th>Check-out</th>
+            <th>Totale</th>
+            <th>Stato</th>
+            <th>Azioni</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Le righe vengono inserite dinamicamente da Angular -->
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>

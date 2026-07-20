@@ -32,5 +32,4 @@ public class StaffSrv {
 		public void delStaff(Long id_staff_canc) {
 			stfrepo.deleteById(id_staff_canc);
 		}
-
 }

@@ -1,84 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
+<header>
+  <img src="assets/images/light_logo.png" alt="Blue Horizon Hotel" class="logo">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HOTEL</title>
-    <style>
-        header {
-            position: relative;
-            text-align: center;
-            padding: 20px 0;
-        }
+  <nav>
+    <a routerLink="/home"      routerLinkActive="active">Home</a>
+    <a routerLink="/servizi"   routerLinkActive="active">Servizi</a>
+    <a routerLink="/storia"    routerLinkActive="active">Storia</a>
+    <a routerLink="/dovesiamo" routerLinkActive="active">Dove siamo</a>
+    <a routerLink="/recensioni" routerLinkActive="active">Recensioni</a>
+  </nav>
 
-        .btn-prenota {
-            position: absolute;
-            top: 25px;
-            right: 20px;
-            padding: 10px 20px;
-        }
+  <button class="btn-prenota" routerLink="/prenotazione">Prenota ora</button>
+</header>
 
-        nav {
-            margin-top: 15px;
-        }
+<main>
+  <router-outlet></router-outlet>
+</main>
 
-        nav a {
-            margin: 0 15px;
-            text-decoration: none;
-            color: #333;
-        }
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="assets/images/light_logo.png" alt="Blue Horizon Hotel" class="footer-logo">
+      <span class="footer-name">Blue Horizon Hotel</span>
+    </div>
 
-        body {
-            background-image: url('/assets/images/sfondo_home.avif');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            min-height: 100vh;
-        }
+    <div class="footer-links">
+      <a routerLink="/servizi">Servizi</a>
+      <a routerLink="/storia">Storia</a>
+      <a routerLink="/dovesiamo">Dove siamo</a>
+      <a routerLink="/recensioni">Recensioni</a>
+      <a routerLink="/prenotazione">Prenota</a>
+    </div>
 
-        * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html, body {
-  margin: 0 !important;
-  padding: 0 !important;
-  height: 100%;
-  width: 100%;
-}
-
-app-root {
-  display: block;
-  margin: 0;
-  padding: 0;
-}
-    </style>
-</head>
-
-<body>
-    <header>
-        <h1>HOTEL DA GASEMAK</h1>
-
-        <nav>
-            <a routerLink="/servizi">Servizi</a>
-            <a routerLink="/storia">Storia</a>
-            <a routerLink="/dovesiamo">Dove siamo</a>
-        </nav>
-
-        <button routerLink="/prenotazione" class="btn-prenota">Prenota</button>
-    </header>
-
-
-    <main>
-        <router-outlet></router-outlet>
-    </main>
-
-    <footer align="center" style="margin-top: 30px;">
-        <a routerLink="/contatti">Contatti</a>
-    </footer>
-</body>
-
-</html>
+    <span class="footer-copy">© 2025 Blue Horizon Hotel · Roma</span>
+  </div>
+</footer>

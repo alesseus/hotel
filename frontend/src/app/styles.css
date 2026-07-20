@@ -1,0 +1,575 @@
+/* ============================================================
+   BLUE HORIZON HOTEL — Design System
+   Palette dal logo: Navy #1B2E5E, Bianco #FFFFFF, Oro #C9A84C
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Montserrat:wght@300;400;500;600&display=swap');
+
+/* ── Token palette ── */
+:root {
+  --navy-900:   #0D1A38;
+  --navy-800:   #1B2E5E;
+  --navy-700:   #243B78;
+  --navy-600:   #2E4A94;
+  --navy-200:   #C2CEE8;
+  --navy-100:   #E8EDF7;
+  --navy-50:    #F2F5FB;
+
+  --gold-500:   #C9A84C;
+  --gold-400:   #D9BB6A;
+  --gold-200:   #F0E2B8;
+  --gold-100:   #FAF5E6;
+
+  --white:      #FFFFFF;
+  --off-white:  #F8F9FC;
+  --text-dark:  #0D1A38;
+  --text-mid:   #3A4A6B;
+  --text-light: #8A9ABB;
+
+  --shadow-sm:  0 2px 8px rgba(27,46,94,0.10);
+  --shadow-md:  0 6px 24px rgba(27,46,94,0.14);
+  --shadow-lg:  0 16px 48px rgba(27,46,94,0.18);
+
+  --radius-sm:  6px;
+  --radius-md:  12px;
+  --radius-lg:  20px;
+  --radius-pill:999px;
+
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body:    'Montserrat', system-ui, sans-serif;
+
+  --transition: 0.25s ease;
+}
+
+/* ── Reset & Base ── */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--text-dark);
+  background-color: var(--off-white);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Typography ── */
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--navy-800);
+}
+
+h1 { font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1.15; }
+h2 { font-size: clamp(1.4rem, 2.5vw, 2.2rem); line-height: 1.25; }
+h3 { font-size: 1.3rem; line-height: 1.35; }
+
+p { line-height: 1.7; color: var(--text-mid); }
+
+a {
+  color: var(--navy-700);
+  text-decoration: none;
+  transition: color var(--transition);
+}
+a:hover { color: var(--gold-500); }
+
+/* ── NAV / HEADER globale ── */
+nav,
+app-root > nav,
+header nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 36px;
+  background: var(--navy-800);
+  padding: 0 40px;
+  height: 64px;
+  box-shadow: 0 2px 12px rgba(13,26,56,0.25);
+}
+
+nav a,
+header nav a {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--navy-200) !important;
+  text-decoration: none;
+  padding-bottom: 3px;
+  border-bottom: 2px solid transparent;
+  transition: color var(--transition), border-color var(--transition);
+}
+
+nav a:hover,
+header nav a:hover,
+nav a.active,
+header nav a.active {
+  color: var(--white) !important;
+  border-bottom-color: var(--gold-500);
+}
+
+/* ── HEADER (app shell) ── */
+header {
+  background: var(--navy-900);
+  padding: 20px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border-bottom: 3px solid var(--gold-500);
+}
+
+header h1 {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--white);
+  letter-spacing: 0.06em;
+}
+
+/* ── FOOTER ── */
+footer,
+app-root > footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  background: var(--navy-900);
+  padding: 22px 40px;
+  border-top: 2px solid var(--navy-700);
+}
+
+footer a {
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--navy-200) !important;
+}
+
+footer a:hover { color: var(--gold-400) !important; }
+
+/* ── BOTTONE PRENOTA (header) ── */
+.btn-prenota,
+button[routerlink="/prenotazione"] {
+  position: absolute;
+  top: 50%;
+  right: 40px;
+  transform: translateY(-50%);
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--navy-900) !important;
+  background: var(--gold-500);
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 10px 24px;
+  cursor: pointer;
+  transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+  box-shadow: 0 2px 10px rgba(201,168,76,0.35);
+}
+
+.btn-prenota:hover,
+button[routerlink="/prenotazione"]:hover {
+  background: var(--gold-400);
+  transform: translateY(calc(-50% - 2px));
+  box-shadow: 0 6px 20px rgba(201,168,76,0.45);
+}
+
+/* ── MAIN ── */
+main {
+  flex: 1;
+  padding: 40px 24px;
+}
+
+/* ── CARD generica ── */
+.card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--navy-100);
+  overflow: hidden;
+  transition: box-shadow var(--transition), transform var(--transition);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-3px);
+}
+
+/* ── DASHBOARD amministrazione ── */
+.dashboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 28px;
+  padding: 60px 80px;
+  min-height: 50vh;
+  align-content: center;
+}
+
+.dashboard .card {
+  flex: unset;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: linear-gradient(145deg, var(--navy-800), var(--navy-900));
+  color: var(--white);
+  padding: 48px 28px 36px;
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  border: 1px solid var(--navy-700);
+  box-shadow: var(--shadow-md);
+  min-height: 180px;
+  transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.dashboard .card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--gold-500);
+  opacity: 0;
+  transition: opacity var(--transition);
+}
+
+.dashboard .card:hover {
+  background: linear-gradient(145deg, var(--navy-700), var(--navy-800));
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.dashboard .card:hover::before { opacity: 1; }
+
+.dashboard .card h2 {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--white);
+  letter-spacing: 0.04em;
+}
+
+/* ── MAPPA "Dove siamo" ── */
+.mappa-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 20px 0;
+}
+
+.mappa-card {
+  width: 100%;
+  max-width: 580px;
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--navy-100);
+  transition: box-shadow var(--transition), transform var(--transition);
+}
+
+.mappa-card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-3px);
+}
+
+.mappa-header {
+  padding: 28px 32px 20px;
+  background: var(--navy-800);
+  border-bottom: 2px solid var(--gold-500);
+}
+
+.mappa-header h2 {
+  margin: 0 0 6px;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mappa-header h2::before {
+  content: "📍";
+  font-size: 1.2rem;
+}
+
+.mappa-header p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--navy-200);
+  letter-spacing: 0.03em;
+}
+
+.mappa-card iframe {
+  width: 100%;
+  display: block;
+  filter: saturate(0.7) contrast(1.05);
+}
+
+.mappa-footer {
+  padding: 18px 32px;
+  background: var(--navy-50);
+  border-top: 1px solid var(--navy-100);
+  text-align: right;
+}
+
+.mappa-footer a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--navy-800) !important;
+  background: var(--gold-200);
+  padding: 9px 20px;
+  border-radius: var(--radius-pill);
+  transition: background var(--transition), color var(--transition), transform var(--transition);
+}
+
+.mappa-footer a::after { content: "↗"; transition: transform var(--transition); }
+
+.mappa-footer a:hover {
+  background: var(--gold-500);
+  color: var(--white) !important;
+  transform: translateY(-1px);
+}
+
+.mappa-footer a:hover::after { transform: translate(2px, -2px); }
+
+/* ── FORM globali ── */
+form {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: 40px 48px;
+  max-width: 560px;
+  margin: 0 auto;
+  border: 1px solid var(--navy-100);
+}
+
+label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-mid);
+  margin-bottom: 6px;
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1.5px solid var(--navy-100);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--text-dark);
+  background: var(--off-white);
+  transition: border-color var(--transition), box-shadow var(--transition);
+  margin-bottom: 20px;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--navy-700);
+  box-shadow: 0 0 0 3px rgba(36,59,120,0.12);
+  background: var(--white);
+}
+
+/* ── BOTTONI globali ── */
+button,
+.btn {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 12px 28px;
+  transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+}
+
+/* Primario — oro */
+button.primary,
+.btn-primary,
+button[type="submit"] {
+  background: var(--gold-500);
+  color: var(--navy-900);
+  box-shadow: 0 2px 12px rgba(201,168,76,0.3);
+}
+button.primary:hover,
+.btn-primary:hover,
+button[type="submit"]:hover {
+  background: var(--gold-400);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(201,168,76,0.4);
+}
+
+/* Secondario — navy outline */
+button.secondary,
+.btn-secondary {
+  background: transparent;
+  color: var(--navy-800);
+  border: 2px solid var(--navy-800);
+}
+button.secondary:hover,
+.btn-secondary:hover {
+  background: var(--navy-800);
+  color: var(--white);
+  transform: translateY(-2px);
+}
+
+/* Pericoloso — soft red */
+button.danger,
+.btn-danger {
+  background: #C0392B;
+  color: var(--white);
+}
+button.danger:hover,
+.btn-danger:hover {
+  background: #96281B;
+  transform: translateY(-2px);
+}
+
+/* ── TABELLE amministrazione ── */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--white);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+thead {
+  background: var(--navy-800);
+}
+
+thead th {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--navy-200);
+  padding: 14px 20px;
+  text-align: left;
+}
+
+tbody tr {
+  border-bottom: 1px solid var(--navy-50);
+  transition: background var(--transition);
+}
+
+tbody tr:last-child { border-bottom: none; }
+
+tbody tr:hover { background: var(--navy-50); }
+
+tbody td {
+  padding: 14px 20px;
+  font-size: 0.92rem;
+  color: var(--text-dark);
+}
+
+/* ── BADGE/STATUS ── */
+.badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+}
+
+.badge-success { background: #D4EDDA; color: #155724; }
+.badge-warning { background: var(--gold-200); color: #7A5C00; }
+.badge-danger  { background: #FDDEDE; color: #7B1A1A; }
+.badge-info    { background: var(--navy-100); color: var(--navy-800); }
+
+/* ── PAGE WRAPPER utility ── */
+.page-wrapper {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 48px 32px;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  color: var(--navy-800);
+  margin-bottom: 8px;
+}
+
+.section-subtitle {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  letter-spacing: 0.05em;
+  margin-bottom: 40px;
+}
+
+/* Divisore oro decorativo */
+.divider-gold {
+  width: 52px;
+  height: 3px;
+  background: var(--gold-500);
+  border-radius: 2px;
+  margin: 12px 0 32px;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  header { padding: 16px 20px; }
+
+  .btn-prenota,
+  button[routerlink="/prenotazione"] {
+    position: static;
+    transform: none;
+    margin-top: 10px;
+  }
+
+  header { flex-direction: column; text-align: center; gap: 10px; }
+
+  nav, app-root > nav, header nav {
+    flex-wrap: wrap;
+    gap: 18px;
+    height: auto;
+    padding: 16px 20px;
+  }
+
+  .dashboard {
+    grid-template-columns: 1fr 1fr;
+    padding: 32px 20px;
+    gap: 18px;
+  }
+
+  form { padding: 28px 24px; }
+
+  main { padding: 24px 16px; }
+}
+
+@media (max-width: 480px) {
+  .dashboard { grid-template-columns: 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}

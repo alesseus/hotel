@@ -1,0 +1,167 @@
+/* ── GESTISCI PRENOTAZIONE (e Staff, Servizi, Stanza — CSS condiviso) ── */
+:host { display: block; }
+
+.gestisci-page {
+  background: var(--bg);
+  min-height: 100%;
+}
+
+/* Header sezione */
+.gestisci-header-band {
+  background: linear-gradient(135deg, var(--navy-950) 0%, var(--navy-900) 100%);
+  padding: 40px 48px 36px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.gestisci-header-band h2 {
+  color: var(--white);
+  font-size: 1.8rem;
+  margin-bottom: 4px;
+}
+.gestisci-header-band p {
+  color: var(--navy-300);
+  font-size: 0.86rem;
+  margin: 0;
+}
+.gestisci-header-band .divider-gold { margin: 0; width: 36px; height: 2px; }
+
+/* Body */
+.gestisci-wrapper {
+  padding: 40px 48px 72px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Toolbar */
+.actions-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.actions-bar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.search-input {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.search-input input {
+  padding-left: 40px;
+  width: 260px;
+  height: 40px;
+  font-size: 0.88rem;
+  border-radius: var(--r-pill);
+}
+.search-input::before {
+  content: '🔍';
+  position: absolute;
+  left: 14px;
+  font-size: 0.88rem;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.actions-bar-right { display: flex; gap: 10px; }
+.btn-add {
+  background: var(--navy-800);
+  color: var(--white);
+  border-radius: var(--r-pill);
+  padding: 10px 22px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  transition: background var(--fast), transform var(--fast), box-shadow var(--fast);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.btn-add:hover {
+  background: var(--navy-700);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-navy);
+}
+
+/* Table wrapper */
+.table-wrapper {
+  background: var(--white);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-1);
+  overflow-x: auto;
+  border: 1px solid var(--navy-100);
+}
+
+/* Row action buttons */
+.btn-edit, .btn-delete {
+  font-size: 0.70rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: var(--r-pill);
+  padding: 6px 14px;
+  border: 1.5px solid;
+  cursor: pointer;
+  transition: background var(--fast), color var(--fast), transform var(--fast);
+}
+.btn-edit {
+  color: var(--navy-700);
+  border-color: var(--navy-200);
+  background: transparent;
+}
+.btn-edit:hover { background: var(--navy-50); border-color: var(--navy-600); }
+
+.btn-delete {
+  color: #C0392B;
+  border-color: #F5C6C2;
+  background: transparent;
+}
+.btn-delete:hover { background: #FEF2F0; border-color: #E57368; }
+
+/* Empty state */
+.empty-state {
+  text-align: center;
+  padding: 72px 32px;
+  color: var(--ink-faint);
+}
+.empty-state span { font-size: 3rem; display: block; margin-bottom: 16px; }
+.empty-state p { font-size: 0.9rem; }
+
+/* Back link */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--navy-300);
+  cursor: pointer;
+  transition: color var(--fast);
+  margin-bottom: 28px;
+  background: none;
+  border: none;
+  padding: 0;
+}
+.back-link:hover { color: var(--white); }
+.back-link::before { content: '←'; }
+
+@media (max-width: 768px) {
+  .gestisci-header-band { padding: 28px 20px 24px; }
+  .gestisci-wrapper { padding: 28px 16px 56px; }
+  .search-input input { width: 100%; }
+  .actions-bar { flex-direction: column; align-items: flex-start; }
+  .actions-bar-right { width: 100%; }
+  .btn-add { width: 100%; justify-content: center; }
+}

@@ -1,19 +1,40 @@
-<div class="dashboard">
+<div class="admin-page">
 
-  <div class="card" routerLink="/amministrazione/gestiscistanza">
-    <h2>Gestione Stanze</h2>
+  <!-- Header -->
+  <div class="admin-header">
+    <div class="admin-header-text">
+      <h1>Pannello di Amministrazione</h1>
+      <p>Gestisci stanze, prenotazioni, staff e servizi dell'hotel</p>
+    </div>
+    <span class="admin-badge">Admin</span>
   </div>
 
-  <div class="card" routerLink="/amministrazione/gestisciprenotazione">
-    <h2>Gestione Prenotazioni</h2>
-  </div>
+  <!-- Dashboard cards -->
+  <div class="dashboard">
 
-  <div class="card" routerLink="/amministrazione/gestiscistaff">
-    <h2>Gestione Staff</h2>
-  </div>
+    <div class="admin-card" routerLink="/amministrazione/gestiscistanza">
+      <span class="card-icon">🏨</span>
+      <h2>Gestione Stanze</h2>
+      <p>Visualizza, aggiungi e modifica le stanze disponibili</p>
+    </div>
 
-  <div class="card" routerLink="/amministrazione/gestisciservizi">
-    <h2>Gestione Servizi</h2>
-  </div>
+    <div class="admin-card" routerLink="/amministrazione/gestisciprenotazione">
+      <span class="card-icon">📋</span>
+      <h2>Gestione Prenotazioni</h2>
+      <p>Monitora e gestisci tutte le prenotazioni degli ospiti</p>
+    </div>
 
+    <div class="admin-card" routerLink="/amministrazione/gestiscistaff">
+      <span class="card-icon">👥</span>
+      <h2>Gestione Staff</h2>
+      <p>Amministra il personale e le relative mansioni</p>
+    </div>
+
+    <div class="admin-card" routerLink="/amministrazione/gestisciservizi">
+      <span class="card-icon">⭐</span>
+      <h2>Gestione Servizi</h2>
+      <p>Configura i servizi aggiuntivi offerti dall'hotel</p>
+    </div>
+
+  </div>
 </div>

@@ -1,84 +1,96 @@
-<!DOCTYPE html>
-<html lang="it">
+<div class="prenota-page">
 
-<head>
-    <meta charset="UTF-8">
-    <title>Prenota una Stanza</title>
-</head>
+  <!-- Hero band -->
+  <div class="prenota-hero">
+    <h1>Prenota il tuo soggiorno</h1>
+    <div class="divider-gold"></div>
+    <p>Compila il modulo per riservare la camera perfetta per te.</p>
+  </div>
 
-<body>
-    <div align="center">
-        <h1>Prenota una Stanza</h1>
+  <!-- Form card -->
+  <div class="prenota-body">
+    <form class="prenota-card">
 
-        <form action="/prenotazioni" method="POST">
+      <!-- Dati personali -->
+      <div class="form-section">
+        <h3 class="form-section-title"><span>👤</span> Dati personali</h3>
 
-            <h2>Dati Personali</h2>
+        <div class="fields-2">
+          <div>
+            <label for="nome">Nome</label>
+            <input type="text" id="nome" name="nome" required maxlength="100" placeholder="Mario">
+          </div>
+          <div>
+            <label for="cognome">Cognome</label>
+            <input type="text" id="cognome" name="cognome" required maxlength="100" placeholder="Rossi">
+          </div>
+        </div>
 
-            <label for="nome">Nome:</label>
-            <input type="text" id="nome" name="nome" required maxlength="100">
-            <br>
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required maxlength="150" placeholder="mario.rossi@email.com">
 
-            <label for="cognome">Cognome:</label>
-            <input type="text" id="cognome" name="cognome" required maxlength="100">
-            <br>
-
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required maxlength="150">
-            <br>
-
-            <label for="telefono">Telefono:</label>
-            <input type="tel" id="telefono" name="telefono" maxlength="20">
-            <br>
-
-            <label for="datanascita">Data di Nascita:</label>
+        <div class="fields-2">
+          <div>
+            <label for="telefono">Telefono</label>
+            <input type="tel" id="telefono" name="telefono" maxlength="20" placeholder="+39 000 0000000">
+          </div>
+          <div>
+            <label for="datanascita">Data di nascita</label>
             <input type="date" id="datanascita" name="datanascita">
-            <br>
+          </div>
+        </div>
+      </div>
 
-            <h2>Dettagli Prenotazione</h2>
+      <!-- Dettagli prenotazione -->
+      <div class="form-section">
+        <h3 class="form-section-title"><span>🏨</span> Dettagli prenotazione</h3>
 
-            <label for="idstanza">Stanza:</label>
-            <select id="idstanza" name="idstanza" required>
-                <option value="">-- Seleziona una stanza --</option>
+        <label for="idstanza">Stanza</label>
+        <select id="idstanza" name="idstanza" required>
+          <option value="">— Seleziona una stanza —</option>
+        </select>
 
-            </select>
-            <br>
-
-            <label for="check_in">Data Check-in:</label>
+        <div class="fields-2">
+          <div>
+            <label for="check_in">Check-in</label>
             <input type="date" id="check_in" name="check_in" required>
-            <br>
-
-            <label for="check_out">Data Check-out:</label>
+          </div>
+          <div>
+            <label for="check_out">Check-out</label>
             <input type="date" id="check_out" name="check_out" required>
-            <br>
+          </div>
+        </div>
 
-            <label for="idservizio">Servizio Aggiuntivo:</label>
-            <select id="idservizio" name="idservizio">
-                <option value="">-- Nessun servizio --</option>
+        <label for="idservizio">Servizio aggiuntivo</label>
+        <select id="idservizio" name="idservizio">
+          <option value="">— Nessun servizio —</option>
+        </select>
 
-            </select>
-            <br>
+        <div class="checkbox-row">
+          <input type="checkbox" id="spa" name="spa" value="1">
+          <label for="spa">Includi accesso SPA & Benessere</label>
+        </div>
 
-            <label for="spa">Includi SPA:</label>
-            <input type="checkbox" id="spa" name="spa" value="1">
-            <br>
+        <label for="note">Note e richieste speciali</label>
+        <textarea id="note" name="note" rows="3" placeholder="Es. camera silenziosa, piano alto, culla..."></textarea>
+      </div>
 
-            <label for="note">Note:</label>
-            <textarea id="note" name="note" rows="4" cols="50"></textarea>
-            <br>
+      <!-- Riepilogo -->
+      <div class="form-section">
+        <h3 class="form-section-title"><span>💳</span> Riepilogo</h3>
+        <div class="riepilogo">
+          <span class="riepilogo-label">Totale stimato</span>
+          <span class="riepilogo-price" id="totale">--</span>
+          <input type="hidden" id="totale_hidden" name="totale">
+        </div>
+      </div>
 
-            <h2>Riepilogo</h2>
+      <!-- Azioni -->
+      <div class="form-actions">
+        <button type="submit">Conferma prenotazione</button>
+        <button type="reset">Annulla</button>
+      </div>
 
-            <p>Totale : <span id="totale">--</span></p>
-            <input type="hidden" id="totale_hidden" name="totale">
-
-            <br>
-            <button type="submit">Conferma Prenotazione</button>
-            <button type="reset">Annulla</button>
-
-        </form>
-    </div>
-
-
-</body>
-
-</html>
+    </form>
+  </div>
+</div>

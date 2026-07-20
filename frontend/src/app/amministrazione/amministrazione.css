@@ -1,25 +1,123 @@
-.dashboard {
+/* ── AMMINISTRAZIONE (Dashboard) ──────────────────────────────── */
+:host { display: block; }
+
+.admin-page {
+  min-height: 100%;
+  background: var(--bg);
+}
+
+/* Header admin */
+.admin-header {
+  background: linear-gradient(135deg, var(--navy-950) 0%, var(--navy-900) 100%);
+  padding: 44px 48px 40px;
   display: flex;
-  flex-direction: row;
-  gap: 60px;
-  padding: 150px;
-  min-height: 40vh;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+}
+.admin-header-text h1 {
+  color: var(--white);
+  font-size: clamp(1.6rem, 2.8vw, 2.2rem);
+  margin-bottom: 6px;
+}
+.admin-header-text p {
+  color: var(--navy-300);
+  font-size: 0.88rem;
+  margin: 0;
+}
+.admin-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: var(--r-pill);
+  padding: 6px 14px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--navy-200);
+}
+.admin-badge::before { content: '●'; color: #4CAF50; font-size: 0.6rem; }
+
+/* Dashboard grid */
+.dashboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
+  padding: 48px 48px 72px;
+  max-width: 1080px;
+  margin: 0 auto;
 }
 
-.card {
-  flex: 1 1 0;    
-  text-align: center;          
-  background-color: coral;
-  color: white;
-  padding: 20px;
-  padding-top: 120px;
-  border-radius: 20px;
+.admin-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background: var(--white);
+  padding: 36px 30px;
+  border-radius: var(--r-xl);
   cursor: pointer;
-  transition: background-color 0.2s;
-  min-height: 150px;
-  min-width: 0;          
+  border: 1px solid var(--navy-100);
+  box-shadow: var(--shadow-1);
+  min-height: 170px;
+  transition: box-shadow var(--med), transform var(--med), border-color var(--fast);
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+}
+.admin-card::after {
+  content: '→';
+  position: absolute;
+  bottom: 20px; right: 24px;
+  font-size: 1.2rem;
+  color: var(--navy-300);
+  transition: color var(--fast), transform var(--med);
+}
+.admin-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-3);
+  border-color: var(--navy-700);
+}
+.admin-card:hover::after {
+  color: var(--navy-700);
+  transform: translateX(4px);
 }
 
-.card:hover {
-  background-color: chocolate;
+/* Strip colorata in cima */
+.admin-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+}
+.admin-card:nth-child(1)::before { background: linear-gradient(90deg, var(--navy-700), var(--navy-500)); }
+.admin-card:nth-child(2)::before { background: linear-gradient(90deg, #2A7A8C, #4DABBF); }
+.admin-card:nth-child(3)::before { background: linear-gradient(90deg, #7A5C2A, var(--gold-500)); }
+.admin-card:nth-child(4)::before { background: linear-gradient(90deg, #2A6A44, #4DAF7A); }
+
+.card-icon {
+  font-size: 2.2rem;
+  margin-bottom: 18px;
+  line-height: 1;
+}
+.admin-card h2 {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  color: var(--navy-900);
+  margin-bottom: 6px;
+}
+.admin-card p {
+  font-size: 0.82rem;
+  color: var(--ink-faint);
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .admin-header { padding: 32px 20px 28px; flex-direction: column; align-items: flex-start; }
+  .dashboard { grid-template-columns: 1fr 1fr; padding: 32px 20px; gap: 16px; }
+}
+@media (max-width: 480px) {
+  .dashboard { grid-template-columns: 1fr; }
 }

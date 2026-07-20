@@ -1,0 +1,122 @@
+/* ── RECENSIONI ───────────────────────────────────────────────── */
+:host { display: block; }
+
+/* Hero */
+.recensioni-hero {
+  background: linear-gradient(135deg, var(--navy-950) 0%, var(--navy-800) 100%);
+  padding: 72px 40px 64px;
+  text-align: center;
+}
+.recensioni-hero h1 { color: var(--white); margin-bottom: 12px; }
+.recensioni-hero .divider-gold { margin: 0 auto 16px; }
+.recensioni-hero p { color: var(--navy-200); max-width: 480px; margin: 0 auto; }
+
+/* Score band */
+.score-band {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 48px;
+  background: var(--white);
+  border-bottom: 1px solid var(--navy-100);
+  padding: 32px 40px;
+  flex-wrap: wrap;
+}
+.score-big {
+  text-align: center;
+}
+.score-number {
+  font-family: var(--font-display);
+  font-size: 4rem;
+  font-weight: 600;
+  color: var(--navy-900);
+  line-height: 1;
+}
+.score-stars { color: var(--gold-500); font-size: 1.3rem; letter-spacing: 3px; margin: 6px 0; }
+.score-label { font-size: 0.76rem; color: var(--ink-faint); font-weight: 500; }
+
+.score-breakdown { display: flex; flex-direction: column; gap: 8px; min-width: 200px; }
+.score-row { display: flex; align-items: center; gap: 10px; font-size: 0.82rem; color: var(--ink-soft); }
+.score-bar-track { flex: 1; height: 6px; background: var(--navy-50); border-radius: 3px; overflow: hidden; }
+.score-bar-fill { height: 100%; background: linear-gradient(90deg, var(--navy-700), var(--navy-400)); border-radius: 3px; }
+.score-pct { font-weight: 600; color: var(--navy-800); min-width: 28px; text-align: right; font-size: 0.78rem; }
+
+/* Grid */
+.recensioni-wrapper {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 64px 40px 80px;
+}
+
+.recensioni-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 22px;
+}
+
+.recensione-card {
+  background: var(--white);
+  border-radius: var(--r-lg);
+  padding: 28px;
+  border: 1px solid var(--navy-100);
+  box-shadow: var(--shadow-1);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: transform var(--med), box-shadow var(--med);
+  position: relative;
+}
+.recensione-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-2); }
+
+.recensione-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+.recensione-avatar {
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--navy-700), var(--navy-500));
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--white);
+  flex-shrink: 0;
+}
+.stelle { color: var(--gold-500); font-size: 0.95rem; letter-spacing: 2px; }
+
+.recensione-card p {
+  font-size: 0.90rem;
+  font-style: italic;
+  line-height: 1.72;
+  flex: 1;
+}
+
+.recensione-card p::before { content: '"'; }
+.recensione-card p::after  { content: '"'; }
+
+.recensione-autore {
+  font-size: 0.73rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--navy-800);
+  border-top: 1px solid var(--navy-50);
+  padding-top: 12px;
+}
+
+/* CTA */
+.recensioni-cta {
+  text-align: center;
+  padding: 24px 0 0;
+}
+.recensioni-cta p { margin-bottom: 18px; }
+
+@media (max-width: 768px) {
+  .recensioni-hero { padding: 52px 20px 48px; }
+  .score-band { padding: 24px 20px; gap: 28px; }
+  .recensioni-wrapper { padding: 44px 20px 60px; }
+  .recensioni-grid { grid-template-columns: 1fr; }
+}

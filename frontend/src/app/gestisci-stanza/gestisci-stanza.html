@@ -1,1 +1,47 @@
-<p>gestisci-stanza works!</p>
+<div class="gestisci-page">
+
+  <!-- Header -->
+  <div class="gestisci-header-band">
+    <div>
+      <h2>Gestione Stanze</h2>
+      <div class="divider-gold"></div>
+      <p>Visualizza e gestisci le stanze disponibili dell'hotel</p>
+    </div>
+    <button class="back-link" routerLink="/amministrazione">← Pannello admin</button>
+  </div>
+
+  <!-- Body -->
+  <div class="gestisci-wrapper">
+
+    <div class="actions-bar">
+      <div class="actions-bar-left">
+        <div class="search-input">
+          <input type="search" placeholder="Cerca stanza...">
+        </div>
+      </div>
+      <div class="actions-bar-right">
+        <button class="btn-add">+ Nuova stanza</button>
+      </div>
+    </div>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>N° Stanza</th>
+            <th>Tipo</th>
+            <th>Capienza</th>
+            <th>Prezzo / notte (€)</th>
+            <th>Piano</th>
+            <th>Disponibile</th>
+            <th>Azioni</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Righe dinamiche Angular -->
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>

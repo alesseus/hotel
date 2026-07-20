@@ -1,0 +1,134 @@
+/* ── PRENOTAZIONE ─────────────────────────────────────────────── */
+:host { display: block; }
+
+.prenota-page {
+  min-height: 100%;
+  background: var(--bg);
+}
+
+/* Hero band */
+.prenota-hero {
+  background: linear-gradient(135deg, var(--navy-950) 0%, var(--navy-800) 100%);
+  padding: 56px 40px 52px;
+  text-align: center;
+}
+.prenota-hero h1 { color: var(--white); margin-bottom: 10px; }
+.prenota-hero p { color: var(--navy-200); max-width: 480px; margin: 0 auto 0; }
+.prenota-hero .divider-gold { margin: 12px auto 0; }
+
+/* Body */
+.prenota-body {
+  max-width: 640px;
+  margin: -24px auto 0;
+  padding: 0 20px 72px;
+  position: relative;
+  z-index: 10;
+}
+
+/* Card form */
+.prenota-card {
+  background: var(--white);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-3);
+  border: 1px solid var(--navy-100);
+  overflow: hidden;
+}
+
+/* Section tabs all'interno del form */
+.form-section {
+  padding: 36px 44px;
+  border-bottom: 1px solid var(--navy-50);
+}
+.form-section:last-of-type { border-bottom: none; }
+
+.form-section-title {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  color: var(--navy-900);
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1.5px solid var(--navy-50);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.form-section-title span { font-size: 1.1rem; }
+
+/* Grid fields */
+.fields-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 16px;
+}
+
+/* Riepilogo */
+.riepilogo {
+  background: linear-gradient(135deg, var(--navy-50) 0%, var(--navy-100) 100%);
+  border-radius: var(--r-md);
+  padding: 18px 22px;
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid var(--navy-100);
+}
+.riepilogo-label {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--ink-soft);
+}
+.riepilogo-price {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--navy-900);
+}
+
+/* Checkbox SPA */
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+  padding: 14px 18px;
+  background: var(--navy-50);
+  border-radius: var(--r-sm);
+  border: 1.5px solid var(--navy-100);
+  cursor: pointer;
+  transition: border-color var(--fast), background var(--fast);
+}
+.checkbox-row:hover { border-color: var(--navy-300); background: var(--white); }
+.checkbox-row label {
+  margin: 0;
+  font-size: 0.88rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--ink-mid);
+  cursor: pointer;
+}
+
+/* Form actions */
+.form-actions {
+  padding: 28px 44px 36px;
+  display: flex;
+  gap: 12px;
+  background: var(--navy-50);
+  border-top: 1px solid var(--navy-100);
+}
+.form-actions button[type="submit"] {
+  flex: 1;
+  justify-content: center;
+  padding: 14px;
+  font-size: 0.80rem;
+}
+.form-actions button[type="reset"] {
+  padding: 14px 28px;
+}
+
+@media (max-width: 640px) {
+  .prenota-hero { padding: 44px 20px 42px; }
+  .form-section { padding: 28px 22px; }
+  .fields-2 { grid-template-columns: 1fr; }
+  .form-actions { padding: 22px; flex-direction: column; }
+}
