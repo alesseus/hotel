@@ -1,4 +1,4 @@
-com.geak.hotel;  // stesso package di HotelApplication.java
+package com.geak.hotel;  // stesso package di HotelApplication.java
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
