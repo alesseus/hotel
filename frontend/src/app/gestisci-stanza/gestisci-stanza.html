@@ -16,7 +16,7 @@
     <div class="actions-bar">
       <div class="actions-bar-left">
         <div class="search-input">
-          <input type="search" placeholder="Cerca stanza..." [(ngModel)]="ricerca">
+          <input type="search" placeholder="Cerca stanza..." [value]="ricerca()" (input)="ricerca.set($any($event.target).value)">
         </div>
       </div>
       <div class="actions-bar-right">
@@ -24,8 +24,8 @@
       </div>
     </div>
 
-    @if (erroreCaricamento) {
-      <div class="form-error-banner">{{ erroreCaricamento }}</div>
+    @if (erroreCaricamento()) {
+      <div class="form-error-banner">{{ erroreCaricamento() }}</div>
     }
 
     <div class="table-wrapper">
@@ -42,7 +42,7 @@
           </tr>
         </thead>
         <tbody>
-          @if (caricamento) {
+          @if (caricamento()) {
             <tr>
               <td colspan="7" class="table-empty">Caricamento stanze in corso...</td>
             </tr>
@@ -80,12 +80,12 @@
   <!-- ══════════════════════════════════════════════════════════ -->
   <!-- MODALE — crea / modifica stanza                            -->
   <!-- ══════════════════════════════════════════════════════════ -->
-  @if (modaleAperto) {
+  @if (modaleAperto()) {
     <div class="modal-overlay" (click)="chiudiModale()">
       <div class="modal-box" (click)="$event.stopPropagation()">
 
         <div class="modal-header">
-          <h3>{{ modaleModalita === 'crea' ? 'Nuova stanza' : 'Modifica stanza' }}</h3>
+          <h3>{{ modaleModalita() === 'crea' ? 'Nuova stanza' : 'Modifica stanza' }}</h3>
           <button class="modal-close" type="button" (click)="chiudiModale()">✕</button>
         </div>
 
@@ -129,15 +129,15 @@
             <textarea id="note" name="note" rows="3"
                       [(ngModel)]="stanzaForm.NOTE" placeholder="Note aggiuntive..."></textarea>
 
-            @if (formError) {
-              <div class="form-error-banner">{{ formError }}</div>
+            @if (formError()) {
+              <div class="form-error-banner">{{ formError() }}</div>
             }
           </div>
 
           <div class="modal-footer">
             <button class="secondary" type="button" (click)="chiudiModale()">Annulla</button>
-            <button class="primary" type="submit" [disabled]="invio">
-              {{ invio ? 'Salvataggio...' : (modaleModalita === 'crea' ? 'Crea stanza' : 'Salva modifiche') }}
+            <button class="primary" type="submit" [disabled]="invio()">
+              {{ invio() ? 'Salvataggio...' : (modaleModalita() === 'crea' ? 'Crea stanza' : 'Salva modifiche') }}
             </button>
           </div>
         </form>
@@ -149,7 +149,7 @@
   <!-- ══════════════════════════════════════════════════════════ -->
   <!-- CONFERMA ELIMINAZIONE                                       -->
   <!-- ══════════════════════════════════════════════════════════ -->
-  @if (eliminaTarget) {
+  @if (eliminaTarget()) {
     <div class="modal-overlay" (click)="annullaEliminazione()">
       <div class="modal-box modal-box-sm" (click)="$event.stopPropagation()">
         <div class="modal-header">
@@ -158,7 +158,7 @@
         </div>
         <div class="modal-body">
           <p>Sei sicuro di voler eliminare la stanza
-             <strong>{{ eliminaTarget.DESCRIZIONE || eliminaTarget.DIMENSIONE }}</strong>?
+             <strong>{{ eliminaTarget()!.DESCRIZIONE || eliminaTarget()!.DIMENSIONE }}</strong>?
              L'operazione non è reversibile.</p>
         </div>
         <div class="modal-footer">

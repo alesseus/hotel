@@ -17,45 +17,45 @@ export class GestisciServizi implements OnInit {
   private readonly servizioServices = inject(ServizioServices);
 
   // ── Dati ──────────────────────────────────────────────────────
-  servizi = signal<servizio[]>([]);
-  ricerca = '';
-  caricamento = true;
-  erroreCaricamento = '';
+  servizi          = signal<servizio[]>([]);
+  ricerca          = signal('');
+  caricamento      = signal(true);
+  erroreCaricamento = signal('');
 
   // ── Modale ────────────────────────────────────────────────────
-  modaleAperto = false;
-  modaleModalita: 'crea' | 'modifica' = 'crea';
-  formError = '';
-  invio = false;
+  modaleAperto    = signal(false);
+  modaleModalita  = signal<'crea' | 'modifica'>('crea');
+  formError       = signal('');
+  invio           = signal(false);
 
   servizioForm: Partial<servizio> = {};
 
   // ── Conferma eliminazione ────────────────────────────────────
-  eliminaTarget: servizio | null = null;
+  eliminaTarget = signal<servizio | null>(null);
 
   ngOnInit(): void {
     this.caricaServizi();
   }
 
   caricaServizi(): void {
-    this.caricamento = true;
-    this.erroreCaricamento = '';
+    this.caricamento.set(true);
+    this.erroreCaricamento.set('');
     this.servizioServices.getServizi().subscribe({
       next: (data) => {
         this.servizi.set(data);
-        this.caricamento = false;
+        this.caricamento.set(false);
       },
       error: (err) => {
         console.error('Errore caricamento servizi', err);
-        this.erroreCaricamento = 'Impossibile caricare i servizi. Riprova più tardi.';
-        this.caricamento = false;
+        this.erroreCaricamento.set('Impossibile caricare i servizi. Riprova più tardi.');
+        this.caricamento.set(false);
       }
     });
   }
 
   // ── Filtro ricerca ────────────────────────────────────────────
   get serviziFiltrati(): servizio[] {
-    const q = this.ricerca.trim().toLowerCase();
+    const q = this.ricerca().trim().toLowerCase();
     if (!q) return this.servizi();
     return this.servizi().filter(s =>
       (s.NOTE ?? '').toLowerCase().includes(q) ||
@@ -65,56 +65,57 @@ export class GestisciServizi implements OnInit {
 
   // ── Apertura modale ───────────────────────────────────────────
   apriModaleCreazione(): void {
-    this.modaleModalita = 'crea';
+    this.modaleModalita.set('crea');
     this.servizioForm = { NOTE: '', COSTO: 0 };
-    this.formError = '';
-    this.modaleAperto = true;
+    this.formError.set('');
+    this.modaleAperto.set(true);
   }
 
   apriModaleModifica(s: servizio): void {
-    this.modaleModalita = 'modifica';
+    this.modaleModalita.set('modifica');
     this.servizioForm = { ...s };
-    this.formError = '';
-    this.modaleAperto = true;
+    this.formError.set('');
+    this.modaleAperto.set(true);
   }
 
   chiudiModale(): void {
-    this.modaleAperto = false;
+    this.modaleAperto.set(false);
     this.servizioForm = {};
-    this.formError = '';
+    this.formError.set('');
   }
 
   // ── Salvataggio (crea o modifica) ────────────────────────────
   salvaServizio(form: NgForm): void {
-    this.formError = '';
+    this.formError.set('');
     if (form.invalid) {
-      this.formError = 'Compila tutti i campi obbligatori.';
+      this.formError.set('Compila tutti i campi obbligatori.');
       return;
     }
-    this.invio = true;
+    this.invio.set(true);
 
-    if (this.modaleModalita === 'crea') {
+    if (this.modaleModalita() === 'crea') {
       this.servizioServices.addServizio(this.servizioForm).subscribe({
-        next: (lista) => { this.servizi.set(lista); this.invio = false; this.chiudiModale(); },
-        error: (err) => { console.error(err); this.formError = 'Errore durante la creazione.'; this.invio = false; }
+        next: (lista) => { this.servizi.set(lista); this.invio.set(false); this.chiudiModale(); },
+        error: (err) => { console.error(err); this.formError.set('Errore durante la creazione.'); this.invio.set(false); }
       });
     } else {
       this.servizioServices.aggiornaServizio(this.servizioForm as servizio).subscribe({
-        next: (lista) => { this.servizi.set(lista); this.invio = false; this.chiudiModale(); },
-        error: (err) => { console.error(err); this.formError = 'Errore durante l\'aggiornamento.'; this.invio = false; }
+        next: (lista) => { this.servizi.set(lista); this.invio.set(false); this.chiudiModale(); },
+        error: (err) => { console.error(err); this.formError.set('Errore durante l\'aggiornamento.'); this.invio.set(false); }
       });
     }
   }
 
   // ── Eliminazione ──────────────────────────────────────────────
-  chiediConfermaEliminazione(s: servizio): void { this.eliminaTarget = s; }
-  annullaEliminazione(): void { this.eliminaTarget = null; }
+  chiediConfermaEliminazione(s: servizio): void { this.eliminaTarget.set(s); }
+  annullaEliminazione(): void { this.eliminaTarget.set(null); }
 
   confermaEliminazione(): void {
-    if (!this.eliminaTarget) return;
-    this.servizioServices.eliminaServizio(this.eliminaTarget.IDSERVIZIO).subscribe({
-      next: (lista) => { this.servizi.set(lista); this.eliminaTarget = null; },
-      error: (err) => { console.error(err); this.eliminaTarget = null; this.erroreCaricamento = 'Errore durante l\'eliminazione.'; }
+    const target = this.eliminaTarget();
+    if (!target) return;
+    this.servizioServices.eliminaServizio(target.IDSERVIZIO).subscribe({
+      next: (lista) => { this.servizi.set(lista); this.eliminaTarget.set(null); },
+      error: (err) => { console.error(err); this.eliminaTarget.set(null); this.erroreCaricamento.set('Errore durante l\'eliminazione.'); }
     });
   }
 }
