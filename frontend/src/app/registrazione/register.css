@@ -1,85 +1,97 @@
 /* ================================================================
    Register Component – Blue Horizon Hotel
-   Allineato al design system della pagina /login
-   Font richiesti nel global styles / index.html:
-   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+   Valori estratti direttamente dal CSS compilato di /login
+   Font nel global styles / index.html:
+   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
    ================================================================ */
 
 /* ----------------------------------------------------------------
-   Variabili del design system Blue Horizon
+   Variabili — copiate dal design system Blue Horizon (/login)
    ---------------------------------------------------------------- */
 :host {
-  --navy:          #0B2140;
-  --navy-light:    #0f2d55;
-  --gold:          #C9A46A;
-  --gold-hover:    #b8913a;
-  --white:         #ffffff;
-  --body-bg:       #f0f4f8;
-  --card-shadow:   0 4px 24px rgba(11, 33, 64, 0.10);
+  /* Palette */
+  --navy-900:      #0D1B3E;   /* --ink / --navy-900 del sito */
+  --navy-700:      #1a3060;   /* tinta più chiara per sfumature hero */
+  --gold:          #C9A44C;   /* colore primario / accent */
+  --gold-dark:     #8a6a1e;   /* gold scuro per hover link */
+  --error:         #c0392b;   /* rgb(192, 57, 43) */
+  --error-light:   rgba(192, 57, 43, 0.12);
 
-  /* Campi */
-  --input-bg:      #e8eef6;
-  --input-border:  #9aafc5;
-  --input-focus:   #0B2140;
-  --input-radius:  6px;
+  /* Sfondo pagina */
+  --body-bg:       #F5F9FF;   /* background estratto */
+  --white:         #ffffff;
+
+  /* Card */
+  --card-shadow:
+    0 1px 4px  rgba(13, 27, 62, .06),
+    0 4px 20px rgba(13, 27, 62, .08);
+
+  /* Campi — valori esatti da extractBranding */
+  --input-bg:      #FAFBFD;
+  --input-border:  #D9E6F6;
+  --input-radius:  8px;
+  --input-focus-border: #0D1B3E;
+  --input-focus-shadow: rgba(13, 27, 62, .12);
+
+  /* Bottone (colore ACCEDI della login page — steel-blue medio) */
+  --btn-bg:        #7a9ab5;
+  --btn-hover:     #6b8aa5;
+  --btn-active:    #5d7a93;
 
   /* Testi */
-  --text-primary:  #0B2140;
-  --text-muted:    #6b7c93;
-  --text-error:    #b94040;
-
-  /* Pulsante */
-  --btn-bg:        #0B2140;
-  --btn-hover:     #0f2d55;
+  --text-primary:  #0D1B3E;
+  --text-muted:    #6b7a99;
+  --text-light:    rgba(255, 255, 255, .75);
 
   display: block;
 }
 
 /* ----------------------------------------------------------------
-   Hero header (uguale alla login page)
+   Hero — identico alla login page
    ---------------------------------------------------------------- */
 .page-hero {
-  background-color: var(--navy);
+  background: linear-gradient(160deg, var(--navy-700) 0%, var(--navy-900) 60%);
   padding: 3rem 1.5rem 3.25rem;
   text-align: center;
 }
 
 .page-hero__title {
-  font-family: 'Playfair Display', Georgia, serif;
+  /* Cormorant Garamond italic — esattamente come "Accedi" nella login */
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-style: italic;
-  font-size: 3rem;
   font-weight: 400;
+  font-size: 3.5rem;        /* ~55.8px come riportato dall'extraction */
   color: var(--white);
-  margin: 0 0 0.6rem;
+  margin: 0 0 0.5rem;
   letter-spacing: 0.01em;
-  line-height: 1.15;
+  line-height: 1.1;
 }
 
-/* Sottolineatura oro decorativa */
+/* Linea oro centrata sotto il titolo — uguale alla login */
 .page-hero__title::after {
   content: '';
   display: block;
-  width: 48px;
+  width: 44px;
   height: 2px;
   background-color: var(--gold);
-  margin: 0.75rem auto 0;
+  margin: 0.65rem auto 0;
 }
 
 .page-hero__subtitle {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
   font-size: 0.9375rem;
-  color: rgba(255, 255, 255, 0.72);
-  margin: 0;
   font-weight: 300;
+  color: var(--text-light);
+  margin: 0;
   letter-spacing: 0.01em;
 }
 
 /* ----------------------------------------------------------------
-   Sfondo corpo pagina
+   Corpo pagina
    ---------------------------------------------------------------- */
 .page-body {
   background-color: var(--body-bg);
-  min-height: calc(100vh - 200px);
+  min-height: calc(100vh - 220px);
   display: flex;
   align-items: flex-start;
   justify-content: center;
@@ -87,7 +99,7 @@
 }
 
 /* ----------------------------------------------------------------
-   Card (stessa della login page)
+   Card — stessa della login
    ---------------------------------------------------------------- */
 .register-card {
   background: var(--white);
@@ -99,7 +111,7 @@
 }
 
 /* ----------------------------------------------------------------
-   Logo in cima alla card
+   Logo
    ---------------------------------------------------------------- */
 .card-logo {
   text-align: center;
@@ -107,7 +119,7 @@
 }
 
 .card-logo img {
-  height: 56px;
+  height: 58px;
   width: auto;
   display: inline-block;
 }
@@ -118,18 +130,18 @@
 .alert {
   display: flex;
   align-items: flex-start;
-  gap: 0.55rem;
-  padding: 0.8rem 1rem;
-  border-radius: 6px;
-  font-family: 'Inter', sans-serif;
+  gap: 0.5rem;
+  padding: 0.75rem 0.875rem;
+  border-radius: var(--input-radius);
+  font-family: 'Inter', system-ui, sans-serif;
   font-size: 0.875rem;
   line-height: 1.5;
   margin-bottom: 1.5rem;
 }
 
 .alert svg {
-  width: 16px;
-  height: 16px;
+  width: 15px;
+  height: 15px;
   flex-shrink: 0;
   margin-top: 2px;
 }
@@ -139,19 +151,17 @@
   border: 1px solid #a8d5b5;
   color: #2a6b3f;
 }
-
 .alert--success svg { stroke: #2a6b3f; }
 
 .alert--error {
-  background: #fdf1f1;
-  border: 1px solid #e8b4b4;
-  color: var(--text-error);
+  background: var(--error-light);
+  border: 1px solid rgba(192, 57, 43, .3);
+  color: var(--error);
 }
-
-.alert--error svg { stroke: var(--text-error); }
+.alert--error svg { stroke: var(--error); }
 
 /* ----------------------------------------------------------------
-   Form layout
+   Layout form
    ---------------------------------------------------------------- */
 .form-row {
   display: grid;
@@ -171,11 +181,11 @@
 }
 
 /* ----------------------------------------------------------------
-   Label — UPPERCASE, come nel sito
+   Label — UPPERCASE come nella login (EMAIL, PASSWORD)
    ---------------------------------------------------------------- */
 .form-label {
-  font-family: 'Inter', sans-serif;
-  font-size: 0.72rem;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.6875rem;     /* ~11px — uguale alle label EMAIL / PASSWORD */
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -183,52 +193,56 @@
 }
 
 /* ----------------------------------------------------------------
-   Input
+   Input — valori esatti dal design system
    ---------------------------------------------------------------- */
 .form-control {
   width: 100%;
-  padding: 0.65rem 0.875rem;
-  font-family: 'Inter', sans-serif;
+  padding: 0.7rem 0.875rem;
+  font-family: 'Inter', system-ui, sans-serif;
   font-size: 0.9375rem;
+  font-weight: 400;
   color: var(--text-primary);
-  background-color: var(--input-bg);
-  border: 1.5px solid var(--input-border);
-  border-radius: var(--input-radius);
+  background-color: var(--input-bg);     /* #FAFBFD */
+  border: 1px solid var(--input-border); /* #D9E6F6 */
+  border-radius: var(--input-radius);    /* 8px */
   outline: none;
   box-sizing: border-box;
-  transition: border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+  transition:
+    border-color .15s ease,
+    box-shadow   .15s ease,
+    background-color .15s ease;
   -webkit-appearance: none;
   appearance: none;
 }
 
 .form-control::placeholder {
-  color: #b0bec9;
+  color: #b8c9db;
+  font-weight: 300;
 }
 
 .form-control:focus {
-  border-color: var(--input-focus);
+  border-color: var(--input-focus-border);
   background-color: var(--white);
-  box-shadow: 0 0 0 3px rgba(11, 33, 64, 0.08);
+  box-shadow: 0 0 0 3px var(--input-focus-shadow);
 }
 
-/* Stato errore */
+/* Errore */
 .form-group--error .form-control {
-  border-color: var(--text-error);
+  border-color: var(--error);
   background-color: #fdf6f6;
 }
-
 .form-group--error .form-control:focus {
-  border-color: var(--text-error);
-  box-shadow: 0 0 0 3px rgba(185, 64, 64, 0.08);
+  border-color: var(--error);
+  box-shadow: 0 0 0 3px rgba(192, 57, 43, .08);
 }
 
-/* Input con toggle visibilità */
+/* Spazio per il toggle password */
 .form-control--has-toggle {
   padding-right: 2.75rem;
 }
 
 /* ----------------------------------------------------------------
-   Wrapper per toggle password
+   Wrapper input + toggle
    ---------------------------------------------------------------- */
 .input-wrapper {
   position: relative;
@@ -243,16 +257,14 @@
   border: none;
   padding: 0;
   cursor: pointer;
-  color: var(--text-muted);
+  color: #a0b4c8;
   line-height: 0;
-  transition: color 0.15s;
+  transition: color .15s;
 }
-
-.toggle-btn:hover { color: var(--navy); }
-
+.toggle-btn:hover { color: var(--navy-900); }
 .toggle-btn svg {
-  width: 18px;
-  height: 18px;
+  width: 17px;
+  height: 17px;
   stroke: currentColor;
 }
 
@@ -260,54 +272,55 @@
    Testi ausiliari
    ---------------------------------------------------------------- */
 .form-hint {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
   font-size: 0.775rem;
   color: var(--text-muted);
   margin: 0;
-  line-height: 1.4;
+  line-height: 1.45;
 }
 
 .form-error-msg {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
   font-size: 0.775rem;
-  color: var(--text-error);
-  line-height: 1.4;
+  color: var(--error);
+  line-height: 1.45;
 }
 
 /* ----------------------------------------------------------------
-   Bottone — pieno navy, uppercase, stessa larghezza della login
+   Bottone — stessa dimensione, colore e stile del bottone ACCEDI
    ---------------------------------------------------------------- */
 .btn-submit {
   width: 100%;
-  padding: 0.8rem 1rem;
-  margin-top: 0.5rem;
-  font-family: 'Inter', sans-serif;
+  padding: 0.75rem 1rem;
+  margin-top: 0.35rem;
+  font-family: 'Inter', system-ui, sans-serif;
   font-size: 0.8125rem;
   font-weight: 600;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--white);
-  background-color: var(--btn-bg);
+  background-color: var(--btn-bg);   /* steel-blue, colore ACCEDI */
   border: none;
   border-radius: var(--input-radius);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.6rem;
-  transition: background-color 0.2s ease, transform 0.15s ease;
+  gap: 0.55rem;
+  transition:
+    background-color .18s ease,
+    transform .12s ease;
 }
 
 .btn-submit:hover:not(:disabled) {
   background-color: var(--btn-hover);
 }
-
 .btn-submit:active:not(:disabled) {
+  background-color: var(--btn-active);
   transform: translateY(1px);
 }
-
 .btn-submit:disabled {
-  opacity: 0.6;
+  opacity: .6;
   cursor: not-allowed;
 }
 
@@ -316,25 +329,23 @@
    ---------------------------------------------------------------- */
 .spinner {
   display: inline-block;
-  width: 16px;
-  height: 16px;
-  border: 2px solid rgba(255, 255, 255, 0.35);
-  border-top-color: #ffffff;
+  width: 15px;
+  height: 15px;
+  border: 2px solid rgba(255, 255, 255, .35);
+  border-top-color: #fff;
   border-radius: 50%;
-  animation: spin 0.7s linear infinite;
+  animation: spin .7s linear infinite;
   flex-shrink: 0;
 }
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
+@keyframes spin { to { transform: rotate(360deg); } }
 
 /* ----------------------------------------------------------------
-   Link in fondo alla card — oro, come "Hai dimenticato la password?"
+   Link footer card — oro, stesso stile "Hai dimenticato la password?"
    ---------------------------------------------------------------- */
 .card-footer-link {
-  font-family: 'Inter', sans-serif;
-  font-size: 0.9rem;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 0.875rem;
   color: var(--text-muted);
   text-align: center;
   margin: 1.5rem 0 0;
@@ -344,11 +355,10 @@
   color: var(--gold);
   font-weight: 500;
   text-decoration: none;
-  transition: color 0.15s;
+  transition: color .15s;
 }
-
 .card-footer-link__anchor:hover {
-  color: var(--gold-hover);
+  color: var(--gold-dark);
   text-decoration: underline;
 }
 
@@ -356,10 +366,6 @@
    Responsive
    ---------------------------------------------------------------- */
 @media (max-width: 600px) {
-  .page-hero__title { font-size: 2.25rem; }
-
-  .register-card {
-    padding: 2rem 1.25rem 1.75rem;
-    border-radius: 10px;
-  }
+  .page-hero__title  { font-size: 2.75rem; }
+  .register-card     { padding: 2rem 1.25rem 1.75rem; border-radius: 10px; }
 }
