@@ -102,6 +102,14 @@
   border: 1px solid var(--navy-100);
 }
 
+/* Table cells */
+.table-empty {
+  text-align: center;
+  padding: 48px 20px;
+  color: var(--ink-faint);
+  font-size: 0.88rem;
+}
+
 /* Row action buttons */
 .btn-edit, .btn-delete {
   font-size: 0.70rem;
@@ -128,6 +136,8 @@
 }
 .btn-delete:hover { background: #FEF2F0; border-color: #E57368; }
 
+.actions-cell { display: flex; gap: 6px; align-items: center; }
+
 /* Empty state */
 .empty-state {
   text-align: center;
@@ -137,7 +147,7 @@
 .empty-state span { font-size: 3rem; display: block; margin-bottom: 16px; }
 .empty-state p { font-size: 0.9rem; }
 
-/* Back link */
+/* Back link — la freccia è nel CSS, NON nel testo HTML */
 .back-link {
   display: inline-flex;
   align-items: center;
@@ -155,7 +165,38 @@
   padding: 0;
 }
 .back-link:hover { color: var(--white); }
-.back-link::before { content: '←'; }
+.back-link::before { content: '←'; }   /* freccia solo dal CSS */
+
+/* Banner errore */
+.form-error-banner {
+  background: #FEE2E2;
+  color: #991B1B;
+  border: 1px solid #FECACA;
+  border-radius: var(--r-md, 8px);
+  padding: 10px 16px;
+  font-size: 0.84rem;
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+
+/* Badge stato */
+.badge-stato {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: var(--r-pill, 999px);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: capitalize;
+  background: var(--navy-100);
+  color: var(--navy-700);
+}
+.stato-confermata   { background: #D1FAE5; color: #065F46; }
+.stato-in-attesa    { background: #FEF3C7; color: #92400E; }
+.stato-cancellata   { background: #FEE2E2; color: #991B1B; }
+.stato-disponibile  { background: #D1FAE5; color: #065F46; }
+.stato-occupata     { background: #FEE2E2; color: #991B1B; }
+.stato-manutenzione { background: #E0E7FF; color: #3730A3; }
 
 @media (max-width: 768px) {
   .gestisci-header-band { padding: 28px 20px 24px; }
@@ -213,6 +254,7 @@
   font-size: 0.88rem;
   color: var(--ink);
   transition: border-color .15s;
+  background: var(--white);
 }
 .form-group input:focus,
 .form-group select:focus,
@@ -224,6 +266,38 @@
 .check-label {
   display: flex; align-items: center; gap: 8px;
   font-size: 0.88rem; font-weight: 500; cursor: pointer;
+}
+.required { color: #C0392B; }
+
+/* Scheda dettaglio dropdown */
+.detail-card {
+  margin-top: 8px;
+  background: var(--navy-50, #f0f4ff);
+  border: 1px solid var(--navy-100, #dbe4ff);
+  border-radius: var(--r-md, 8px);
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  animation: fadeSlideIn .18s ease;
+}
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.80rem;
+  color: var(--ink, #1a1a2e);
+}
+.detail-label {
+  font-weight: 600;
+  color: var(--navy-600, #3b5bdb);
+  white-space: nowrap;
+  min-width: 80px;
 }
 
 .modal-footer {
@@ -244,6 +318,7 @@
   transition: background .15s;
 }
 .btn-save:hover { background: var(--navy-700); }
+.btn-save:disabled { opacity: 0.6; cursor: not-allowed; }
 
 @media (max-width: 540px) {
   .form-grid { grid-template-columns: 1fr; }
