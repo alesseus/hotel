@@ -16,117 +16,117 @@ export class GestisciStanza implements OnInit {
   private readonly stanzaServices = inject(StanzaServices);
 
   // ── Dati ──────────────────────────────────────────────────────
-  stanze = signal<stanza[]>([]);
-  ricerca = '';
-  caricamento = true;
-  erroreCaricamento = '';
+  stanze            = signal<stanza[]>([]);
+  ricerca           = signal('');
+  caricamento       = signal(true);
+  erroreCaricamento = signal('');
 
   // ── Modale ────────────────────────────────────────────────────
-  modaleAperto = false;
-  modaleModalita: 'crea' | 'modifica' = 'crea';
-  formError = '';
-  invio = false;
+  modaleAperto   = signal(false);
+  modaleModalita = signal<'crea' | 'modifica'>('crea');
+  formError      = signal('');
+  invio          = signal(false);
 
   // Stanza in creazione/modifica sul form
   stanzaForm: Partial<stanza> = {};
 
   // ── Conferma eliminazione ────────────────────────────────────
-  eliminaTarget: stanza | null = null;
+  eliminaTarget = signal<stanza | null>(null);
 
   ngOnInit(): void {
     this.caricaStanze();
   }
 
   caricaStanze(): void {
-    this.caricamento = true;
-    this.erroreCaricamento = '';
+    this.caricamento.set(true);
+    this.erroreCaricamento.set('');
     this.stanzaServices.getStanze().subscribe({
       next: (data) => {
         this.stanze.set(data);
-        this.caricamento = false;
+        this.caricamento.set(false);
       },
       error: (err) => {
         console.error('Errore caricamento stanze', err);
-        this.erroreCaricamento = 'Impossibile caricare le stanze. Riprova più tardi.';
-        this.caricamento = false;
+        this.erroreCaricamento.set('Impossibile caricare le stanze. Riprova più tardi.');
+        this.caricamento.set(false);
       }
     });
   }
 
   // ── Filtro ricerca ────────────────────────────────────────────
   get stanzeFiltrate(): stanza[] {
-    const q = this.ricerca.trim().toLowerCase();
+    const q = this.ricerca().trim().toLowerCase();
     if (!q) return this.stanze();
     return this.stanze().filter(s =>
       (s.DESCRIZIONE ?? '').toLowerCase().includes(q) ||
-      (s.DIMENSIONE ?? '').toLowerCase().includes(q) ||
+      (s.DIMENSIONE  ?? '').toLowerCase().includes(q) ||
       String(s.IDSTANZA).includes(q)
     );
   }
 
   // ── Apertura modale ───────────────────────────────────────────
   apriModaleCreazione(): void {
-    this.modaleModalita = 'crea';
+    this.modaleModalita.set('crea');
     this.stanzaForm = {
       DESCRIZIONE: '',
-      DIMENSIONE: '',
-      CAPACITA: undefined,
-      COSTO: undefined,
-      NOTE: '',
-      STATO: 'Libera'
+      DIMENSIONE:  '',
+      CAPACITA:    undefined,
+      COSTO:       undefined,
+      NOTE:        '',
+      STATO:       'Libera'
     };
-    this.formError = '';
-    this.modaleAperto = true;
+    this.formError.set('');
+    this.modaleAperto.set(true);
   }
 
   apriModaleModifica(s: stanza): void {
-    this.modaleModalita = 'modifica';
+    this.modaleModalita.set('modifica');
     this.stanzaForm = { ...s };
-    this.formError = '';
-    this.modaleAperto = true;
+    this.formError.set('');
+    this.modaleAperto.set(true);
   }
 
   chiudiModale(): void {
-    this.modaleAperto = false;
+    this.modaleAperto.set(false);
     this.stanzaForm = {};
-    this.formError = '';
+    this.formError.set('');
   }
 
   // ── Salvataggio (crea o modifica) ────────────────────────────
   salvaStanza(form: NgForm): void {
-    this.formError = '';
+    this.formError.set('');
 
     if (form.invalid) {
-      this.formError = 'Compila tutti i campi obbligatori.';
+      this.formError.set('Compila tutti i campi obbligatori.');
       return;
     }
 
-    this.invio = true;
+    this.invio.set(true);
 
-    if (this.modaleModalita === 'crea') {
+    if (this.modaleModalita() === 'crea') {
       this.stanzaServices.addStanza(this.stanzaForm).subscribe({
         next: (lista) => {
           this.stanze.set(lista);
-          this.invio = false;
+          this.invio.set(false);
           this.chiudiModale();
         },
         error: (err) => {
           console.error('Errore creazione stanza', err);
-          this.formError = 'Errore durante la creazione della stanza.';
-          this.invio = false;
+          this.formError.set('Errore durante la creazione della stanza.');
+          this.invio.set(false);
         }
       });
     } else {
       this.stanzaServices.aggiornaStanza(this.stanzaForm as stanza).subscribe({
         next: (lista) => {
           this.stanze.set(lista);
-          this.invio = false;
+          this.invio.set(false);
           this.chiudiModale();
         },
         error: (err) => {
           console.error('Errore aggiornamento stanza', err);
-          this.formError = 'Errore durante l\'aggiornamento della stanza.';
-          this.invio = false;
+          this.formError.set('Errore durante l\'aggiornamento della stanza.');
+          this.invio.set(false);
         }
       });
     }
@@ -134,26 +134,27 @@ export class GestisciStanza implements OnInit {
 
   // ── Eliminazione ──────────────────────────────────────────────
   chiediConfermaEliminazione(s: stanza): void {
-    this.eliminaTarget = s;
+    this.eliminaTarget.set(s);
   }
 
   annullaEliminazione(): void {
-    this.eliminaTarget = null;
+    this.eliminaTarget.set(null);
   }
 
   confermaEliminazione(): void {
-    if (!this.eliminaTarget) return;
-    const id = this.eliminaTarget.IDSTANZA;
+    const target = this.eliminaTarget();
+    if (!target) return;
+    const id = target.IDSTANZA;
 
     this.stanzaServices.eliminaStanza(id).subscribe({
       next: (lista) => {
         this.stanze.set(lista);
-        this.eliminaTarget = null;
+        this.eliminaTarget.set(null);
       },
       error: (err) => {
         console.error('Errore eliminazione stanza', err);
-        this.eliminaTarget = null;
-        this.erroreCaricamento = 'Errore durante l\'eliminazione della stanza.';
+        this.eliminaTarget.set(null);
+        this.erroreCaricamento.set('Errore durante l\'eliminazione della stanza.');
       }
     });
   }
