@@ -7,30 +7,55 @@
     <div class="divider-gold"></div>
 
     <div class="progress-bar">
+
+      <!-- Step 1: Tipo — sempre visibile -->
       <div class="progress-step" [class.done]="step > 0" [class.active]="step === 0">
         <span class="step-num">1</span>
         <span class="step-lbl">Tipo</span>
       </div>
       <div class="progress-line"></div>
 
-      @if (tipoPrenotazione !== 'spa') {
+      @if (tipoPrenotazione === '') {
+        <div class="progress-step">
+          <span class="step-num">2</span>
+          <span class="step-lbl">Stanza</span>
+        </div>
+        <div class="progress-line"></div>
+        <div class="progress-step">
+          <span class="step-num">3</span>
+          <span class="step-lbl">Servizi</span>
+        </div>
+        <div class="progress-line"></div>
+        <div class="progress-step">
+          <span class="step-num">4</span>
+          <span class="step-lbl">Conferma</span>
+        </div>
+      }
+
+      @if (tipoPrenotazione === 'stanza') {
         <div class="progress-step" [class.done]="step > 1" [class.active]="step === 1">
           <span class="step-num">2</span>
           <span class="step-lbl">Stanza</span>
         </div>
         <div class="progress-line"></div>
+        <div class="progress-step" [class.done]="step > 2" [class.active]="step === 2">
+          <span class="step-num">3</span>
+          <span class="step-lbl">Servizi</span>
+        </div>
+        <div class="progress-line"></div>
+        <div class="progress-step" [class.active]="step === 3">
+          <span class="step-num">4</span>
+          <span class="step-lbl">Conferma</span>
+        </div>
       }
 
-      <div class="progress-step" [class.done]="step > 2" [class.active]="step === 2">
-        <span class="step-num">3</span>
-        <span class="step-lbl">Servizi</span>
-      </div>
-      <div class="progress-line"></div>
+      @if (tipoPrenotazione === 'spa') {
+        <div class="progress-step" [class.active]="step === 3">
+          <span class="step-num">2</span>
+          <span class="step-lbl">Conferma</span>
+        </div>
+      }
 
-      <div class="progress-step" [class.active]="step === 3">
-        <span class="step-num">4</span>
-        <span class="step-lbl">Conferma</span>
-      </div>
     </div>
   </div>
 
@@ -135,7 +160,7 @@
         </div>
 
         <div class="step-nav">
-          <button class="secondary" type="button" (click)="step = tipoPrenotazione === 'spa' ? 0 : 1">
+          <button class="secondary" type="button" (click)="step = 1">
             ← Indietro
           </button>
           <button class="primary" type="button" (click)="step = 3">
@@ -249,7 +274,7 @@
             <button type="submit" class="primary confirm-btn">
               Conferma prenotazione
             </button>
-            <button type="button" class="secondary" (click)="step = 2">
+            <button type="button" class="secondary" (click)="step = tipoPrenotazione === 'spa' ? 0 : 2">
               ← Modifica
             </button>
           </div>
