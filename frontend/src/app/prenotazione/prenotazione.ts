@@ -5,6 +5,7 @@ import { PrenotazioneServices } from './Services/services';
 import { prenotazione } from './interfacce/prenotazione_i';
 import { stanza } from '../gestisci-stanza/interfacce/stanza_i';
 import { servizio } from '../servizi/interfacce/servizio_i';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-prenotazione',
@@ -17,13 +18,16 @@ export class Prenotazione implements OnInit {
 
   private readonly http = inject(HttpClient);
   private readonly API = 'https://hotel-4n9x.onrender.com';
+  private readonly router = inject(Router)
 
-  constructor(private _PrenotazioneServices: PrenotazioneServices) {}
+  constructor(private _PrenotazioneServices: PrenotazioneServices) { }
 
   // ── Wizard ────────────────────────────────────────────────────
   step = 0;
   tipoPrenotazione: 'spa' | 'stanza' | '' = '';
   formError = '';
+  confermata = false;
+  invio = false;
 
   // ── Dati remoti ───────────────────────────────────────────────
   stanzeDisponibili = signal<stanza[]>([]);
@@ -35,14 +39,14 @@ export class Prenotazione implements OnInit {
   serviziSelezionati: servizio[] = [];
 
   // ── Form dati ─────────────────────────────────────────────────
-  nome       = '';
-  cognome    = '';
-  email      = '';
-  telefono   = '';
+  nome = '';
+  cognome = '';
+  email = '';
+  telefono = '';
   dataNascita = '';
-  checkIn    = '';
-  checkOut   = '';
-  note       = '';
+  checkIn = '';
+  checkOut = '';
+  note = '';
 
   // ─────────────────────────────────────────────────────────────
   ngOnInit(): void {
@@ -52,15 +56,15 @@ export class Prenotazione implements OnInit {
 
   caricaStanze(): void {
     this.http.get<stanza[]>(`${this.API}/stanza/elenco`).subscribe({
-      next:  (data) => this.stanzeDisponibili.set(data),
-      error: (err)  => console.error('Errore caricamento stanze', err)
+      next: (data) => this.stanzeDisponibili.set(data),
+      error: (err) => console.error('Errore caricamento stanze', err)
     });
   }
 
   caricaServizi(): void {
     this.http.get<servizio[]>(`${this.API}/servizio/elenco`).subscribe({
-      next:  (data) => this.serviziDisponibili.set(data),
-      error: (err)  => console.error('Errore caricamento servizi', err)
+      next: (data) => this.serviziDisponibili.set(data),
+      error: (err) => console.error('Errore caricamento servizi', err)
     });
   }
 
@@ -90,8 +94,8 @@ export class Prenotazione implements OnInit {
 
   // ── Calcolo totale ────────────────────────────────────────────
   get totale(): number {
-    const costoStanza   = this.stanzaSelezionata ? this.stanzaSelezionata.COSTO : 0;
-    const costoServizi  = this.serviziSelezionati.reduce((sum, s) => sum + s.COSTO, 0);
+    const costoStanza = this.stanzaSelezionata ? this.stanzaSelezionata.COSTO : 0;
+    const costoServizi = this.serviziSelezionati.reduce((sum, s) => sum + s.COSTO, 0);
     return costoStanza + costoServizi;
   }
 
@@ -105,32 +109,34 @@ export class Prenotazione implements OnInit {
     }
 
     const nuova: prenotazione = {
-      IDPRE:       0,
-      NOME:        this.nome,
-      COGNOME:     this.cognome,
-      EMAIL:       this.email,
-      TELEFONO:    this.telefono,
+      IDPRE: 0,
+      NOME: this.nome,
+      COGNOME: this.cognome,
+      EMAIL: this.email,
+      TELEFONO: this.telefono,
       DATANASCITA: new Date(this.dataNascita),
-      IDSTANZA:    this.stanzaSelezionata?.IDSTANZA ?? 0,
-      IDSERVIZIO:  this.serviziSelezionati[0]?.IDSERVIZIO ?? 0,
-      TOTALE:      this.totale,
-      SPA:         this.tipoPrenotazione === 'spa',
-      NOTE:        this.note,
-      CHECK_IN:    new Date(this.checkIn),
-      CHECK_OUT:   new Date(this.checkOut),
-      STATO:       'In attesa'
+      IDSTANZA: this.stanzaSelezionata?.IDSTANZA ?? 0,
+      IDSERVIZIO: this.serviziSelezionati[0]?.IDSERVIZIO ?? 0,
+      TOTALE: this.totale,
+      SPA: this.tipoPrenotazione === 'spa',
+      NOTE: this.note,
+      CHECK_IN: new Date(this.checkIn),
+      CHECK_OUT: new Date(this.checkOut),
+      STATO: 'In attesa'
     };
 
+    this.invio = true;
+
     this._PrenotazioneServices.postUtente(nuova).subscribe({
-      next:  () => {
-        alert('Prenotazione confermata!');
-        this.step = 0;
-        this.tipoPrenotazione = '';
-        this.stanzaSelezionata = null;
-        this.serviziSelezionati = [];
-        form.resetForm();
+      next: () => {
+        this.invio = false;
+        this.confermata = true;
+        setTimeout(() => {
+          this.router.navigate(['/']);
+        }, 3000);
       },
       error: (err: any) => {
+        this.invio = false;
         console.error('Errore conferma prenotazione', err);
         this.formError = 'Errore durante l\'invio della prenotazione. Riprova.';
       }
