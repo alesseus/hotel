@@ -1,60 +1,60 @@
 <div class="login-page">
 
-    <!-- Header -->
-    <div class="login-header">
-        <h1>Accedi</h1>
-        <div class="divider-gold"></div>
-        <p>Inserisci le tue credenziali per accedere all'area riservata</p>
-    </div>
+  <!-- Header -->
+  <div class="login-header">
+    <h1>Accedi</h1>
+    <div class="divider-gold"></div>
+    <p>Inserisci le tue credenziali per accedere all'area riservata</p>
+  </div>
 
-    <!-- Corpo -->
-    <div class="login-body">
-        <div class="login-card">
+  <!-- Corpo -->
+  <div class="login-body">
+    <div class="login-card">
 
-            <div class="login-logo">
-                <img src="assets/images/logo.png" height="90" width="auto" alt="Blue Horizon Hotel">
-            </div>
-            <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)" novalidate>
+      <div class="login-logo">
+        <img src="assets/images/logo.png" height="90" width="auto" alt="Blue Horizon Hotel">
+      </div>
+      <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)" novalidate>
 
-                <div class="field-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" [(ngModel)]="email" required email
-                        placeholder="mario.rossi@email.com" #emailField="ngModel"
-                        [class.invalid]="emailField.invalid && emailField.touched">
-                    @if (emailField.invalid && emailField.touched) {
-                    <span class="field-error">Inserisci un indirizzo email valido</span>
-                    }
-                </div>
-
-                <div class="field-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password" [(ngModel)]="password" required minlength="6"
-                        placeholder="••••••••" #passwordField="ngModel"
-                        [class.invalid]="passwordField.invalid && passwordField.touched">
-                    @if (passwordField.invalid && passwordField.touched) {
-                    <span class="field-error">La password deve contenere almeno 6 caratteri</span>
-                    }
-                </div>
-
-                @if (errorMessage) {
-                <div class="login-error">{{ errorMessage }}</div>
-                }
-
-                <button type="submit" [disabled]="loginForm.invalid || loading">
-                    @if (loading) {
-                    Accesso in corso…
-                    } @else {
-                    Accedi
-                    }
-                </button>
-
-            </form>
-
-            <a class="forgot-link" href="#">Hai dimenticato la password?</a>
-            <a class="forgot-link" routerLink="/registrazione">Non sei registrato? Vai qui</a>
-
+        <!-- Cerca questo blocco nel tuo login.html e sostituiscilo così -->
+        <div class="field-group">
+          <label for="codice">Codice Staff</label>
+          <input type="text" id="codice" name="codice" [(ngModel)]="codice" required placeholder="STF001"
+            #codiceField="ngModel" [class.invalid]="codiceField.invalid && codiceField.touched">
+          @if (codiceField.invalid && codiceField.touched) {
+          <span class="field-error">Il codice staff è obbligatorio</span>
+          }
         </div>
 
+        <div class="field-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" [(ngModel)]="password" required minlength="6"
+            placeholder="••••••••" #passwordField="ngModel"
+            [class.invalid]="passwordField.invalid && passwordField.touched">
+          @if (passwordField.invalid && passwordField.touched) {
+          <span class="field-error">La password deve contenere almeno 6 caratteri</span>
+          }
+        </div>
+
+        @if (errorMessage) {
+        <div class="login-error">{{ errorMessage }}</div>
+        }
+
+        <button type="submit" [disabled]="loginForm.invalid || loading">
+          @if (loading) {
+          Accesso in corso…
+          } @else {
+          Accedi
+          }
+        </button>
+
+      </form>
+
+      <a class="forgot-link" href="#">Hai dimenticato la password?</a>
+      <a class="forgot-link" routerLink="/registrazione">Non sei registrato? Vai qui</a>
+
     </div>
+
+  </div>
 
 </div>
