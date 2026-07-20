@@ -93,10 +93,31 @@ export class Prenotazione implements OnInit {
   }
 
   // ── Calcolo totale ────────────────────────────────────────────
+  get notti(): number {
+    if (!this.checkIn || !this.checkOut) return 0;
+    const inD = new Date(this.checkIn);
+    const outD = new Date(this.checkOut);
+    const diff = outD.getTime() - inD.getTime();
+    const n = Math.round(diff / (1000 * 60 * 60 * 24));
+    return n > 0 ? n : 0;
+  }
+ 
+  get costoStanza(): number {
+    if (!this.stanzaSelezionata || this.tipoPrenotazione !== 'stanza') return 0;
+    return this.stanzaSelezionata.COSTO * this.notti;
+  }
+ 
+  get costoServizi(): number {
+    return this.serviziSelezionati.reduce((sum, s) => sum + s.COSTO, 0);
+  }
+ 
   get totale(): number {
-    const costoStanza = this.stanzaSelezionata ? this.stanzaSelezionata.COSTO : 0;
-    const costoServizi = this.serviziSelezionati.reduce((sum, s) => sum + s.COSTO, 0);
-    return costoStanza + costoServizi;
+    return this.costoStanza + this.costoServizi;
+  }
+ 
+  // Caparra 10% del totale, sempre dovuta (pagamento online obbligatorio)
+  get caparra(): number {
+    return +(this.totale * 0.10).toFixed(2);
   }
 
   // ── Submit ────────────────────────────────────────────────────
@@ -108,6 +129,12 @@ export class Prenotazione implements OnInit {
       return;
     }
 
+    
+    if (this.tipoPrenotazione === 'stanza' && this.notti <= 0) {
+      this.formError = 'La data di check-out deve essere successiva al check-in.';
+      return;
+    }
+ 
     const nuova: prenotazione = {
       IDPRE: 0,
       NOME: this.nome,
@@ -118,15 +145,16 @@ export class Prenotazione implements OnInit {
       IDSTANZA: this.stanzaSelezionata?.IDSTANZA ?? 0,
       IDSERVIZIO: this.serviziSelezionati[0]?.IDSERVIZIO ?? 0,
       TOTALE: this.totale,
+      CAPARRA: this.caparra,
       SPA: this.tipoPrenotazione === 'spa',
       NOTE: this.note,
       CHECK_IN: new Date(this.checkIn),
       CHECK_OUT: new Date(this.checkOut),
       STATO: 'In attesa'
     };
-
+ 
     this.invio = true;
-
+ 
     this._PrenotazioneServices.postUtente(nuova).subscribe({
       next: () => {
         this.invio = false;

@@ -72,7 +72,7 @@
                   </span>
                 </td>
                 <td class="actions-cell">
-                  <button class="btn-edit" type="button" (click)="apriModaleModifica(p)">Modifica</button>
+                  <button class="btn-edit"   type="button" (click)="apriModaleModifica(p)">Modifica</button>
                   <button class="btn-delete" type="button" (click)="apriConfermaEliminazione(p)">Elimina</button>
                 </td>
               </tr>
@@ -106,42 +106,39 @@
 
           <div class="form-grid">
 
-            <!-- Nome -->
+            <!-- ── Riga 1: Nome / Cognome ── -->
             <div class="form-group">
               <label for="f-nome">Nome <span class="required">*</span></label>
               <input id="f-nome" type="text" name="NOME"
                      [(ngModel)]="form.NOME" required placeholder="Mario">
             </div>
 
-            <!-- Cognome -->
             <div class="form-group">
               <label for="f-cognome">Cognome <span class="required">*</span></label>
               <input id="f-cognome" type="text" name="COGNOME"
                      [(ngModel)]="form.COGNOME" required placeholder="Rossi">
             </div>
 
-            <!-- Email -->
+            <!-- ── Riga 2: Email / Telefono ── -->
             <div class="form-group">
               <label for="f-email">Email <span class="required">*</span></label>
               <input id="f-email" type="email" name="EMAIL"
                      [(ngModel)]="form.EMAIL" required placeholder="mario@email.com">
             </div>
 
-            <!-- Telefono -->
             <div class="form-group">
               <label for="f-tel">Telefono</label>
               <input id="f-tel" type="tel" name="TELEFONO"
                      [(ngModel)]="form.TELEFONO" placeholder="+39 000 0000000">
             </div>
 
-            <!-- Data di nascita -->
+            <!-- ── Riga 3: Data nascita / Stanza select ── -->
             <div class="form-group">
               <label for="f-nascita">Data di nascita</label>
               <input id="f-nascita" type="date" name="DATANASCITA"
                      [(ngModel)]="form.DATANASCITA">
             </div>
 
-            <!-- Stanza — dropdown dal DB -->
             <div class="form-group">
               <label for="f-stanza">Stanza <span class="required">*</span></label>
               <select id="f-stanza" name="IDSTANZA"
@@ -155,8 +152,12 @@
                   </option>
                 }
               </select>
-              @if (stanzaSelezionata) {
-                <div class="detail-card">
+            </div>
+
+            <!-- ── Scheda dettaglio stanza (riga intera, condizionale) ── -->
+            @if (stanzaSelezionata) {
+              <div class="detail-card full-width">
+                <div class="detail-card-grid">
                   <div class="detail-row">
                     <span class="detail-label">Dimensione</span>
                     <span>{{ stanzaSelezionata.DIMENSIONE }}</span>
@@ -178,22 +179,22 @@
                     </span>
                   </div>
                   @if (stanzaSelezionata.DESCRIZIONE) {
-                    <div class="detail-row">
+                    <div class="detail-row detail-row--wide">
                       <span class="detail-label">Descrizione</span>
                       <span>{{ stanzaSelezionata.DESCRIZIONE }}</span>
                     </div>
                   }
                   @if (stanzaSelezionata.NOTE) {
-                    <div class="detail-row">
+                    <div class="detail-row detail-row--wide">
                       <span class="detail-label">Note</span>
                       <span>{{ stanzaSelezionata.NOTE }}</span>
                     </div>
                   }
                 </div>
-              }
-            </div>
+              </div>
+            }
 
-            <!-- Servizio — dropdown dal DB -->
+            <!-- ── Riga 4: Servizio select / Totale ── -->
             <div class="form-group">
               <label for="f-servizio">Servizio <span class="required">*</span></label>
               <select id="f-servizio" name="IDSERVIZIO"
@@ -207,8 +208,19 @@
                   </option>
                 }
               </select>
-              @if (servizioSelezionato) {
-                <div class="detail-card">
+            </div>
+
+            <div class="form-group">
+              <label for="f-totale">Totale (€) <span class="required">*</span></label>
+              <input id="f-totale" type="number" name="TOTALE"
+                     [(ngModel)]="form.TOTALE" required
+                     placeholder="0.00" step="0.01" min="0">
+            </div>
+
+            <!-- ── Scheda dettaglio servizio (riga intera, condizionale) ── -->
+            @if (servizioSelezionato) {
+              <div class="detail-card full-width">
+                <div class="detail-card-grid">
                   <div class="detail-row">
                     <span class="detail-label">Note</span>
                     <span>{{ servizioSelezionato.NOTE }}</span>
@@ -218,32 +230,23 @@
                     <span>€ {{ servizioSelezionato.COSTO | number:'1.2-2' }}</span>
                   </div>
                 </div>
-              }
-            </div>
+              </div>
+            }
 
-            <!-- Totale -->
-            <div class="form-group">
-              <label for="f-totale">Totale (€) <span class="required">*</span></label>
-              <input id="f-totale" type="number" name="TOTALE"
-                     [(ngModel)]="form.TOTALE" required
-                     placeholder="0.00" step="0.01" min="0">
-            </div>
-
-            <!-- Check-in -->
+            <!-- ── Riga 5: Check-in / Check-out ── -->
             <div class="form-group">
               <label for="f-checkin">Check-in <span class="required">*</span></label>
               <input id="f-checkin" type="date" name="CHECK_IN"
                      [(ngModel)]="form.CHECK_IN" required>
             </div>
 
-            <!-- Check-out -->
             <div class="form-group">
               <label for="f-checkout">Check-out <span class="required">*</span></label>
               <input id="f-checkout" type="date" name="CHECK_OUT"
                      [(ngModel)]="form.CHECK_OUT" required>
             </div>
 
-            <!-- Stato prenotazione -->
+            <!-- ── Riga 6: Stato / SPA ── -->
             <div class="form-group">
               <label for="f-stato">Stato <span class="required">*</span></label>
               <select id="f-stato" name="STATO" [(ngModel)]="form.STATO" required>
@@ -254,14 +257,13 @@
               </select>
             </div>
 
-            <!-- SPA -->
             <div class="form-group form-check">
               <label class="check-label">
                 <input type="checkbox" name="SPA" [(ngModel)]="form.SPA"> SPA inclusa
               </label>
             </div>
 
-            <!-- Note -->
+            <!-- ── Note (riga intera) ── -->
             <div class="form-group full-width">
               <label for="f-note">Note</label>
               <textarea id="f-note" name="NOTE"
