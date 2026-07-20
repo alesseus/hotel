@@ -8,7 +8,6 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name="STAFF")
 public class Staff {
-	private String MAIL;
 	private String CODICE;
 	private String PASS;
 	@Id
@@ -16,14 +15,6 @@ public class Staff {
 	private long IDSTAFF;
 	
 	public Staff () {}
-
-	public String getMAIL() {
-		return MAIL;
-	}
-
-	public void setMAIL(String mAIL) {
-		MAIL = mAIL;
-	}
 
 	public String getCODICE() {
 		return CODICE;
