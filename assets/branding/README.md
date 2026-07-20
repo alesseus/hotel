@@ -1,27 +1,20 @@
-# Blue Horizon - Branding files
+# Blue Horizon - Branding files (updated)
 
-Contenuto aggiunto in branch `add/blue-horizon-branding`:
+Ho aggiornato i file del logo su richiesta: ho reso la scritta più grande e ho semplificato l'icona per avere un aspetto più pulito e meno "strano".
 
-- `assets/branding/blue-horizon-wordmark.svg` — Wordmark (SVG, sfondo bianco, logo blu)
-- `assets/branding/blue-horizon-emblem.svg` — Emblema circolare (SVG)
+Files aggiornati nel branch `add/blue-horizon-branding`:
 
-Nota importante
-- Ho aggiunto gli SVG vettoriali. Non ho rasterizzato i PNG in questo commit perché il rendering PNG richiede un tool di conversione (Inkscape, rsvg-convert, ImageMagick, ecc.).
+- `assets/branding/blue-horizon-wordmark.svg` — Wordmark aggiornato (larghezza maggiore, testo grande per display)
+- `assets/branding/blue-horizon-emblem.svg` — Emblema aggiornato e semplificato
 
-Comandi consigliati per generare PNG localmente (Inkscape):
+Cosa posso fare dopo (scegli una opzione o rispondi):
 
-```bash
-# Wordmark large (1600x400)
-inkscape assets/branding/blue-horizon-wordmark.svg --export-type=png --export-filename=assets/branding/blue-horizon-wordmark-1600x400.png --export-width=1600
+1. Generare e aggiungere PNG ad alta risoluzione al branch (richiede che io rasterizzi le SVG). Consigliata: convertire il testo in tracciati prima di esportare per evitare differenze di font.
+2. Convertire i testi in tracciati (outlines) nelle SVG e poi esportare PNG.
+3. Lasciare così e discutere ulteriori modifiche (colore, posizione icona/testo, spaziatura).
 
-# Emblem PNG (512x512)
-inkscape assets/branding/blue-horizon-emblem.svg --export-type=png --export-filename=assets/branding/blue-horizon-emblem-512x512.png --export-width=512
-```
+Se vuoi i PNG direttamente nel repository, dimmi:
+- se vuoi che converta i testi in tracciati (sì/no),
+- le risoluzioni desiderate (es. Wordmark: 3840×960 e 1920×480; Emblem: 1024×1024 e 512×512), oppure lascia che usi le dimensioni consigliate.
 
-Palette colore
-- Primary blue: `#0B63B8`
-- Darker blue: `#084E8C`
-- Light blue: `#6FB3E6`
-- Bianco: `#FFFFFF`
-
-Se vuoi che generi anche i PNG nel repository, posso farlo in un commit successivo usando i tool esterni o convertendoli qui se mi autorizzi a includere file PNG codificati (base64).
+Se non rispondi, non aggiungerò ancora i PNG e lascerò i SVG come sorgenti vettoriali.
