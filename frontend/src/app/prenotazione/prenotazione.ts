@@ -65,10 +65,9 @@ export class Prenotazione implements OnInit {
 
   // ── Wizard methods ────────────────────────────────────────────
   scegliTipo(tipo: 'spa' | 'stanza'): void {
-    this.tipoPrenotazione = tipo;
-    // SPA-only → salta la scelta stanza, vai ai servizi
-    this.step = tipo === 'spa' ? 2 : 1;
-  }
+  this.tipoPrenotazione = tipo;
+  this.step = tipo === 'spa' ? 3 : 1;  // SPA → step 3 diretto
+}
 
   selezionaStanza(s: stanza): void {
     this.stanzaSelezionata = s;
