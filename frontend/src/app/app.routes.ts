@@ -8,12 +8,14 @@ import { GestisciStaff } from './gestisci-staff/gestisci-staff';
 import { GestisciStanza } from './gestisci-stanza/gestisci-stanza';
 import {GestisciPrenotazione } from './gestisci-prenotazione/gestisci-prenotazione';
 import { GestisciServizi } from './gestisci-servizi/gestisci-servizi';
+import {Home} from './home/home';
 
 export const routes: Routes = [
   { path: 'servizi', component: Servizi },
   { path: 'storia', component: Storia },
   { path: 'dovesiamo', component: Dovesiamo },
   { path: 'prenotazione', component: Prenotazione },
+  { path: '', component: Home },
   {
     path: 'amministrazione',
     children: [
