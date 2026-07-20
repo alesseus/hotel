@@ -28,11 +28,12 @@ public class Prenotazione {
 	private Date CHECK_IN;
 	private Date CHECK_OUT;
 	private String STATO;
+	private double CAPARRA;
 
 	public Prenotazione() {}
 
 	public Prenotazione(long IDPRE, String NOME, String COGNOME, String EMAIL, String TELEFONO, Date DATANASCITA,
-			long IDSTANZA, long IDSERVIZIO, double TOTALE, boolean SPA, String NOTE, Date CHECK_IN, Date CHECK_OUT,
+			long IDSTANZA, long IDSERVIZIO, double TOTALE, double CAPARRA, boolean SPA, String NOTE, Date CHECK_IN, Date CHECK_OUT,
 			String STATO) {
 		setIDPRE(IDPRE);
 		setNOME(NOME);
@@ -48,6 +49,7 @@ public class Prenotazione {
 		setCHECK_IN(CHECK_IN);
 		setCHECK_OUT(CHECK_OUT);
 		setSTATO(STATO);
+		setCAPARRA(CAPARRA);
 		
 	}
 
@@ -161,6 +163,14 @@ public class Prenotazione {
 
 	public void setSTATO(String sTATO) {
 		STATO = sTATO;
+	}
+	
+	public double getCAPARRA() {
+		return CAPARRA;
+	}
+
+	public void setCAPARRA(double cAPARRA) {
+		CAPARRA = cAPARRA;
 	}
 
 }

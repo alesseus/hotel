@@ -19,42 +19,42 @@ import com.geak.hotel.Services.ServiziSrv;
 @RequestMapping("/servizio/")
 public class ServizioController {
 
-	@Autowired
-	private ServiziSrv serv;
+    @Autowired
+    private ServiziSrv serv;
 
-	// GET /servizio/elenco
-	@GetMapping("elenco")
-	public List<Servizio> elencoServizio() {
-		return serv.getAllServizi();
-	}
+    // GET /servizio/elenco
+    @GetMapping("elenco")
+    public List<Servizio> elencoServizio() {
+        return serv.getAllServizi();
+    }
 
-	// GET /servizio/elenco/{IDSERVIZIO}
-	@GetMapping("elenco/{IDSERVIZIO}")
-	public Servizio tornaServ(@PathVariable Long IDSERVIZIO) {
-		return serv.getAllServizi().stream()
-				.filter(s -> s.getIDSERVIZIO().equals(IDSERVIZIO))
-				.findFirst()
-				.get();
-	}
+    // GET /servizio/elenco/{IDSERVIZIO}
+    @GetMapping("elenco/{IDSERVIZIO}")
+    public Servizio tornaServ(@PathVariable Long IDSERVIZIO) {
+        return serv.getAllServizi().stream()
+                .filter(s -> s.getIDSERVIZIO() == IDSERVIZIO)
+                .findFirst()
+                .get();
+    }
 
-	// POST /servizio/add ← era "aggiungi"
-	@PostMapping("add")
-	public List<Servizio> add(@RequestBody Servizio agg) {
-		serv.addServizio(agg);
-		return serv.getAllServizi();
-	}
+    // POST /servizio/add
+    @PostMapping("add")
+    public List<Servizio> add(@RequestBody Servizio agg) {
+        serv.addServizio(agg);
+        return serv.getAllServizi();
+    }
 
-	// PUT /servizio/aggiorna
-	@PutMapping("aggiorna")
-	public List<Servizio> aggiorna(@RequestBody Servizio aggiornato) {
-		serv.aggServizio(aggiornato); // ← era cambiaServizio, non esiste
-		return serv.getAllServizi();
-	}
+    // PUT /servizio/aggiorna
+    @PutMapping("aggiorna")
+    public List<Servizio> aggiorna(@RequestBody Servizio aggiornato) {
+        serv.aggServizio(aggiornato);
+        return serv.getAllServizi();
+    }
 
-	// DELETE /servizio/elimina/{id} ← era "cancella/{IDSERVIZIO}"
-	@DeleteMapping("elimina/{id}")
-	public List<Servizio> elimina(@PathVariable Long id) {
-		serv.delServ(id);
-		return serv.getAllServizi();
-	}
+    // DELETE /servizio/elimina/{id}
+    @DeleteMapping("elimina/{id}")
+    public List<Servizio> elimina(@PathVariable Long id) {
+        serv.delServ(id);
+        return serv.getAllServizi();
+    }
 }

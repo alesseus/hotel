@@ -234,6 +234,9 @@
               @if (checkOutField.invalid && (checkOutField.touched || datiForm.submitted)) {
                 <small class="field-error">Seleziona la data di check-out</small>
               }
+              @if (tipoPrenotazione === 'stanza' && checkIn && checkOut && notti <= 0) {
+                <small class="field-error">Il check-out deve essere dopo il check-in</small>
+              }
             </div>
           </div>
 
@@ -258,10 +261,6 @@
                 <span>Stanza</span>
                 <span>{{ stanzaSelezionata.DESCRIZIONE || stanzaSelezionata.DIMENSIONE }}</span>
               </div>
-              <div class="riepilogo-row">
-                <span>Costo stanza</span>
-                <span>€{{ stanzaSelezionata.COSTO }}</span>
-              </div>
             }
 
             <div class="riepilogo-row">
@@ -273,10 +272,21 @@
               <span>{{ checkOut || '—' }}</span>
             </div>
 
+            @if (tipoPrenotazione === 'stanza') {
+              <div class="riepilogo-row">
+                <span>Notti</span>
+                <span>{{ notti }}</span>
+              </div>
+              <div class="riepilogo-row">
+                <span>Costo stanza</span>
+                <span>€{{ costoStanza }}</span>
+              </div>
+            }
+
             @if (serviziSelezionati.length > 0) {
               <div class="riepilogo-row">
                 <span>Servizi extra</span>
-                <span>+€{{ serviziSelezionati.reduce((a,s) => a + s.COSTO, 0) }}</span>
+                <span>+€{{ costoServizi }}</span>
               </div>
             }
 
@@ -285,6 +295,12 @@
               <span>Totale</span>
               <span>€{{ totale }}</span>
             </div>
+
+            <div class="riepilogo-row riepilogo-caparra">
+              <span>Caparra (10%, dovuta ora)</span>
+              <span>€{{ caparra }}</span>
+            </div>
+            <small class="riepilogo-nota">La caparra non è rimborsabile in caso di cancellazione.</small>
           </div>
 
           @if (formError) {
@@ -293,7 +309,7 @@
 
           <div class="confirm-actions">
             <button type="submit" class="primary confirm-btn" [disabled]="invio">
-              {{ invio ? 'Invio in corso...' : 'Conferma prenotazione' }}
+              {{ invio ? 'Invio in corso...' : 'Paga caparra e conferma (€' + caparra + ')' }}
             </button>
             <button type="button" class="secondary" (click)="step = tipoPrenotazione === 'spa' ? 0 : 2">
               ← Modifica
