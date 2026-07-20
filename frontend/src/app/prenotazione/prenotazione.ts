@@ -57,7 +57,7 @@ export class Prenotazione implements OnInit {
   }
 
   caricaServizi(): void {
-    this.http.get<servizio[]>(`${this.API}/servizio/lista`).subscribe({
+    this.http.get<servizio[]>(`${this.API}/servizio/elenco`).subscribe({
       next:  (data) => this.serviziDisponibili.set(data),
       error: (err)  => console.error('Errore caricamento servizi', err)
     });
