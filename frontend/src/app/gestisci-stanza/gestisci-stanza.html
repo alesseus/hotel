@@ -27,7 +27,7 @@
       </div>
     </div>
 
-    <!-- ── Filtro disponibilità: seleziona date dalle prenotazioni esistenti ── -->
+    <!-- ── Filtro disponibilità: date dalle prenotazioni esistenti ── -->
     <div class="date-filter-bar">
       <div class="date-filter-intro">
         <span class="date-filter-label-title">🔍 Filtra per periodo prenotazione</span>
@@ -70,9 +70,9 @@
       <div class="date-filter-summary">
         Periodo: <strong>{{ formatData(filtroCheckIn()) }}</strong> → <strong>{{ formatData(filtroCheckOut()) }}</strong>
         &nbsp;·&nbsp;
-        <span class="summary-pill summary-pill-red">Occupate: {{ stanzeOccupatePeriodo.length }}</span>
-        <span class="summary-pill summary-pill-green">Disponibili: {{ stanzeDisponibiliPeriodo.length }}</span>
-        <span class="summary-pill summary-pill-yellow">Manutenzione: {{ stanzeInManutenzione.length }}</span>
+        <span class="summary-pill summary-pill-red">🔴 Occupate: {{ stanzeOccupatePeriodo.length }}</span>
+        <span class="summary-pill summary-pill-green">🟢 Disponibili: {{ stanzeDisponibiliPeriodo.length }}</span>
+        <span class="summary-pill summary-pill-yellow">🟡 Manutenzione: {{ stanzeInManutenzione.length }}</span>
       </div>
       }
     </div>
@@ -81,7 +81,9 @@
     <div class="form-error-banner">{{ erroreCaricamento() }}</div>
     }
 
-    <!-- ── Vista a 3 gruppi (solo quando il filtro è attivo) ── -->
+    <!-- ════════════════════════════════════════════════════════ -->
+    <!-- VISTA A 3 GRUPPI — attiva solo con il filtro applicato  -->
+    <!-- ════════════════════════════════════════════════════════ -->
     @if (filtroAttivo) {
 
     <!-- Stanze Occupate -->
@@ -100,14 +102,11 @@
               <th>Capienza</th>
               <th>Prezzo / notte (€)</th>
               <th>Piano</th>
-              <th>Stato</th>
             </tr>
           </thead>
           <tbody>
             @if (stanzeOccupatePeriodo.length === 0) {
-            <tr>
-              <td colspan="6" class="table-empty">Nessuna stanza occupata in questo periodo</td>
-            </tr>
+            <tr><td colspan="5" class="table-empty">Nessuna stanza occupata in questo periodo</td></tr>
             }
             @for (s of stanzeOccupatePeriodo; track s.IDSTANZA) {
             <tr>
@@ -116,9 +115,6 @@
               <td>{{ s.CAPACITA }}</td>
               <td>€{{ s.COSTO }}</td>
               <td>{{ s.DIMENSIONE }}</td>
-              <td>
-                <span class="badge badge-no">Occupata</span>
-              </td>
             </tr>
             }
           </tbody>
@@ -142,14 +138,11 @@
               <th>Capienza</th>
               <th>Prezzo / notte (€)</th>
               <th>Piano</th>
-              <th>Stato</th>
             </tr>
           </thead>
           <tbody>
             @if (stanzeDisponibiliPeriodo.length === 0) {
-            <tr>
-              <td colspan="6" class="table-empty">Nessuna stanza disponibile in questo periodo</td>
-            </tr>
+            <tr><td colspan="5" class="table-empty">Nessuna stanza disponibile in questo periodo</td></tr>
             }
             @for (s of stanzeDisponibiliPeriodo; track s.IDSTANZA) {
             <tr>
@@ -158,9 +151,6 @@
               <td>{{ s.CAPACITA }}</td>
               <td>€{{ s.COSTO }}</td>
               <td>{{ s.DIMENSIONE }}</td>
-              <td>
-                <span class="badge badge-ok">Disponibile</span>
-              </td>
             </tr>
             }
           </tbody>
@@ -184,14 +174,11 @@
               <th>Capienza</th>
               <th>Prezzo / notte (€)</th>
               <th>Piano</th>
-              <th>Stato</th>
             </tr>
           </thead>
           <tbody>
             @if (stanzeInManutenzione.length === 0) {
-            <tr>
-              <td colspan="6" class="table-empty">Nessuna stanza in manutenzione</td>
-            </tr>
+            <tr><td colspan="5" class="table-empty">Nessuna stanza in manutenzione</td></tr>
             }
             @for (s of stanzeInManutenzione; track s.IDSTANZA) {
             <tr>
@@ -200,9 +187,6 @@
               <td>{{ s.CAPACITA }}</td>
               <td>€{{ s.COSTO }}</td>
               <td>{{ s.DIMENSIONE }}</td>
-              <td>
-                <span class="badge badge-warn">Manutenzione</span>
-              </td>
             </tr>
             }
           </tbody>
@@ -212,7 +196,9 @@
 
     } @else {
 
-    <!-- ── Elenco generale (nessun filtro attivo) ── -->
+    <!-- ════════════════════════════════════════════════════════ -->
+    <!-- ELENCO GENERALE — senza colonna stato, senza azioni     -->
+    <!-- ════════════════════════════════════════════════════════ -->
     <div class="table-wrapper">
       <table>
         <thead>
@@ -222,14 +208,13 @@
             <th>Capienza</th>
             <th>Prezzo / notte (€)</th>
             <th>Piano</th>
-            <th>Stato</th>
             <th>Azioni</th>
           </tr>
         </thead>
         <tbody>
           @if (caricamento()) {
           <tr>
-            <td colspan="7" class="table-empty">Caricamento stanze in corso...</td>
+            <td colspan="6" class="table-empty">Caricamento stanze in corso...</td>
           </tr>
           } @else {
           @for (s of stanzeFiltrate; track s.IDSTANZA) {
@@ -239,12 +224,6 @@
             <td>{{ s.CAPACITA }}</td>
             <td>€{{ s.COSTO }}</td>
             <td>{{ s.DIMENSIONE }}</td>
-            <td>
-              <span class="badge" [class.badge-ok]="s.STATO === 'disponibile'"
-                [class.badge-warn]="s.STATO === 'manutenzione'" [class.badge-no]="s.STATO === 'occupata'">
-                {{ s.STATO }}
-              </span>
-            </td>
             <td class="table-actions">
               <button class="btn-icon" type="button" (click)="apriModaleModifica(s)" title="Modifica">✎</button>
               <button class="btn-icon btn-icon-danger" type="button" (click)="chiediConfermaEliminazione(s)"
@@ -253,7 +232,7 @@
           </tr>
           } @empty {
           <tr>
-            <td colspan="7" class="table-empty">Nessuna stanza trovata</td>
+            <td colspan="6" class="table-empty">Nessuna stanza trovata</td>
           </tr>
           }
           }
@@ -266,7 +245,7 @@
   </div>
 
   <!-- ══════════════════════════════════════════════════════════ -->
-  <!-- MODALE — crea / modifica stanza                            -->
+  <!-- MODALE — crea / modifica stanza (senza campo STATO)        -->
   <!-- ══════════════════════════════════════════════════════════ -->
   @if (modaleAperto()) {
   <div class="modal-overlay" (click)="chiudiModale()">

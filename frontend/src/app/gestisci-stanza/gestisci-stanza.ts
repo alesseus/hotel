@@ -24,7 +24,7 @@ export class GestisciStanza implements OnInit, OnDestroy {
   caricamento       = signal(true);
   erroreCaricamento = signal('');
 
-  // ── Filtro disponibilità per date (scelte dalle prenotazioni) ──
+  // ── Filtro per date dalle prenotazioni ────────────────────────
   filtroCheckIn  = signal('');
   filtroCheckOut = signal('');
 
@@ -34,16 +34,22 @@ export class GestisciStanza implements OnInit, OnDestroy {
               this.filtroCheckOut() > this.filtroCheckIn());
   }
 
-  /** Date di check-in univoche dalle prenotazioni non cancellate */
+  // ── Normalizzazione date (stringa YYYY-MM-DD, robusto vs UTC) ─
+  private toDateStr(d: any): string {
+    if (!d) return '';
+    return String(d).slice(0, 10);
+  }
+
+  // ── Date uniche dalle prenotazioni attive ─────────────────────
+
   get checkInOptions(): string[] {
     return [...new Set(
       this.prenotazioni()
         .filter(p => p.STATO?.toLowerCase() !== 'cancellata' && p.CHECK_IN)
-        .map(p => String(p.CHECK_IN).slice(0, 10))
+        .map(p => this.toDateStr(p.CHECK_IN))
     )].sort();
   }
 
-  /** Date di check-out univoche, filtrando quelle > check-in selezionato */
   get checkOutOptions(): string[] {
     const ci = this.filtroCheckIn();
     return [...new Set(
@@ -51,65 +57,70 @@ export class GestisciStanza implements OnInit, OnDestroy {
         .filter(p => {
           if (p.STATO?.toLowerCase() === 'cancellata') return false;
           if (!p.CHECK_OUT) return false;
-          const co = String(p.CHECK_OUT).slice(0, 10);
+          const co = this.toDateStr(p.CHECK_OUT);
           return !ci || co > ci;
         })
-        .map(p => String(p.CHECK_OUT).slice(0, 10))
+        .map(p => this.toDateStr(p.CHECK_OUT))
     )].sort();
   }
 
   onFiltroCheckInChange(): void {
-    // Resetta check-out se non è più successivo al check-in
     if (this.filtroCheckOut() && this.filtroCheckIn() &&
         this.filtroCheckOut() <= this.filtroCheckIn()) {
       this.filtroCheckOut.set('');
     }
   }
 
-  // ── Gruppi stanze per il filtro attivo ────────────────────────
+  // ── Verifica sovrapposizione (string YYYY-MM-DD, hotel convention) ─
+  private haConflitto(
+    ciSel: string, coSel: string,
+    pCiRaw: any, pCoRaw: any
+  ): boolean {
+    const pCi = this.toDateStr(pCiRaw);
+    const pCo = this.toDateStr(pCoRaw);
+    if (!pCi || !pCo) return false;
+    // Overlap: [ciSel, coSel) ∩ [pCi, pCo) ≠ ∅
+    return ciSel < pCo && coSel > pCi;
+  }
 
-  /** Stanze che hanno una prenotazione attiva che si sovrappone al periodo */
+  // ── Gruppi stanze (attivi solo col filtro) ────────────────────
+
+  /** Stanze che hanno prenotazioni attive sovrapposte al periodo */
   get stanzeOccupatePeriodo(): stanza[] {
     if (!this.filtroAttivo) return [];
-    const ci = new Date(this.filtroCheckIn());
-    const co = new Date(this.filtroCheckOut());
+    const ci = this.filtroCheckIn();
+    const co = this.filtroCheckOut();
     return this.stanze().filter(s => {
       if (s.STATO?.toLowerCase() === 'manutenzione') return false;
       return this.prenotazioni().some(p => {
-        if (p.IDSTANZA !== s.IDSTANZA) return false;
+        if (+p.IDSTANZA !== s.IDSTANZA) return false;           // ← cast numerico
         if (p.STATO?.toLowerCase() === 'cancellata') return false;
-        const pCi = p.CHECK_IN  ? new Date(p.CHECK_IN)  : null;
-        const pCo = p.CHECK_OUT ? new Date(p.CHECK_OUT) : null;
-        if (!pCi || !pCo) return false;
-        return ci < pCo && co > pCi;
+        return this.haConflitto(ci, co, p.CHECK_IN, p.CHECK_OUT);
       });
     });
   }
 
-  /** Stanze senza conflitti di prenotazione nel periodo selezionato */
+  /** Stanze libere nel periodo (no sovrapposizioni, no manutenzione) */
   get stanzeDisponibiliPeriodo(): stanza[] {
     if (!this.filtroAttivo) return [];
-    const ci = new Date(this.filtroCheckIn());
-    const co = new Date(this.filtroCheckOut());
+    const ci = this.filtroCheckIn();
+    const co = this.filtroCheckOut();
     return this.stanze().filter(s => {
       if (s.STATO?.toLowerCase() === 'manutenzione') return false;
       return !this.prenotazioni().some(p => {
-        if (p.IDSTANZA !== s.IDSTANZA) return false;
+        if (+p.IDSTANZA !== s.IDSTANZA) return false;
         if (p.STATO?.toLowerCase() === 'cancellata') return false;
-        const pCi = p.CHECK_IN  ? new Date(p.CHECK_IN)  : null;
-        const pCo = p.CHECK_OUT ? new Date(p.CHECK_OUT) : null;
-        if (!pCi || !pCo) return false;
-        return ci < pCo && co > pCi;
+        return this.haConflitto(ci, co, p.CHECK_IN, p.CHECK_OUT);
       });
     });
   }
 
-  /** Stanze in manutenzione (indipendente dal filtro date) */
+  /** Stanze in manutenzione (sempre, indipendente dal periodo) */
   get stanzeInManutenzione(): stanza[] {
     return this.stanze().filter(s => s.STATO?.toLowerCase() === 'manutenzione');
   }
 
-  // ── Elenco generale (solo ricerca testuale, nessun filtro date) ─
+  // ── Elenco generale con sola ricerca testuale ─────────────────
   get stanzeFiltrate(): stanza[] {
     const q = this.ricerca().trim().toLowerCase();
     if (!q) return this.stanze();
@@ -125,7 +136,6 @@ export class GestisciStanza implements OnInit, OnDestroy {
   modaleModalita = signal<'crea' | 'modifica'>('crea');
   formError      = signal('');
   invio          = signal(false);
-
   stanzaForm: Partial<stanza> = {};
 
   // ── Conferma eliminazione ────────────────────────────────────
@@ -133,7 +143,7 @@ export class GestisciStanza implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.caricaStanze();
-    // Auto-refresh ogni 60s per rispecchiare le prenotazioni effettuate
+    // Auto-refresh ogni 60s: rispecchia prenotazioni effettuate altrove
     this.refreshSub = interval(60000).subscribe(() => this.caricaStanze());
   }
 
@@ -162,12 +172,9 @@ export class GestisciStanza implements OnInit, OnDestroy {
   apriModaleCreazione(): void {
     this.modaleModalita.set('crea');
     this.stanzaForm = {
-      DESCRIZIONE: '',
-      DIMENSIONE:  '',
-      CAPACITA:    undefined,
-      COSTO:       undefined,
-      NOTE:        '',
-      IMMAGINE:    ''
+      DESCRIZIONE: '', DIMENSIONE: '',
+      CAPACITA: undefined, COSTO: undefined,
+      NOTE: '', IMMAGINE: ''
     };
     this.formError.set('');
     this.modaleAperto.set(true);
@@ -186,77 +193,45 @@ export class GestisciStanza implements OnInit, OnDestroy {
     this.formError.set('');
   }
 
-  // ── Salvataggio (crea o modifica) ────────────────────────────
+  // ── Salvataggio ───────────────────────────────────────────────
   salvaStanza(form: NgForm): void {
     this.formError.set('');
-
-    if (form.invalid) {
-      this.formError.set('Compila tutti i campi obbligatori.');
-      return;
-    }
-
+    if (form.invalid) { this.formError.set('Compila tutti i campi obbligatori.'); return; }
     this.invio.set(true);
 
-    if (this.modaleModalita() === 'crea') {
-      this.stanzaServices.addStanza(this.stanzaForm).subscribe({
-        next: (lista) => {
-          this.stanze.set(lista);
-          this.invio.set(false);
-          this.chiudiModale();
-        },
-        error: (err) => {
-          console.error('Errore creazione stanza', err);
-          this.formError.set(this.estraiMessaggioErrore(err, 'creazione'));
-          this.invio.set(false);
-        }
-      });
-    } else {
-      this.stanzaServices.aggiornaStanza(this.stanzaForm as stanza).subscribe({
-        next: (lista) => {
-          this.stanze.set(lista);
-          this.invio.set(false);
-          this.chiudiModale();
-        },
-        error: (err) => {
-          console.error('Errore aggiornamento stanza', err);
-          this.formError.set(this.estraiMessaggioErrore(err, 'aggiornamento'));
-          this.invio.set(false);
-        }
-      });
-    }
+    const obs = this.modaleModalita() === 'crea'
+      ? this.stanzaServices.addStanza(this.stanzaForm)
+      : this.stanzaServices.aggiornaStanza(this.stanzaForm as stanza);
+
+    obs.subscribe({
+      next: (lista) => { this.stanze.set(lista); this.invio.set(false); this.chiudiModale(); },
+      error: (err) => {
+        console.error('Errore salvataggio stanza', err);
+        this.formError.set(this.estraiMessaggio(err, this.modaleModalita() === 'crea' ? 'creazione' : 'aggiornamento'));
+        this.invio.set(false);
+      }
+    });
   }
 
-  private estraiMessaggioErrore(err: any, azione: string): string {
-    const dettaglio =
+  private estraiMessaggio(err: any, azione: string): string {
+    const det =
       (typeof err?.error === 'string' && err.error) ||
-      err?.error?.message ||
-      err?.error?.error ||
-      err?.message ||
-      '';
-    const status = err?.status ? ` (HTTP ${err.status})` : '';
-    return dettaglio
-      ? `Errore durante l'${azione} della stanza${status}: ${dettaglio}`
-      : `Errore durante l'${azione} della stanza${status}.`;
+      err?.error?.message || err?.error?.error || err?.message || '';
+    const s = err?.status ? ` (HTTP ${err.status})` : '';
+    return det
+      ? `Errore durante l'${azione} della stanza${s}: ${det}`
+      : `Errore durante l'${azione} della stanza${s}.`;
   }
 
   // ── Eliminazione ──────────────────────────────────────────────
-  chiediConfermaEliminazione(s: stanza): void {
-    this.eliminaTarget.set(s);
-  }
-
-  annullaEliminazione(): void {
-    this.eliminaTarget.set(null);
-  }
+  chiediConfermaEliminazione(s: stanza): void { this.eliminaTarget.set(s); }
+  annullaEliminazione():                 void { this.eliminaTarget.set(null); }
 
   confermaEliminazione(): void {
-    const target = this.eliminaTarget();
-    if (!target) return;
-
-    this.stanzaServices.eliminaStanza(target.IDSTANZA).subscribe({
-      next: (lista) => {
-        this.stanze.set(lista);
-        this.eliminaTarget.set(null);
-      },
+    const t = this.eliminaTarget();
+    if (!t) return;
+    this.stanzaServices.eliminaStanza(t.IDSTANZA).subscribe({
+      next: (lista) => { this.stanze.set(lista); this.eliminaTarget.set(null); },
       error: (err) => {
         console.error('Errore eliminazione stanza', err);
         this.eliminaTarget.set(null);
@@ -268,6 +243,8 @@ export class GestisciStanza implements OnInit, OnDestroy {
   // ── Utilità ───────────────────────────────────────────────────
   formatData(d: string): string {
     if (!d) return '—';
-    return new Date(d).toLocaleDateString('it-IT');
+    // Parso dalla stringa YYYY-MM-DD evitando timezone shift
+    const [y, m, g] = d.split('-').map(Number);
+    return new Date(y, m - 1, g).toLocaleDateString('it-IT');
   }
 }
