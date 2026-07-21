@@ -8,6 +8,7 @@ import { GestisciStaff } from './gestisci-staff/gestisci-staff';
 import { GestisciStanza } from './gestisci-stanza/gestisci-stanza';
 import {GestisciPrenotazione } from './gestisci-prenotazione/gestisci-prenotazione';
 import { GestisciServizi } from './gestisci-servizi/gestisci-servizi';
+import { Pagamento } from './pagamento/pagamento';
 import {Home} from './home/home';
 import { Login } from './login/login';
 import { Register } from './registrazione/register';
@@ -21,6 +22,7 @@ export const routes: Routes = [
   { path: 'login', component: Login },
   { path: 'registrazione', component: Register},
   { path: '', component: Home },
+  { path: 'pagamento', component: Pagamento },
   {
     path: 'amministrazione',
     canActivate: [adminGuard],
