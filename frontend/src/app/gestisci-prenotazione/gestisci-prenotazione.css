@@ -403,3 +403,12 @@
   .modal-header,
   .modal-footer       { padding-left: 16px; padding-right: 16px; }
 }
+
+/* ── Date error ── */
+.date-error {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.78rem;
+  color: #c0392b;
+  font-weight: 500;
+}
