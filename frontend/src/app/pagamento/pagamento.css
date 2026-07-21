@@ -5,7 +5,6 @@
   min-height: 100%;
 }
 
-/* ── Header ── */
 .pagamento-header {
   background: linear-gradient(135deg, var(--navy-950) 0%, var(--navy-800) 100%);
   padding: 52px 40px 44px;
@@ -15,7 +14,6 @@
 .pagamento-header .divider-gold { margin: 0 auto 12px; }
 .pagamento-header p { color: rgba(255,255,255,0.55); font-size: 0.92rem; }
 
-/* ── Card ── */
 .pagamento-card {
   max-width: 480px;
   margin: 52px auto 72px;
@@ -26,7 +24,6 @@
   padding: 36px;
 }
 
-/* ── Importo ── */
 .caparra-box {
   background: var(--navy-50);
   border: 1px solid var(--navy-100);
@@ -47,17 +44,12 @@
 }
 .caparra-box small { font-size: 0.75rem; color: var(--ink-faint); }
 
-/* ── Form ── */
 .field-group { display: flex; flex-direction: column; margin-bottom: 16px; }
 .field-group label { font-size: 0.82rem; font-weight: 600; color: var(--navy-800); margin-bottom: 6px; }
 
 .fields-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; }
 
-.field-error {
-  color: #d33;
-  font-size: 0.75rem;
-  margin-top: 4px;
-}
+.field-error { color: #d33; font-size: 0.75rem; margin-top: 4px; }
 input.invalid { border-color: #d33; }
 
 .pagamento-error {
@@ -70,7 +62,6 @@ input.invalid { border-color: #d33; }
   margin-bottom: 14px;
 }
 
-/* ── Azioni ── */
 .pagamento-actions {
   display: flex;
   flex-direction: column;
@@ -79,7 +70,17 @@ input.invalid { border-color: #d33; }
 }
 .pagamento-actions button { width: 100%; justify-content: center; }
 
-/* ── Loading ── */
+.carte-loghi {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 20px;
+  font-size: 2rem;
+  color: var(--navy-300);
+}
+.carte-loghi span { transition: color var(--fast); cursor: default; }
+.carte-loghi span:hover { color: var(--navy-600); }
+
 .pagamento-loading {
   max-width: 480px;
   margin: 80px auto;
@@ -95,11 +96,8 @@ input.invalid { border-color: #d33; }
   margin: 0 auto 20px;
   animation: spin 0.8s linear infinite;
 }
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
+@keyframes spin { to { transform: rotate(360deg); } }
 
-/* ── Successo ── */
 .pagamento-successo {
   max-width: 480px;
   margin: 80px auto;

@@ -32,7 +32,7 @@
         <label for="numeroCarta">Numero carta</label>
         <input type="text" id="numeroCarta" name="numeroCarta"
           [(ngModel)]="numeroCarta" required minlength="16" maxlength="16"
-          placeholder="1234 5678 9012 3456"
+          placeholder="1234567890123456"
           #numeroCartaField="ngModel"
           [class.invalid]="numeroCartaField.invalid && numeroCartaField.touched">
         @if (numeroCartaField.invalid && numeroCartaField.touched) {
@@ -78,6 +78,13 @@
         </button>
       </div>
 
+      <div class="carte-loghi">
+        <span title="Visa"><i class="fa-brands fa-cc-visa"></i></span>
+        <span title="Mastercard"><i class="fa-brands fa-cc-mastercard"></i></span>
+        <span title="American Express"><i class="fa-brands fa-cc-amex"></i></span>
+        <span title="PayPal"><i class="fa-brands fa-cc-paypal"></i></span>
+      </div>
+
     </form>
   </div>
   }
@@ -92,9 +99,9 @@
   @if (stato === 'successo') {
   <div class="pagamento-successo">
     <div class="success-icon">✓</div>
-    <h2>Pagamento effettuato!</h2>
-    <p>La tua prenotazione è stata confermata.</p>
-    <p class="success-redirect">Verrai reindirizzato alla home tra pochi secondi...</p>
+    <h2>Pagamento confermato!</h2>
+    <p>La tua prenotazione è stata registrata con successo.</p>
+    <p class="success-redirect">Sarai reindirizzato alla home tra {{ conto }}...</p>
   </div>
   }
 

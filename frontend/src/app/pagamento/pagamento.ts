@@ -16,7 +16,6 @@ export class Pagamento implements OnInit {
   caparra = 0;
   prenotazionePending: prenotazione | null = null;
 
-  // Form carta
   nomeTitolare = '';
   numeroCarta  = '';
   scadenza     = '';
@@ -24,6 +23,7 @@ export class Pagamento implements OnInit {
 
   stato: 'form' | 'loading' | 'successo' | 'errore' = 'form';
   erroreMsg = '';
+  conto = 3;
 
   constructor(
     private router: Router,
@@ -48,21 +48,27 @@ export class Pagamento implements OnInit {
 
     this.stato = 'loading';
 
-    // Simulazione pagamento (1.5s)
     setTimeout(() => {
       this.prenotazioneServices.postUtente(this.prenotazionePending!).subscribe({
         next: () => {
           sessionStorage.removeItem('prenotazione_pending');
           sessionStorage.removeItem('caparra');
           this.stato = 'successo';
-          setTimeout(() => this.router.navigate(['/']), 3000);
+
+          const interval = setInterval(() => {
+            this.conto--;
+            if (this.conto === 0) {
+              clearInterval(interval);
+              this.router.navigate(['/']);
+            }
+          }, 1000);
         },
         error: () => {
           this.stato = 'errore';
           this.erroreMsg = 'Errore durante la conferma della prenotazione. Riprova.';
         }
       });
-    }, 1500);
+    }, 800);
   }
 
   annulla(): void {
