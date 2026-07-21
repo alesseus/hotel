@@ -5,8 +5,6 @@ import com.geak.hotel.Dto.LoginResponse;
 import com.geak.hotel.Model.Cliente;
 import com.geak.hotel.Repository.ClientiRepo;
 
-import jakarta;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
