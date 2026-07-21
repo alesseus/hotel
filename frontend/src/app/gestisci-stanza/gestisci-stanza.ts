@@ -49,6 +49,11 @@ export class GestisciStanza implements OnInit {
   // Stanza in creazione/modifica sul form
   stanzaForm: Partial<stanza> = {};
 
+  // Stati riconosciuti dal <select>: se lo STATO salvato in DB non è
+  // esattamente uno di questi (es. spazi, maiuscole diverse, valore legacy),
+  // il template aggiunge un'opzione extra per non invalidare il form.
+  readonly statiValidi = ['disponibile', 'occupata', 'manutenzione'];
+
   // ── Conferma eliminazione ────────────────────────────────────
   eliminaTarget = signal<stanza | null>(null);
 
@@ -120,7 +125,7 @@ export class GestisciStanza implements OnInit {
       CAPACITA:    undefined,
       COSTO:       undefined,
       NOTE:        '',
-      STATO:       'Libera',
+      STATO:       'disponibile',
       IMMAGINE:    ''
     };
     this.formError.set('');
@@ -160,7 +165,7 @@ export class GestisciStanza implements OnInit {
         },
         error: (err) => {
           console.error('Errore creazione stanza', err);
-          this.formError.set('Errore durante la creazione della stanza.');
+          this.formError.set(this.estraiMessaggioErrore(err, 'creazione'));
           this.invio.set(false);
         }
       });
@@ -173,11 +178,27 @@ export class GestisciStanza implements OnInit {
         },
         error: (err) => {
           console.error('Errore aggiornamento stanza', err);
-          this.formError.set('Errore durante l\'aggiornamento della stanza.');
+          this.formError.set(this.estraiMessaggioErrore(err, 'aggiornamento'));
           this.invio.set(false);
         }
       });
     }
+  }
+
+  // Prova a recuperare il messaggio d'errore reale restituito dal backend,
+  // così da capire davvero perché il salvataggio fallisce (es. validazione,
+  // campo mancante, ecc.) invece di mostrare sempre un messaggio generico.
+  private estraiMessaggioErrore(err: any, azione: string): string {
+    const dettaglio =
+      (typeof err?.error === 'string' && err.error) ||
+      err?.error?.message ||
+      err?.error?.error ||
+      err?.message ||
+      '';
+    const status = err?.status ? ` (HTTP ${err.status})` : '';
+    return dettaglio
+      ? `Errore durante l'${azione} della stanza${status}: ${dettaglio}`
+      : `Errore durante l'${azione} della stanza${status}.`;
   }
 
   // ── Eliminazione ──────────────────────────────────────────────
