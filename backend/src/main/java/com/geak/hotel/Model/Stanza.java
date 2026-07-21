@@ -15,19 +15,21 @@ public class Stanza {
 	private double COSTO;
 	private String DESCRIZIONE;
 	private String STATO;
+	private String IMMAGINE;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long IDSTANZA;
 
 	public Stanza(String NOTE, String DIMENSIONE, int CAPACITA, double COSTO, String DESCRIZIONE, String STATO,
-			long IDSTANZA) {
+			String IMMAGINE, long IDSTANZA) {
 		setNOTE(NOTE);
 		setDIMENSIONE(DIMENSIONE);
 		setCAPACITA(CAPACITA);
 		setCOSTO(COSTO);
 		setDESCRIZIONE(DESCRIZIONE);
 		setSTATO(STATO);
+		setIMMAGINE(IMMAGINE);
 		setIDSTANZA(IDSTANZA);
 	}
 
@@ -80,6 +82,14 @@ public class Stanza {
 
 	public void setSTATO(String STATO) {
 		this.STATO = STATO;
+	}
+	
+	public String getIMMAGINE() {
+		return IMMAGINE;
+	}
+
+	public void setIMMAGINE(String iMMAGINE) {
+		IMMAGINE = iMMAGINE;
 	}
 
 	public long getIDSTANZA() {
