@@ -24,6 +24,34 @@
       </div>
     </div>
 
+    <!-- ── Filtro disponibilità per date ── -->
+    <div class="date-filter-bar">
+      <div class="date-filter-group">
+        <label for="fci">Check-in</label>
+        <input id="fci" type="date"
+               [value]="filtroCheckIn()"
+               (change)="filtroCheckIn.set($any($event.target).value); onFiltroCheckInChange()">
+      </div>
+      <div class="date-filter-group">
+        <label for="fco">Check-out</label>
+        <input id="fco" type="date"
+               [value]="filtroCheckOut()"
+               [min]="filtroCheckOutMin"
+               (change)="filtroCheckOut.set($any($event.target).value)">
+      </div>
+      @if (filtroCheckIn() || filtroCheckOut()) {
+        <button class="btn-clear-dates" type="button"
+                (click)="filtroCheckIn.set(''); filtroCheckOut.set('')">
+          ✕ Rimuovi filtro
+        </button>
+      }
+      @if (filtroCheckIn() && filtroCheckOut()) {
+        <span class="date-filter-info">
+          Stanze disponibili: <strong>{{ stanzeFiltrate.length }}</strong>
+        </span>
+      }
+    </div>
+
     @if (erroreCaricamento()) {
       <div class="form-error-banner">{{ erroreCaricamento() }}</div>
     }

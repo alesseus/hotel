@@ -185,3 +185,69 @@ td {
 @media (max-width: 640px) {
   .modal-body .fields-2 { grid-template-columns: 1fr; }
 }
+/* ── Date filter bar ── */
+.date-filter-bar {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding: 14px 16px;
+  background: #f8f9fc;
+  border: 1px solid #e2e6f0;
+  border-radius: 8px;
+}
+
+.date-filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.date-filter-group label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #1a2a5e;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+.date-filter-group input[type="date"] {
+  padding: 7px 10px;
+  border: 1px solid #cdd3e0;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  color: #1a2a5e;
+  background: #fff;
+  cursor: pointer;
+}
+
+.date-filter-group input[type="date"]:focus {
+  outline: none;
+  border-color: #1a2a5e;
+}
+
+.btn-clear-dates {
+  padding: 7px 14px;
+  background: transparent;
+  border: 1px solid #cdd3e0;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  color: #666;
+  cursor: pointer;
+  transition: background .15s;
+}
+
+.btn-clear-dates:hover {
+  background: #f0f0f0;
+}
+
+.date-filter-info {
+  font-size: 0.85rem;
+  color: #555;
+  margin-left: auto;
+}
+
+.date-filter-info strong {
+  color: #1a2a5e;
+}

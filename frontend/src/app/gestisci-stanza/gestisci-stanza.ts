@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { FormsModule, NgForm } from '@angular/forms';
-import { StanzaServices } from './Services/services';
+import { StanzaServices, prenotazioneMin } from './Services/services';
 import { stanza } from './interfacce/stanza_i';
 
 @Component({
@@ -17,9 +17,28 @@ export class GestisciStanza implements OnInit {
 
   // ── Dati ──────────────────────────────────────────────────────
   stanze            = signal<stanza[]>([]);
+  prenotazioni      = signal<prenotazioneMin[]>([]);
   ricerca           = signal('');
   caricamento       = signal(true);
   erroreCaricamento = signal('');
+
+  // ── Filtro disponibilità per date ─────────────────────────────
+  filtroCheckIn  = signal('');
+  filtroCheckOut = signal('');
+
+  get filtroCheckOutMin(): string {
+    const ci = this.filtroCheckIn();
+    if (!ci) return '';
+    const d = new Date(ci);
+    d.setDate(d.getDate() + 1);
+    return d.toISOString().slice(0, 10);
+  }
+
+  onFiltroCheckInChange(): void {
+    if (this.filtroCheckOut() && this.filtroCheckIn() && this.filtroCheckOut() <= this.filtroCheckIn()) {
+      this.filtroCheckOut.set('');
+    }
+  }
 
   // ── Modale ────────────────────────────────────────────────────
   modaleAperto   = signal(false);
@@ -41,27 +60,55 @@ export class GestisciStanza implements OnInit {
     this.caricamento.set(true);
     this.erroreCaricamento.set('');
     this.stanzaServices.getStanze().subscribe({
-      next: (data) => {
-        this.stanze.set(data);
-        this.caricamento.set(false);
-      },
+      next: (data) => { this.stanze.set(data); this.caricamento.set(false); },
       error: (err) => {
         console.error('Errore caricamento stanze', err);
         this.erroreCaricamento.set('Impossibile caricare le stanze. Riprova più tardi.');
         this.caricamento.set(false);
       }
     });
+    this.stanzaServices.getPrenotazioni().subscribe({
+      next: (data) => this.prenotazioni.set(data),
+      error: (err) => console.error('Errore caricamento prenotazioni', err)
+    });
   }
 
-  // ── Filtro ricerca ────────────────────────────────────────────
+  // ── Filtro ricerca + disponibilità per date ───────────────────
   get stanzeFiltrate(): stanza[] {
-    const q = this.ricerca().trim().toLowerCase();
-    if (!q) return this.stanze();
-    return this.stanze().filter(s =>
-      (s.DESCRIZIONE ?? '').toLowerCase().includes(q) ||
-      (s.DIMENSIONE  ?? '').toLowerCase().includes(q) ||
-      String(s.IDSTANZA).includes(q)
-    );
+    const q  = this.ricerca().trim().toLowerCase();
+    const ci = this.filtroCheckIn();
+    const co = this.filtroCheckOut();
+
+    return this.stanze().filter(s => {
+      // Filtro testo
+      if (q && !(
+        (s.DESCRIZIONE ?? '').toLowerCase().includes(q) ||
+        (s.DIMENSIONE  ?? '').toLowerCase().includes(q) ||
+        String(s.IDSTANZA).includes(q)
+      )) return false;
+
+      // Filtro date: se entrambe le date sono inserite
+      if (ci && co && co > ci) {
+        const nuovaCi = new Date(ci);
+        const nuovaCo = new Date(co);
+
+        // Stanza in manutenzione: sempre esclusa
+        if (s.STATO?.toLowerCase() === 'manutenzione') return false;
+
+        // Controlla sovrapposizione con prenotazioni attive
+        const conflitto = this.prenotazioni().some(p => {
+          if (p.IDSTANZA !== s.IDSTANZA) return false;
+          if (p.STATO?.toLowerCase() === 'cancellata') return false;
+          const pCi = p.CHECK_IN  ? new Date(p.CHECK_IN)  : null;
+          const pCo = p.CHECK_OUT ? new Date(p.CHECK_OUT) : null;
+          if (!pCi || !pCo) return false;
+          return nuovaCi < pCo && nuovaCo > pCi;
+        });
+        return !conflitto;
+      }
+
+      return true;
+    });
   }
 
   // ── Apertura modale ───────────────────────────────────────────

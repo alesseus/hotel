@@ -3,6 +3,13 @@ import { inject, Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { stanza } from "../interfacce/stanza_i";
 
+export interface prenotazioneMin {
+  IDSTANZA: number;
+  CHECK_IN: string;
+  CHECK_OUT: string;
+  STATO: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -31,5 +38,9 @@ export class StanzaServices {
 
   eliminaStanza(id: number): Observable<stanza[]> {
     return this.http.delete<stanza[]>(`${this.API}/elimina/${id}`);
+  }
+
+  getPrenotazioni(): Observable<prenotazioneMin[]> {
+    return this.http.get<prenotazioneMin[]>('https://hotel-4n9x.onrender.com/prenotazione/lista');
   }
 }
