@@ -83,8 +83,10 @@
                 <td>€{{ s.COSTO }}</td>
                 <td>{{ s.DIMENSIONE }}</td>
                 <td>
-                  <span class="badge" [class.badge-ok]="s.STATO === 'Libera'"
-                                       [class.badge-no]="s.STATO !== 'Libera'">
+                  <span class="badge"
+                        [class.badge-ok]="s.STATO === 'Libera'"
+                        [class.badge-warn]="s.STATO === 'Manutenzione'"
+                        [class.badge-no]="s.STATO === 'Occupata'">
                     {{ s.STATO }}
                   </span>
                 </td>
@@ -152,6 +154,10 @@
               <option value="Occupata">Occupata</option>
               <option value="Manutenzione">In manutenzione</option>
             </select>
+
+            <label for="immagine">URL Immagine</label>
+            <input type="text" id="immagine" name="immagine"
+                   [(ngModel)]="stanzaForm.IMMAGINE" placeholder="https://...">
 
             <label for="note">Note</label>
             <textarea id="note" name="note" rows="3"
