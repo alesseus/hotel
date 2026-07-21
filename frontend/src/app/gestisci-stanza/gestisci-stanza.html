@@ -70,9 +70,9 @@
       <div class="date-filter-summary">
         Periodo: <strong>{{ formatData(filtroCheckIn()) }}</strong> → <strong>{{ formatData(filtroCheckOut()) }}</strong>
         &nbsp;·&nbsp;
-        <span class="summary-pill summary-pill-red">🔴 Occupate: {{ stanzeOccupatePeriodo.length }}</span>
-        <span class="summary-pill summary-pill-green">🟢 Disponibili: {{ stanzeDisponibiliPeriodo.length }}</span>
-        <span class="summary-pill summary-pill-yellow">🟡 Manutenzione: {{ stanzeInManutenzione.length }}</span>
+        <span class="summary-pill summary-pill-red"> Occupate: {{ stanzeOccupatePeriodo.length }}</span>
+        <span class="summary-pill summary-pill-green"> Disponibili: {{ stanzeDisponibiliPeriodo.length }}</span>
+        <span class="summary-pill summary-pill-yellow"> Manutenzione: {{ stanzeInManutenzione.length }}</span>
       </div>
       }
     </div>
@@ -89,7 +89,7 @@
     <!-- Stanze Occupate -->
     <div class="gruppo-stanze">
       <div class="gruppo-header gruppo-header-red">
-        <span class="gruppo-icon">🔴</span>
+      
         <h3>Stanze Occupate</h3>
         <span class="gruppo-count">{{ stanzeOccupatePeriodo.length }}</span>
       </div>
@@ -125,7 +125,7 @@
     <!-- Stanze Disponibili -->
     <div class="gruppo-stanze">
       <div class="gruppo-header gruppo-header-green">
-        <span class="gruppo-icon">🟢</span>
+        
         <h3>Stanze Disponibili</h3>
         <span class="gruppo-count">{{ stanzeDisponibiliPeriodo.length }}</span>
       </div>
@@ -161,7 +161,7 @@
     <!-- Stanze in Manutenzione -->
     <div class="gruppo-stanze">
       <div class="gruppo-header gruppo-header-yellow">
-        <span class="gruppo-icon">🟡</span>
+        
         <h3>Stanze in Manutenzione</h3>
         <span class="gruppo-count">{{ stanzeInManutenzione.length }}</span>
       </div>
@@ -244,9 +244,7 @@
 
   </div>
 
-  <!-- ══════════════════════════════════════════════════════════ -->
-  <!-- MODALE — crea / modifica stanza (senza campo STATO)        -->
-  <!-- ══════════════════════════════════════════════════════════ -->
+
   @if (modaleAperto()) {
   <div class="modal-overlay" (click)="chiudiModale()">
     <div class="modal-box" (click)="$event.stopPropagation()">
