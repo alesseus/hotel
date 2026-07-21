@@ -76,14 +76,17 @@ export class Pagamento implements OnInit {
           sessionStorage.removeItem('prenotazione_pending');
           sessionStorage.removeItem('caparra');
           this.stato = 'successo';
+          this.conto = 3;
 
-          const interval = setInterval(() => {
-            this.conto--;
-            if (this.conto === 0) {
-              clearInterval(interval);
-              this.router.navigate(['/']);
-            }
-          }, 1000);
+          setTimeout(() => {
+            const interval = setInterval(() => {
+              this.conto--;
+              if (this.conto === 0) {
+                clearInterval(interval);
+                this.router.navigate(['/']);
+              }
+            }, 1000);
+          }, 100);
         },
         error: () => {
           this.stato = 'errore';
