@@ -24,7 +24,7 @@ export const routes: Routes = [
   { path: 'registrazione', component: Register},
   { path: '', component: Home },
   { path: 'pagamento', component: Pagamento },
-  { path: 'prenotazioni', component: PrenotazioniUtente }
+  { path: 'prenotazioni', component: PrenotazioniUtente },
   {
     path: 'amministrazione',
     canActivate: [adminGuard],
