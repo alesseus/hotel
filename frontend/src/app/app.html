@@ -1,18 +1,23 @@
 <header>
-  <!-- Logo: usa logo.png con filtro CSS per renderlo bianco su sfondo scuro -->
   <a routerLink="/" class="logo-link">
     <img src="assets/images/logo.png" alt="Blue Horizon Hotel" class="logo">
   </a>
 
   <nav>
-    <a routerLink="/"   routerLinkActive="active">Home</a>
+    <a routerLink="/"          routerLinkActive="active">Home</a>
     <a routerLink="/servizi"   routerLinkActive="active">Servizi</a>
     <a routerLink="/storia"    routerLinkActive="active">Storia</a>
     <a routerLink="/dovesiamo" routerLinkActive="active">Come raggiungerci</a>
   </nav>
-  
+
   <a class="btn-hero-ghost" *ngIf="!isLoggedIn" routerLink="/login">Login</a>
-  <a class="btn-hero-ghost" *ngIf="isLoggedIn" (click)="logout()">Logout</a>
+
+  <ng-container *ngIf="isLoggedIn">
+    <a class="btn-hero-ghost" *ngIf="isAdmin"  routerLink="/amministrazione">Amministrazione</a>
+    <a class="btn-hero-ghost" *ngIf="!isAdmin" routerLink="/prenotazioni">Le mie prenotazioni</a>
+    <a class="btn-hero-ghost" (click)="logout()">Logout</a>
+  </ng-container>
+
   <button class="btn-prenota" routerLink="/prenotazione">Prenota</button>
 </header>
 
@@ -34,4 +39,3 @@
     <span>info@bluehorizonhotel.it</span>
   </div>
 </footer>
-
