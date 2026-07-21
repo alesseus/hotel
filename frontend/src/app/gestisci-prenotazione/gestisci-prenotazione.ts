@@ -257,6 +257,8 @@ export class GestisciPrenotazione implements OnInit {
       ...this.form,
       TOTALE: totale,
       IDSERVIZIO: idServizioFirst as any,
+      STATO: this.form.STATO || 'in attesa',
+      SPA: this.form.SPA ?? false,
     };
 
     const obs = this.modalita() === 'crea'
