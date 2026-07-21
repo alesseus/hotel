@@ -68,7 +68,18 @@ export class GestisciPrenotazione implements OnInit {
   get stanzeFiltrate(): stanza[] {
     const ci = this.form.CHECK_IN ? new Date(this.form.CHECK_IN as any) : null;
     const co = this.form.CHECK_OUT ? new Date(this.form.CHECK_OUT as any) : null;
-    if (!ci || !co || co <= ci) return this.stanze();
+
+    // In modifica, la stanza già assegnata a QUESTA prenotazione deve restare
+    // sempre selezionabile: non va esclusa solo perché il suo STATO è
+    // 'Occupata' (spesso proprio a causa di questa stessa prenotazione) o
+    // perché, ricaricando i dati, risulta ancora "in conflitto" con se stessa.
+    const idStanzaCorrente = this.modalita() === 'modifica' ? this.form.IDSTANZA : null;
+
+    if (!ci || !co || co <= ci) {
+      return this.stanze().filter(s =>
+        s.IDSTANZA === idStanzaCorrente || s.STATO?.toLowerCase() !== 'manutenzione'
+      );
+    }
 
     const prenotazioniAttive = this.prenotazioni().filter(p =>
       (p.STATO?.toLowerCase() !== 'cancellata') &&
@@ -76,6 +87,8 @@ export class GestisciPrenotazione implements OnInit {
     );
 
     return this.stanze().filter(s => {
+      if (s.IDSTANZA === idStanzaCorrente) return true;
+
       if (s.STATO?.toLowerCase() === 'manutenzione') return false;
       if (s.STATO?.toLowerCase() === 'occupata') return false;
       const conflitto = prenotazioniAttive.some(p => {

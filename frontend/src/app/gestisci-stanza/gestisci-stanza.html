@@ -150,6 +150,9 @@
 
             <label for="stato">Disponibilità</label>
             <select id="stato" name="stato" [(ngModel)]="stanzaForm.STATO" required>
+              @if (stanzaForm.STATO && !statiValidi.includes(stanzaForm.STATO)) {
+                <option [value]="stanzaForm.STATO">{{ stanzaForm.STATO }} (valore attuale — seleziona uno stato valido)</option>
+              }
               <option value="Libera">Libera</option>
               <option value="Occupata">Occupata</option>
               <option value="Manutenzione">In manutenzione</option>
