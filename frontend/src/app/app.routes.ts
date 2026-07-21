@@ -11,6 +11,7 @@ import { GestisciServizi } from './gestisci-servizi/gestisci-servizi';
 import {Home} from './home/home';
 import { Login } from './login/login';
 import { Register } from './registrazione/register';
+import { adminGuard } from './login/Services/auth.guard';
 
 export const routes: Routes = [
   { path: 'servizi', component: Servizi },
@@ -22,6 +23,7 @@ export const routes: Routes = [
   { path: '', component: Home },
   {
     path: 'amministrazione',
+    canActivate: [adminGuard],
     children: [
       { path: '', component: Amministrazione },
       { path: 'gestiscistaff', component: GestisciStaff },

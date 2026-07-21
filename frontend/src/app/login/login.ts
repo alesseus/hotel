@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from './Services/auth.service';
@@ -9,14 +9,14 @@ import { AuthService } from './Services/auth.service';
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
-export class Login {
+export class Login implements OnInit {
 
-  email        = '';
-  password     = '';
-  loading      = false;
+  email = '';
+  password = '';
+  loading = false;
   errorMessage = '';
 
-  constructor(private router: Router, private authService: AuthService) {}
+  constructor(private router: Router, private authService: AuthService) { }
 
   onSubmit(form: NgForm): void {
     if (form.invalid) return;
@@ -41,4 +41,15 @@ export class Login {
       }
     });
   }
+
+  ngOnInit(): void {
+    if (this.authService.isLoggedIn()) {
+      if (this.authService.isAdmin()) {
+        this.router.navigate(['/amministrazione']);
+      } else {
+        this.router.navigate(['/home']);
+      }
+    }
+  }
+
 }
