@@ -26,7 +26,7 @@ header {
   text-decoration: none;
 }
 .logo {
-  height: 50px;
+  height: 60px;
   width: auto;
   /* logo.png è navy scuro su trasparente:
      brightness(0) → tutto nero, invert(1) → tutto bianco */
