@@ -3,7 +3,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../login/Services/auth.service';
 import { prenotazione } from '../prenotazione/interfacce/prenotazione_i';
 
 @Component({
