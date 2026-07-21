@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.geak.hotel.Model.Prenotazione;
+import com.geak.hotel.Services.EmailService;
 import com.geak.hotel.Services.PrenotazioniSrv;
 
 @RestController
@@ -19,7 +20,8 @@ public class PrenotazioneController {
 
 	@Autowired
 	PrenotazioniSrv PrenotazioneDependency;
-
+	EmailService emailService;
+	
 	@GetMapping("lista")
 	public List<Prenotazione> veditutti() {
 		return PrenotazioneDependency.getAllPrenotazioni();
@@ -40,6 +42,7 @@ public class PrenotazioneController {
 	@RequestMapping(value = "add", method = RequestMethod.POST)
 	public PrenotazioniSrv add(@RequestBody Prenotazione nuova) {
 		PrenotazioneDependency.addPrenotazione(nuova);
+		emailService.inviaConfermaPrenotazione(nuova);
 		return PrenotazioneDependency;
 	}
 
