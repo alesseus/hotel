@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { timeout } from 'rxjs/operators';
 
 export interface LoginResponse {
   token: string;
@@ -17,9 +18,9 @@ export class AuthService {
 
   login(email: string, password: string): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(this.apiUrl, {
-      codice: email,
+      email: email,
       password: password
-    });
+    }).pipe(timeout(15000));
   }
 
   salvaSessione(response: LoginResponse): void {

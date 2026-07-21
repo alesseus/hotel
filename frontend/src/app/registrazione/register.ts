@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { timeout } from 'rxjs/operators';
 import {
   AbstractControl,
   FormBuilder,
@@ -104,18 +105,20 @@ export class Register implements OnInit {
       dataNascita,
     };
 
-    this.http.post<{ message: string }>(this.apiUrl, payload).subscribe({
-      next: () => {
-        this.isLoading      = false;
-        this.successMessage = "Registrazione completata! Controlla la tua email per confermare l'account.";
-        this.registerForm.reset();
-      },
-      error: (err) => {
-        this.isLoading    = false;
-        this.errorMessage = err?.status === 409
-          ? 'Questa email è già registrata.'
-          : 'Si è verificato un errore durante la registrazione. Riprova più tardi.';
-      }
-    });
+    this.http.post<{ message: string }>(this.apiUrl, payload)
+      .pipe(timeout(15000))
+      .subscribe({
+        next: () => {
+          this.isLoading      = false;
+          this.successMessage = "Registrazione completata! Controlla la tua email per confermare l'account.";
+          this.registerForm.reset();
+        },
+        error: (err) => {
+          this.isLoading    = false;
+          this.errorMessage = err?.status === 409
+            ? 'Questa email è già registrata.'
+            : 'Si è verificato un errore durante la registrazione. Riprova più tardi.';
+        }
+      });
   }
 }
