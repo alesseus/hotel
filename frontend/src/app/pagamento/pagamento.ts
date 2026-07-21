@@ -74,7 +74,8 @@ export class Pagamento implements OnInit {
 
     setTimeout(() => {
       this.prenotazioneServices.postUtente(this.prenotazionePending!).subscribe({
-        next: () => {
+        next: (res) => {
+          console.log('SUCCESS', res);
           sessionStorage.removeItem('prenotazione_pending');
           sessionStorage.removeItem('caparra');
           this.stato = 'successo';
@@ -90,7 +91,8 @@ export class Pagamento implements OnInit {
             }
           }, 1000);
         },
-        error: () => {
+        error: (err) => {
+          console.log('ERROR', err);
           this.stato = 'errore';
           this.erroreMsg = 'Errore durante la conferma della prenotazione. Riprova.';
           this.cdr.detectChanges();
