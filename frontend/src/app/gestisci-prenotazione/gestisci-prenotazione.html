@@ -195,56 +195,81 @@
               </div>
             }
 
-            <!-- ── Riga 4: Servizio select / Totale ── -->
-            <div class="form-group">
-              <label for="f-servizio">Servizio <span class="required">*</span></label>
-              <select id="f-servizio" name="IDSERVIZIO"
-                      [(ngModel)]="form.IDSERVIZIO"
-                      (ngModelChange)="onServizioChange($event)"
-                      required>
-                <option [ngValue]="null">-- Seleziona servizio --</option>
-                @for (sv of servizi(); track sv.IDSERVIZIO) {
-                  <option [ngValue]="sv.IDSERVIZIO">
-                    #{{ sv.IDSERVIZIO }} — {{ sv.NOTE }} | €{{ sv.COSTO }}
-                  </option>
-                }
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label for="f-totale">Totale (€) <span class="required">*</span></label>
-              <input id="f-totale" type="number" name="TOTALE"
-                     [(ngModel)]="form.TOTALE" required
-                     placeholder="0.00" step="0.01" min="0">
-            </div>
-
-            <!-- ── Scheda dettaglio servizio (riga intera, condizionale) ── -->
-            @if (servizioSelezionato()) {
-              <div class="detail-card full-width">
-                <div class="detail-card-grid">
-                  <div class="detail-row">
-                    <span class="detail-label">Note</span>
-                    <span>{{ servizioSelezionato()!.NOTE }}</span>
-                  </div>
-                  <div class="detail-row">
-                    <span class="detail-label">Costo</span>
-                    <span>€ {{ servizioSelezionato()!.COSTO | number:'1.2-2' }}</span>
-                  </div>
-                </div>
+            <!-- ── Servizi multipli (riga intera) ── -->
+            <div class="form-group full-width">
+              <div class="servizi-header">
+                <label>Servizi aggiuntivi</label>
+                <button class="btn-add-service" type="button" (click)="aggiungiServizio(); aggiornaFormTotale()">
+                  + Aggiungi servizio
+                </button>
               </div>
-            }
+
+              @if (serviziSelezionati().length === 0) {
+                <p class="servizi-empty">Nessun servizio aggiunto. Clicca "+ Aggiungi servizio" per includerne uno.</p>
+              }
+
+              @for (row of serviziRows; track row.index) {
+                <div class="servizio-row">
+                  <select class="servizio-select"
+                          [name]="'servizio_' + row.index"
+                          [ngModel]="row.idServizio"
+                          (ngModelChange)="aggiornaServizio(row.index, $event); aggiornaFormTotale()">
+                    <option [ngValue]="null">-- Seleziona servizio --</option>
+                    @for (sv of servizi(); track sv.IDSERVIZIO) {
+                      <option [ngValue]="sv.IDSERVIZIO">
+                        {{ sv.NOTE }} — €{{ sv.COSTO }}
+                      </option>
+                    }
+                  </select>
+
+                  @if (row.idServizio) {
+                    <span class="servizio-costo">
+                      € {{ (servizi() | servizioById: row.idServizio)?.COSTO | number:'1.2-2' }}
+                    </span>
+                  }
+
+                  <button class="btn-remove-service" type="button"
+                          (click)="rimuoviServizio(row.index); aggiornaFormTotale()">
+                    ✕
+                  </button>
+                </div>
+              }
+            </div>
+
+            <!-- ── Totale calcolato dinamicamente (riga intera, read-only) ── -->
+            <div class="form-group full-width">
+              <label>Totale stimato</label>
+              <div class="totale-display">
+                <span class="totale-value">€ {{ totaleCalcolato | number:'1.2-2' }}</span>
+                <span class="totale-hint">
+                  @if (stanzaSelezionata() && form.CHECK_IN && form.CHECK_OUT) {
+                    Stanza €{{ stanzaSelezionata()!.COSTO }}/notte × {{ calcolaNotti(form.CHECK_IN, form.CHECK_OUT) }} notti
+                    @if (serviziSelezionati().length > 0) {
+                      + {{ serviziSelezionati().length }} servizio/i
+                    }
+                  } @else {
+                    Seleziona stanza e date per calcolare il totale
+                  }
+                </span>
+              </div>
+              <input type="hidden" name="TOTALE" [ngModel]="totaleCalcolato">
+            </div>
 
             <!-- ── Riga 5: Check-in / Check-out ── -->
             <div class="form-group">
               <label for="f-checkin">Check-in <span class="required">*</span></label>
               <input id="f-checkin" type="date" name="CHECK_IN"
-                     [(ngModel)]="form.CHECK_IN" required>
+                     [(ngModel)]="form.CHECK_IN"
+                     (ngModelChange)="onDataChange()"
+                     required>
             </div>
 
             <div class="form-group">
               <label for="f-checkout">Check-out <span class="required">*</span></label>
               <input id="f-checkout" type="date" name="CHECK_OUT"
-                     [(ngModel)]="form.CHECK_OUT" required>
+                     [(ngModel)]="form.CHECK_OUT"
+                     (ngModelChange)="onDataChange()"
+                     required>
             </div>
 
             <!-- ── Riga 6: Stato / SPA ── -->
