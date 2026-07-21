@@ -3,6 +3,7 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PrenotazioneServices } from '../prenotazione/Services/services';
 import { prenotazione } from '../prenotazione/interfacce/prenotazione_i';
+import emailjs from '@emailjs/browser';
 
 @Component({
   selector: 'app-pagamento',
@@ -69,6 +70,27 @@ export class Pagamento implements OnInit {
     return true;
   }
 
+  private inviaMailConferma(): void {
+    const p = this.prenotazionePending!;
+    emailjs.send(
+      'service_cvv0ac7',
+      'template_lphmeb9',
+      {
+        nome: p.NOME,
+        cognome: p.COGNOME,
+        email: p.EMAIL,
+        check_in: p.CHECK_IN,
+        check_out: p.CHECK_OUT,
+        totale: p.TOTALE,
+        caparra: p.CAPARRA
+      },
+      'm2OvObid_6Nr8hcx3'
+    ).then(
+      () => console.log('Mail inviata'),
+      (err) => console.error('Errore mail:', err)
+    );
+  }
+
   paga(form: NgForm): void {
     if (form.invalid || !this.scadenzaValida()) return;
 
@@ -78,6 +100,7 @@ export class Pagamento implements OnInit {
     setTimeout(() => {
       this.prenotazioneServices.postUtente(this.prenotazionePending!).subscribe({
         next: (res) => {
+          this.inviaMailConferma();
           sessionStorage.removeItem('prenotazione_pending');
           sessionStorage.removeItem('caparra');
           this.stato = 'successo';
