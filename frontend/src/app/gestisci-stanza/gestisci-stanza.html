@@ -30,7 +30,9 @@
     <!-- ── Filtro disponibilità: date dalle prenotazioni esistenti ── -->
     <div class="date-filter-bar">
       <div class="date-filter-intro">
-        <span class="date-filter-label-title">🔍 Filtra per periodo prenotazione</span>
+        <span class="date-filter-label-title">
+          <img src="../../assets/icons/search.png" alt="Search_icon" style="vertical-align: middle; height: 1em;">
+          Filtra per periodo prenotazione</span>
         <span class="date-filter-sub">Scegli check-in e check-out dalle prenotazioni esistenti</span>
       </div>
 
@@ -89,7 +91,7 @@
     <!-- Stanze Occupate -->
     <div class="gruppo-stanze">
       <div class="gruppo-header gruppo-header-red">
-        <span class="gruppo-icon"></span>
+
         <h3>Stanze Occupate</h3>
         <span class="gruppo-count">{{ stanzeOccupatePeriodo.length }}</span>
       </div>
@@ -125,7 +127,7 @@
     <!-- Stanze Disponibili -->
     <div class="gruppo-stanze">
       <div class="gruppo-header gruppo-header-green">
-        <span class="gruppo-icon"></span>
+
         <h3>Stanze Disponibili</h3>
         <span class="gruppo-count">{{ stanzeDisponibiliPeriodo.length }}</span>
       </div>
@@ -161,7 +163,7 @@
     <!-- Stanze in Manutenzione -->
     <div class="gruppo-stanze">
       <div class="gruppo-header gruppo-header-yellow">
-        <span class="gruppo-icon"></span>
+
         <h3>Stanze in Manutenzione</h3>
         <span class="gruppo-count">{{ stanzeInManutenzione.length }}</span>
       </div>
@@ -244,9 +246,7 @@
 
   </div>
 
-  <!-- ══════════════════════════════════════════════════════════ -->
-  <!-- MODALE — crea / modifica stanza (senza campo STATO)        -->
-  <!-- ══════════════════════════════════════════════════════════ -->
+
   @if (modaleAperto()) {
   <div class="modal-overlay" (click)="chiudiModale()">
     <div class="modal-box" (click)="$event.stopPropagation()">
