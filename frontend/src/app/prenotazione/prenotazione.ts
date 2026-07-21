@@ -38,10 +38,53 @@ export class Prenotazione implements OnInit {
   filtroCapacita: number | null = null;
   filtroPrezzo: 'asc' | 'desc' | null = null;
 
+  get checkOutMin(): string {
+    if (!this.checkIn) return '';
+    const d = new Date(this.checkIn);
+    d.setDate(d.getDate() + 1);
+    return d.toISOString().slice(0, 10);
+  }
+
+  onCheckInChange(): void {
+    // Resetta checkout e stanza se la data non è più valida
+    if (this.checkOut && this.checkIn && this.checkOut <= this.checkIn) {
+      this.checkOut = '';
+    }
+    this.stanzaSelezionata = null;
+  }
+
+  onCheckOutChange(): void {
+    // Se si cambia checkout, deseleziona la stanza (potrebbe non essere più disponibile)
+    this.stanzaSelezionata = null;
+  }
+
   get stanzeDisponibili(): stanza[] {
-    let risultato = this.tutteLeStanze().filter(s =>
-      s.STATO?.toUpperCase() === 'DISPONIBILE'
-    );
+    const ci = this.checkIn ? new Date(this.checkIn) : null;
+    const co = this.checkOut ? new Date(this.checkOut) : null;
+
+    let risultato = this.tutteLeStanze().filter(s => {
+      const stato = s.STATO?.toLowerCase() ?? '';
+
+      // Escludi sempre stanze in manutenzione
+      if (stato === 'manutenzione') return false;
+
+      // Se le date sono inserite, controlla sovrapposizione con prenotazioni attive
+      if (ci && co && co > ci) {
+        const conflitto = this.listaPrenotazioni().some(p => {
+          if (p.IDSTANZA !== s.IDSTANZA) return false;
+          if (p.STATO?.toLowerCase() === 'cancellata') return false;
+          const pCi = p.CHECK_IN ? new Date(p.CHECK_IN) : null;
+          const pCo = p.CHECK_OUT ? new Date(p.CHECK_OUT) : null;
+          if (!pCi || !pCo) return false;
+          return ci < pCo && co > pCi;
+        });
+        return !conflitto;
+      }
+
+      // Senza date: mostra solo quelle con stato 'disponibile'
+      return stato === 'disponibile';
+    });
+
     if (this.filtroCapacita) {
       risultato = risultato.filter(s => s.CAPACITA >= this.filtroCapacita!);
     }
@@ -76,6 +119,10 @@ export class Prenotazione implements OnInit {
   ngOnInit(): void {
     this.caricaStanze();
     this.caricaServizi();
+    this.http.get<prenotazione[]>(`${this.API}/prenotazione/lista`).subscribe({
+      next: (data) => this.listaPrenotazioni.set(data),
+      error: (err) => console.error('Errore caricamento prenotazioni', err)
+    });
   }
 
   caricaStanze(): void {
