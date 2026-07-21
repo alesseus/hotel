@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PrenotazioneServices } from '../prenotazione/Services/services';
@@ -27,7 +27,8 @@ export class Pagamento implements OnInit {
 
   constructor(
     private router: Router,
-    private prenotazioneServices: PrenotazioneServices
+    private prenotazioneServices: PrenotazioneServices,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -69,6 +70,7 @@ export class Pagamento implements OnInit {
     if (form.invalid || !this.scadenzaValida()) return;
 
     this.stato = 'loading';
+    this.cdr.detectChanges();
 
     setTimeout(() => {
       this.prenotazioneServices.postUtente(this.prenotazionePending!).subscribe({
@@ -77,20 +79,21 @@ export class Pagamento implements OnInit {
           sessionStorage.removeItem('caparra');
           this.stato = 'successo';
           this.conto = 3;
+          this.cdr.detectChanges();
 
-          setTimeout(() => {
-            const interval = setInterval(() => {
-              this.conto--;
-              if (this.conto === 0) {
-                clearInterval(interval);
-                this.router.navigate(['/']);
-              }
-            }, 1000);
-          }, 100);
+          const interval = setInterval(() => {
+            this.conto--;
+            this.cdr.detectChanges();
+            if (this.conto === 0) {
+              clearInterval(interval);
+              this.router.navigate(['/']);
+            }
+          }, 1000);
         },
         error: () => {
           this.stato = 'errore';
           this.erroreMsg = 'Errore durante la conferma della prenotazione. Riprova.';
+          this.cdr.detectChanges();
         }
       });
     }, 800);
