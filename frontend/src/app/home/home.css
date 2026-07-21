@@ -147,6 +147,60 @@
   flex-shrink: 0;
 }
 
+/*Recensioni*/
+
+.recensioni-strip {
+  background: linear-gradient(135deg, var(--navy-900) 0%, var(--navy-950) 100%);
+  padding: 72px 40px 80px;
+}
+.recensioni-strip-inner {
+  max-width: 1080px;
+  margin: 0 auto;
+  text-align: center;
+}
+.recensioni-strip h2 { color: var(--white); margin-bottom: 10px; }
+.recensioni-strip .divider-gold { margin: 0 auto 48px; }
+
+.rec-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  text-align: left;
+}
+
+.rec-card {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: var(--r-lg);
+  padding: 28px;
+  transition: background var(--fast), transform var(--med);
+}
+.rec-card:hover { background: rgba(255,255,255,0.10); transform: translateY(-4px); }
+
+.rec-stars { color: var(--gold-500); font-size: 1rem; letter-spacing: 2px; margin-bottom: 12px; }
+.rec-card p {
+  font-size: 0.90rem;
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.78);
+  line-height: 1.72;
+  margin-bottom: 14px;
+}
+.rec-author {
+  font-size: 0.73rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--navy-300);
+}
+
+@media (max-width: 768px) {
+  .servizi-hero { padding: 52px 20px 44px; }
+  .services-container { padding: 44px 20px 48px; }
+  .services-grid { grid-template-columns: 1fr; }
+  .recensioni-strip { padding: 52px 20px 60px; }
+}
+
+
 /* Animazione */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(24px); }
