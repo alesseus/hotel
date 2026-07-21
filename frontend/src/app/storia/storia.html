@@ -10,16 +10,19 @@
   <div class="storia-layout">
 
     <!-- Colonna sx: galleria foto -->
-    <div class="storia-gallery">
+    <div class="storia-gallery"
+         (mouseenter)="pauseAutoplay()"
+         (mouseleave)="resumeAutoplay()">
+
       <div class="gallery-frame">
 
         <!-- Immagine Principale -->
         <img [src]="activeImage.src" [alt]="activeImage.alt" class="gallery-main-img">
 
         <div class="gallery-controls">
-          <button class="gal-btn" aria-label="Foto precedente" (click)="prevSlide()">&#8592;</button>
+          <button type="button" class="gal-btn" aria-label="Foto precedente" (click)="prevSlide()">&#8592;</button>
           <span class="gal-label">Il nostro hotel</span>
-          <button class="gal-btn" aria-label="Foto successiva" (click)="nextSlide()">&#8594;</button>
+          <button type="button" class="gal-btn" aria-label="Foto successiva" (click)="nextSlide()">&#8594;</button>
         </div>
       </div>
 
