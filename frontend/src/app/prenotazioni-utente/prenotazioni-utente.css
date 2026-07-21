@@ -1,0 +1,213 @@
+:host { display: block; }
+
+.prenotazioni-page {
+  background: var(--bg);
+  min-height: 100%;
+}
+
+.prenotazioni-header {
+  background: linear-gradient(135deg, var(--navy-950) 0%, var(--navy-800) 100%);
+  padding: 52px 40px 44px;
+  text-align: center;
+}
+.prenotazioni-header h1 { color: var(--white); margin-bottom: 10px; }
+.prenotazioni-header .divider-gold { margin: 0 auto 12px; }
+.prenotazioni-header p { color: rgba(255,255,255,0.55); font-size: 0.92rem; }
+
+.prenotazioni-body {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 48px 20px 72px;
+}
+
+/* ── Stati ── */
+.stato-box {
+  text-align: center;
+  padding: 60px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+.stato-icon { font-size: 3rem; }
+.errore-msg { color: #d33; font-size: 0.95rem; }
+
+.spinner {
+  width: 44px; height: 44px;
+  border: 3px solid var(--navy-100);
+  border-top-color: var(--navy-700);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Lista prenotazioni ── */
+.prenotazioni-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.prenotazione-card {
+  background: var(--white);
+  border: 1.5px solid var(--navy-100);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-1);
+  overflow: hidden;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  background: var(--navy-50);
+  border-bottom: 1px solid var(--navy-100);
+  gap: 12px;
+}
+.card-id {
+  font-size: 0.80rem;
+  font-weight: 700;
+  color: var(--navy-500);
+  margin-right: 10px;
+  letter-spacing: 0.05em;
+}
+.card-stato {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: var(--r-pill);
+  background: var(--navy-100);
+  color: var(--navy-700);
+}
+.stato-in-attesa { background: #fff3cd; color: #856404; }
+.stato-confermata { background: #d1e7dd; color: #0a3622; }
+.stato-cancellata { background: #f8d7da; color: #842029; }
+
+.card-totale {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--navy-900);
+}
+
+.card-body {
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.card-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  font-size: 0.88rem;
+  border-bottom: 1px solid var(--navy-50);
+  color: var(--ink-soft);
+}
+.card-row:last-child { border-bottom: none; }
+.card-row span:last-child { font-weight: 600; color: var(--navy-900); text-align: right; }
+
+.card-actions {
+  display: flex;
+  gap: 10px;
+  padding: 16px 24px;
+  border-top: 1px solid var(--navy-100);
+  background: var(--navy-50);
+}
+
+.btn-cancella {
+  padding: 8px 18px;
+  border-radius: var(--r-md);
+  border: 1.5px solid #d33;
+  background: transparent;
+  color: #d33;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--fast), color var(--fast);
+}
+.btn-cancella:hover { background: #d33; color: var(--white); }
+
+/* ── Overlay / Modale ── */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  padding: 20px;
+}
+.modale {
+  background: var(--white);
+  border-radius: var(--r-xl);
+  padding: 36px;
+  width: 100%;
+  max-width: 480px;
+  box-shadow: var(--shadow-2);
+}
+.modale h3 { font-size: 1.2rem; color: var(--navy-900); margin-bottom: 6px; }
+.modale-sub { font-size: 0.84rem; color: var(--ink-soft); margin-bottom: 24px; }
+
+.fields-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; }
+.field-group { display: flex; flex-direction: column; margin-bottom: 14px; }
+.field-group label { font-size: 0.80rem; font-weight: 600; color: var(--navy-800); margin-bottom: 4px; }
+.field-error { color: #d33; font-size: 0.73rem; margin-top: 3px; }
+input.invalid { border-color: #d33; }
+
+.form-error-banner {
+  background: #fdecea;
+  color: #d33;
+  border: 1px solid #f5b5ac;
+  border-radius: var(--r-md);
+  padding: 8px 12px;
+  font-size: 0.83rem;
+  margin-bottom: 12px;
+}
+
+.modale-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+.modale-actions button { flex: 1; justify-content: center; }
+
+/* Modale cancellazione */
+.modale-cancella { text-align: center; }
+.cancella-icon { font-size: 2.5rem; margin-bottom: 12px; }
+.avviso-caparra {
+  background: #fff3cd;
+  border: 1px solid #ffc107;
+  border-radius: var(--r-md);
+  padding: 10px 14px;
+  font-size: 0.85rem;
+  color: #856404;
+  margin: 12px 0 0;
+}
+
+.btn-cancella-confirm {
+  flex: 1;
+  padding: 10px 18px;
+  border-radius: var(--r-md);
+  border: none;
+  background: #d33;
+  color: var(--white);
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--fast);
+}
+.btn-cancella-confirm:hover { background: #b02020; }
+.btn-cancella-confirm:disabled { opacity: 0.6; cursor: not-allowed; }
+
+@media (max-width: 768px) {
+  .prenotazioni-header { padding: 40px 20px 36px; }
+  .prenotazioni-body { padding: 32px 16px 56px; }
+  .card-header { flex-direction: column; align-items: flex-start; }
+  .fields-2 { grid-template-columns: 1fr; }
+  .modale { padding: 24px 20px; }
+}

@@ -11,7 +11,7 @@ export interface LoginResponse {
 @Injectable({ providedIn: 'root' })
 export class AuthService {
 
-    private apiUrl = 'https://hotel-4n9x.onrender.com/auth/login';
+  private apiUrl = 'https://hotel-4n9x.onrender.com/auth/login';
 
   constructor(private http: HttpClient) {}
 
@@ -25,6 +25,11 @@ export class AuthService {
   salvaSessione(response: LoginResponse): void {
     sessionStorage.setItem('token', response.token);
     sessionStorage.setItem('admin', String(response.admin));
+    sessionStorage.setItem('mail', response.codiceRuolo);
+  }
+
+  getMail(): string {
+    return sessionStorage.getItem('mail') ?? '';
   }
 
   isAdmin(): boolean {

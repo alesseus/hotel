@@ -16,37 +16,45 @@ import com.geak.hotel.Services.PrenotazioniSrv;
 @RestController
 @RequestMapping("/prenotazione/")
 public class PrenotazioneController {
-	
+
 	@Autowired
 	PrenotazioniSrv PrenotazioneDependency;
-	
+
 	@GetMapping("lista")
 	public List<Prenotazione> veditutti() {
 		return PrenotazioneDependency.getAllPrenotazioni();
 	}
-	
+
 	@GetMapping("singolo/{IDPRE}")
 	public Prenotazione vedisingolo(@PathVariable long IDPRE) {
 		Prenotazione p = PrenotazioneDependency.vediPrenotazione(IDPRE).get();
 		return p;
 	}
-	
+
 	@RequestMapping(value = "cancella/{IDPREdel}", method = RequestMethod.DELETE)
 	public PrenotazioniSrv cancella(@PathVariable long IDPREdel) {
 		PrenotazioneDependency.cancellaPrenotazione(IDPREdel);
 		return PrenotazioneDependency;
 	}
-	
+
 	@RequestMapping(value = "add", method = RequestMethod.POST)
 	public PrenotazioniSrv add(@RequestBody Prenotazione nuova) {
-  		PrenotazioneDependency.addPrenotazione(nuova);
-   		return PrenotazioneDependency;
+		PrenotazioneDependency.addPrenotazione(nuova);
+		return PrenotazioneDependency;
 	}
-	
+
 	@RequestMapping(value = "cambia", method = RequestMethod.PUT)
 	public PrenotazioniSrv cambia(@RequestBody Prenotazione cambiata) {
 		PrenotazioneDependency.cambiaPrenotazione(cambiata);
 		return PrenotazioneDependency;
 	}
-	
+
+	@GetMapping("mail/{email}")
+	public List<Prenotazione> vediPerMail(@PathVariable String email) {
+		return PrenotazioneDependency.getAllPrenotazioni()
+				.stream()
+				.filter(p -> p.getEMAIL().equalsIgnoreCase(email))
+				.collect(java.util.stream.Collectors.toList());
+	}
+
 }

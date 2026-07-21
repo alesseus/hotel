@@ -1,1 +1,168 @@
-<p>prenotazioni-utente works!</p>
+<div class="prenotazioni-page">
+
+  <div class="prenotazioni-header">
+    <h1>Le mie prenotazioni</h1>
+    <div class="divider-gold"></div>
+    <p>Visualizza e gestisci le tue prenotazioni</p>
+  </div>
+
+  <div class="prenotazioni-body">
+
+    @if (caricamento()) {
+    <div class="stato-box">
+      <div class="spinner"></div>
+      <p>Caricamento in corso...</p>
+    </div>
+    }
+
+    @if (!caricamento() && errore()) {
+    <div class="stato-box">
+      <p class="errore-msg">{{ errore() }}</p>
+      <button class="primary" (click)="goLogin()">Vai al login</button>
+    </div>
+    }
+
+    @if (!caricamento() && !errore() && prenotazioni().length === 0) {
+    <div class="stato-box">
+      <span class="stato-icon">📋</span>
+      <p>Nessuna prenotazione trovata.</p>
+    </div>
+    }
+
+    @if (!caricamento() && !errore() && prenotazioni().length > 0) {
+    <div class="prenotazioni-list">
+      @for (p of prenotazioni(); track p.IDPRE) {
+      <div class="prenotazione-card">
+
+        <div class="card-header">
+          <div>
+            <span class="card-id">#{{ p.IDPRE }}</span>
+            <span class="card-stato" [class]="'stato-' + p.STATO?.toLowerCase().replace(' ', '-')">
+              {{ p.STATO }}
+            </span>
+          </div>
+          <span class="card-totale">€{{ p.TOTALE }}</span>
+        </div>
+
+        <div class="card-body">
+          <div class="card-row">
+            <span>Intestatario</span>
+            <span>{{ p.NOME }} {{ p.COGNOME }}</span>
+          </div>
+          <div class="card-row">
+            <span>Email</span>
+            <span>{{ p.EMAIL }}</span>
+          </div>
+          <div class="card-row">
+            <span>Check-in</span>
+            <span>{{ formatData(p.CHECK_IN) }}</span>
+          </div>
+          <div class="card-row">
+            <span>Check-out</span>
+            <span>{{ formatData(p.CHECK_OUT) }}</span>
+          </div>
+          @if (p.NOTE) {
+          <div class="card-row">
+            <span>Note</span>
+            <span>{{ p.NOTE }}</span>
+          </div>
+          }
+          <div class="card-row">
+            <span>Caparra pagata</span>
+            <span>€{{ p.CAPARRA }}</span>
+          </div>
+        </div>
+
+        @if (isLoggedIn) {
+        <div class="card-actions">
+          <button class="secondary" (click)="apriModifica(p)">Modifica dati</button>
+          <button class="btn-cancella" (click)="apriCancella(p)">Cancella</button>
+        </div>
+        }
+
+      </div>
+      }
+    </div>
+    }
+
+  </div>
+
+  <!-- Modale modifica -->
+  @if (modaleAperto && prenotazioneSelezionata) {
+  <div class="overlay" (click)="chiudiModale()">
+    <div class="modale" (click)="$event.stopPropagation()">
+      <h3>Modifica dati personali</h3>
+      <p class="modale-sub">Puoi modificare solo i tuoi dati personali, non i dettagli del soggiorno.</p>
+
+      <form #modificaForm="ngForm" (ngSubmit)="salvaModifica(modificaForm)" novalidate>
+
+        <div class="fields-2">
+          <div class="field-group">
+            <label>Nome</label>
+            <input type="text" name="nome" [(ngModel)]="formNome" required
+              #nomeF="ngModel" [class.invalid]="nomeF.invalid && nomeF.touched">
+            @if (nomeF.invalid && nomeF.touched) {
+            <span class="field-error">Campo obbligatorio</span>
+            }
+          </div>
+          <div class="field-group">
+            <label>Cognome</label>
+            <input type="text" name="cognome" [(ngModel)]="formCognome" required
+              #cognomeF="ngModel" [class.invalid]="cognomeF.invalid && cognomeF.touched">
+            @if (cognomeF.invalid && cognomeF.touched) {
+            <span class="field-error">Campo obbligatorio</span>
+            }
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label>Email</label>
+          <input type="email" name="email" [(ngModel)]="formEmail" required
+            #emailF="ngModel" [class.invalid]="emailF.invalid && emailF.touched">
+          @if (emailF.invalid && emailF.touched) {
+          <span class="field-error">Inserisci un'email valida</span>
+          }
+        </div>
+
+        <div class="field-group">
+          <label>Telefono</label>
+          <input type="tel" name="telefono" [(ngModel)]="formTelefono"
+            placeholder="+39 000 0000000">
+        </div>
+
+        @if (formError) {
+        <div class="form-error-banner">{{ formError }}</div>
+        }
+
+        <div class="modale-actions">
+          <button type="submit" class="primary" [disabled]="modificaForm.invalid || invio">
+            {{ invio ? 'Salvataggio...' : 'Salva modifiche' }}
+          </button>
+          <button type="button" class="secondary" (click)="chiudiModale()">Annulla</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+  }
+
+  <!-- Modale conferma cancellazione -->
+  @if (cancellaTarget) {
+  <div class="overlay" (click)="annullaCancella()">
+    <div class="modale modale-cancella" (click)="$event.stopPropagation()">
+      <div class="cancella-icon">⚠️</div>
+      <h3>Cancella prenotazione</h3>
+      <p>Stai per cancellare la prenotazione <strong>#{{ cancellaTarget.IDPRE }}</strong>.</p>
+      <p class="avviso-caparra">La caparra di <strong>€{{ cancellaTarget.CAPARRA }}</strong> non sarà rimborsata.</p>
+
+      <div class="modale-actions">
+        <button class="btn-cancella-confirm" [disabled]="cancellaInCorso" (click)="confermaCancella()">
+          {{ cancellaInCorso ? 'Cancellazione...' : 'Sì, cancella' }}
+        </button>
+        <button class="secondary" (click)="annullaCancella()">Torna indietro</button>
+      </div>
+    </div>
+  </div>
+  }
+
+</div>
