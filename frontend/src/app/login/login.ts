@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import { AuthService } from './Services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -10,12 +11,12 @@ import { Router, RouterLink } from '@angular/router';
 })
 export class Login {
 
-  email    = '';
-  password = '';
-  loading  = false;
+  email        = '';
+  password     = '';
+  loading      = false;
   errorMessage = '';
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private authService: AuthService) {}
 
   onSubmit(form: NgForm): void {
     if (form.invalid) return;
@@ -23,15 +24,21 @@ export class Login {
     this.loading = true;
     this.errorMessage = '';
 
-    // TODO: sostituire con chiamata reale al servizio di autenticazione
-    setTimeout(() => {
-      this.loading = false;
+    this.authService.login(this.email, this.password).subscribe({
+      next: (response) => {
+        this.loading = false;
+        this.authService.salvaSessione(response);
 
-      if (this.email === 'admin@bluehorizon.it' && this.password === 'admin123') {
-        this.router.navigate(['/amministrazione']);
-      } else {
+        if (response.admin) {
+          this.router.navigate(['/amministrazione']);
+        } else {
+          this.router.navigate(['/home']);
+        }
+      },
+      error: () => {
+        this.loading = false;
         this.errorMessage = 'Credenziali non valide. Riprova.';
       }
-    }, 800);
+    });
   }
 }
