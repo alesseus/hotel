@@ -35,12 +35,9 @@
       <div class="prenotazione-card">
 
         <div class="card-header">
-          <div>
-            <span class="card-id">#{{ p.IDPRE }}</span>
-            <span class="card-stato" [class]="'stato-' + p.STATO?.toLowerCase().replace(' ', '-')">
-              {{ p.STATO }}
-            </span>
-          </div>
+          <span class="card-stato" [class]="'stato-' + p.STATO?.toLowerCase().replace(' ', '-')">
+            {{ p.STATO }}
+          </span>
           <span class="card-totale">€{{ p.TOTALE }}</span>
         </div>
 
@@ -92,7 +89,7 @@
   <div class="overlay" (click)="chiudiModale()">
     <div class="modale" (click)="$event.stopPropagation()">
       <h3>Modifica dati personali</h3>
-      <p class="modale-sub">Puoi modificare solo i tuoi dati personali, non i dettagli del soggiorno.</p>
+      <p class="modale-sub">Puoi modificare solo nome e cognome.</p>
 
       <form #modificaForm="ngForm" (ngSubmit)="salvaModifica(modificaForm)" novalidate>
 
@@ -113,21 +110,6 @@
             <span class="field-error">Campo obbligatorio</span>
             }
           </div>
-        </div>
-
-        <div class="field-group">
-          <label>Email</label>
-          <input type="email" name="email" [(ngModel)]="formEmail" required
-            #emailF="ngModel" [class.invalid]="emailF.invalid && emailF.touched">
-          @if (emailF.invalid && emailF.touched) {
-          <span class="field-error">Inserisci un'email valida</span>
-          }
-        </div>
-
-        <div class="field-group">
-          <label>Telefono</label>
-          <input type="tel" name="telefono" [(ngModel)]="formTelefono"
-            placeholder="+39 000 0000000">
         </div>
 
         @if (formError) {
@@ -152,7 +134,7 @@
     <div class="modale modale-cancella" (click)="$event.stopPropagation()">
       <div class="cancella-icon">⚠️</div>
       <h3>Cancella prenotazione</h3>
-      <p>Stai per cancellare la prenotazione <strong>#{{ cancellaTarget.IDPRE }}</strong>.</p>
+      <p>Stai per cancellare questa prenotazione.</p>
       <p class="avviso-caparra">La caparra di <strong>€{{ cancellaTarget.CAPARRA }}</strong> non sarà rimborsata.</p>
 
       <div class="modale-actions">
