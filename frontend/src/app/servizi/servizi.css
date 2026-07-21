@@ -64,11 +64,8 @@
 .service-icon svg {
   width: 28px;
   height: 28px;
-  fill: none;
-  stroke: var(--navy-700);
-  stroke-width: 1.6;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+  fill: var(--navy-700);
+  stroke: none;
 }
 .service-card h3 { font-size: 1.2rem; color: var(--navy-900); margin-bottom: 10px; }
 .service-card p  { font-size: 0.88rem; line-height: 1.7; }
