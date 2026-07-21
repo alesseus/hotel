@@ -13,18 +13,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
-/**
- * Gestisce l'autenticazione.
- * Endpoint: POST /auth/login
- *
- * NOTA SICUREZZA: In produzione le password vanno salvate con BCrypt.
- * Sostituire il confronto diretto con:
- *   passwordEncoder.matches(request.getPass(), cliente.getPASS())
- * e usare Spring Security con BCryptPasswordEncoder.
- */
 @RestController
 @RequestMapping("/auth/")
-@CrossOrigin(origins = "http://localhost:4200")   // adatta all'URL del tuo frontend
+@CrossOrigin(origins = "http://localhost:4200")
 public class AuthController {
 
     @Autowired
@@ -33,11 +24,9 @@ public class AuthController {
     @PostMapping("login")
     public ResponseEntity<?> login(@Validated @RequestBody LoginRequest request) {
 
-        // 1. Cerca il cliente per email
-        Optional<Cliente> optional = clientiRepository.findByMAILIgnoreCase(request.getMail());
+        Optional<Cliente> optional = clientiRepository.findByMAILIgnoreCase(request.getCodice());
 
         if (optional.isEmpty()) {
-            // Non rivelare se è l'email o la password a essere sbagliata
             return ResponseEntity
                     .status(HttpStatus.UNAUTHORIZED)
                     .body("Credenziali non valide");
@@ -45,19 +34,16 @@ public class AuthController {
 
         Cliente cliente = optional.get();
 
-        // 2. Verifica la password
-        //    TODO: sostituire con BCrypt quando le password saranno hashate
-        if (!cliente.getPASS().equals(request.getPass())) {
+        if (!cliente.getPASS().equals(request.getPassword())) {
             return ResponseEntity
                     .status(HttpStatus.UNAUTHORIZED)
                     .body("Credenziali non valide");
         }
 
-        // 3. Login OK → restituisci i dati (senza password)
         LoginResponse response = new LoginResponse(
-                cliente.getIDCLIENTE(),
+                String.valueOf(cliente.getIDCLIENTE()),
                 cliente.getMAIL(),
-                cliente.isADMIN()
+                cliente.getADMIN()
         );
 
         return ResponseEntity.ok(response);
