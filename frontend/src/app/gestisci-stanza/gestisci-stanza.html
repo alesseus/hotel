@@ -84,9 +84,9 @@
                 <td>{{ s.DIMENSIONE }}</td>
                 <td>
                   <span class="badge"
-                        [class.badge-ok]="s.STATO === 'Libera'"
-                        [class.badge-warn]="s.STATO === 'Manutenzione'"
-                        [class.badge-no]="s.STATO === 'Occupata'">
+                        [class.badge-ok]="s.STATO === "disponibile"
+                        [class.badge-warn]="s.STATO === 'manutenzione'"
+                        [class.badge-no]="s.STATO === 'occupata'">
                     {{ s.STATO }}
                   </span>
                 </td>
