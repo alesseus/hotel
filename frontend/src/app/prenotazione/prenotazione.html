@@ -68,7 +68,7 @@
       <div class="tipo-cards">
         <div class="tipo-card" (click)="scegliTipo('spa')">
           <span class="tipo-icon">
-            <img src="../../assets/icons/spa_ico.png" alt="">
+            <img src="../../assets/icons/spa__ico.png" alt="Spa_icon">
           </span>
           <h3>Solo S.P.A.</h3>
           <p>Accesso al centro benessere senza pernottamento</p>
@@ -76,7 +76,9 @@
         </div>
         <div class="tipo-card tipo-card--featured" (click)="scegliTipo('stanza')">
           <span class="tipo-badge">Più scelto</span>
-          <span class="tipo-icon">🏨</span>
+          <span class="tipo-icon">
+            <img src="../../assets/icons/hotel_room.png" alt="Hotel_room_icon">
+          </span>
           <h3>Prenota Stanza</h3>
           <p>Pernottamento con eventuale SPA inclusa</p>
           <button class="primary" type="button">Seleziona</button>
@@ -93,6 +95,31 @@
       <div class="scelta-header">
         <h2>Scelta stanza</h2>
         <p>Seleziona la stanza più adatta alle tue esigenze</p>
+      </div>
+
+      <!-- Selezione date -->
+      <div class="date-picker-bar">
+        <div class="date-picker-group">
+          <label for="s1-checkin">Check-in <span class="required">*</span></label>
+          <input id="s1-checkin" type="date" name="s1CheckIn"
+                 [(ngModel)]="checkIn"
+                 (ngModelChange)="onCheckInChange()">
+        </div>
+        <div class="date-picker-group">
+          <label for="s1-checkout">Check-out <span class="required">*</span></label>
+          <input id="s1-checkout" type="date" name="s1CheckOut"
+                 [(ngModel)]="checkOut"
+                 [min]="checkOutMin"
+                 (ngModelChange)="onCheckOutChange()">
+          @if (checkIn && checkOut && checkOut <= checkIn) {
+            <small class="field-error">Il check-out deve essere successivo al check-in.</small>
+          }
+        </div>
+        @if (checkIn && checkOut && checkOut > checkIn) {
+          <span class="date-notti-hint">
+            {{ notti }} nott{{ notti === 1 ? 'e' : 'i' }} — stanze disponibili: <strong>{{ stanzeDisponibili.length }}</strong>
+          </span>
+        }
       </div>
 
       <!-- Filtri -->
@@ -135,7 +162,11 @@
         } @empty {
         <div class="list-empty">
           <span>🏨</span>
-          <p>Nessuna stanza disponibile con i filtri selezionati</p>
+          @if (!checkIn || !checkOut) {
+            <p>Inserisci le date di check-in e check-out per vedere le stanze disponibili.</p>
+          } @else {
+            <p>Nessuna stanza disponibile per le date selezionate o con i filtri applicati.</p>
+          }
         </div>
         }
       </div>
