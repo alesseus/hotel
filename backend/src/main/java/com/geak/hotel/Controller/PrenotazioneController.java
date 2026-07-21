@@ -20,8 +20,10 @@ public class PrenotazioneController {
 
 	@Autowired
 	PrenotazioniSrv PrenotazioneDependency;
+
+	@Autowired
 	EmailService emailService;
-	
+
 	@GetMapping("lista")
 	public List<Prenotazione> veditutti() {
 		return PrenotazioneDependency.getAllPrenotazioni();
