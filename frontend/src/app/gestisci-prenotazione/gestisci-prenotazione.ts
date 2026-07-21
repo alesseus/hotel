@@ -21,11 +21,11 @@ export class GestisciPrenotazione implements OnInit {
 
   // ── Dati (signal → change detection automatico) ───────────────
   prenotazioni = signal<prenotazione[]>([]);
-  stanze       = signal<stanza[]>([]);
-  servizi      = signal<servizio[]>([]);
+  stanze = signal<stanza[]>([]);
+  servizi = signal<servizio[]>([]);
 
-  caricamento        = signal(true);
-  erroreCaricamento  = signal('');
+  caricamento = signal(true);
+  erroreCaricamento = signal('');
 
   // ── Ricerca ───────────────────────────────────────────────────
   ricerca = signal('');
@@ -34,22 +34,22 @@ export class GestisciPrenotazione implements OnInit {
     const q = this.ricerca().trim().toLowerCase();
     if (!q) return this.prenotazioni();
     return this.prenotazioni().filter(p =>
-      (p.NOME    ?? '').toLowerCase().includes(q) ||
+      (p.NOME ?? '').toLowerCase().includes(q) ||
       (p.COGNOME ?? '').toLowerCase().includes(q) ||
-      (p.EMAIL   ?? '').toLowerCase().includes(q) ||
+      (p.EMAIL ?? '').toLowerCase().includes(q) ||
       String(p.IDPRE).includes(q)
     );
   }
 
   // ── Modale form (crea / modifica) ─────────────────────────────
   modaleAperto = signal(false);
-  modalita     = signal<'crea' | 'modifica'>('crea');
-  formError    = signal('');
-  invio        = signal(false);
+  modalita = signal<'crea' | 'modifica'>('crea');
+  formError = signal('');
+  invio = signal(false);
 
   form: Partial<prenotazione> = this.vuota();
 
-  stanzaSelezionata   = signal<stanza   | null>(null);
+  stanzaSelezionata = signal<stanza | null>(null);
   servizioSelezionato = signal<servizio | null>(null);
 
   // ── Multi-servizio ────────────────────────────────────────────
@@ -58,7 +58,7 @@ export class GestisciPrenotazione implements OnInit {
 
   get totaleCalcolato(): number {
     const stanza = this.stanzaSelezionata();
-    const checkIn  = this.form.CHECK_IN  ? new Date(this.form.CHECK_IN as any)  : null;
+    const checkIn = this.form.CHECK_IN ? new Date(this.form.CHECK_IN as any) : null;
     const checkOut = this.form.CHECK_OUT ? new Date(this.form.CHECK_OUT as any) : null;
 
     let notti = 0;
@@ -97,7 +97,7 @@ export class GestisciPrenotazione implements OnInit {
   }
 
   // ── Modale conferma elimina ───────────────────────────────────
-  eliminaTarget  = signal<prenotazione | null>(null);
+  eliminaTarget = signal<prenotazione | null>(null);
   eliminaInCorso = signal(false);
 
   // ─────────────────────────────────────────────────────────────
@@ -108,8 +108,8 @@ export class GestisciPrenotazione implements OnInit {
     this.erroreCaricamento.set('');
 
     this.srv.getPrenotazioni().subscribe({
-      next:  (data) => { this.prenotazioni.set(data); this.caricamento.set(false); },
-      error: (err)  => {
+      next: (data) => { this.prenotazioni.set(data); this.caricamento.set(false); },
+      error: (err) => {
         console.error('Errore caricamento prenotazioni', err);
         this.erroreCaricamento.set('Impossibile caricare le prenotazioni. Riprova più tardi.');
         this.caricamento.set(false);
@@ -117,13 +117,13 @@ export class GestisciPrenotazione implements OnInit {
     });
 
     this.srv.getStanze().subscribe({
-      next:  (data) => this.stanze.set(data),
-      error: (err)  => console.error('Errore caricamento stanze', err)
+      next: (data) => this.stanze.set(data),
+      error: (err) => console.error('Errore caricamento stanze', err)
     });
 
     this.srv.getServizi().subscribe({
-      next:  (data) => this.servizi.set(data),
-      error: (err)  => console.error('Errore caricamento servizi', err)
+      next: (data) => this.servizi.set(data),
+      error: (err) => console.error('Errore caricamento servizi', err)
     });
   }
 
@@ -141,24 +141,7 @@ export class GestisciPrenotazione implements OnInit {
     );
   }
 
-  // ── Vincoli date ─────────────────────────────────────────────
-  get oggi(): string {
-    return new Date().toISOString().slice(0, 10);
-  }
-
-  get minCheckOut(): string {
-    if (!this.form.CHECK_IN) return this.oggi;
-    // check-out deve essere almeno il giorno dopo il check-in
-    const d = new Date(this.form.CHECK_IN as any);
-    d.setDate(d.getDate() + 1);
-    return d.toISOString().slice(0, 10);
-  }
-
-  onCheckInChange(): void {
-    // Se check-out è già impostato ed è <= nuovo check-in, resettalo
-    if (this.form.CHECK_OUT && this.form.CHECK_OUT <= (this.form.CHECK_IN as any)) {
-      this.form.CHECK_OUT = '' as any;
-    }
+  onDataChange(): void {
     this.aggiornaFormTotale();
   }
 
@@ -185,8 +168,8 @@ export class GestisciPrenotazione implements OnInit {
     this.form = {
       ...p,
       DATANASCITA: this.toDateInputString(p.DATANASCITA),
-      CHECK_IN:    this.toDateInputString(p.CHECK_IN),
-      CHECK_OUT:   this.toDateInputString(p.CHECK_OUT),
+      CHECK_IN: this.toDateInputString(p.CHECK_IN),
+      CHECK_OUT: this.toDateInputString(p.CHECK_OUT),
     } as any;
     this.stanzaSelezionata.set(this.stanze().find(s => s.IDSTANZA === p.IDSTANZA) ?? null);
     this.servizioSelezionato.set(this.servizi().find(s => s.IDSERVIZIO === p.IDSERVIZIO) ?? null);
@@ -223,7 +206,7 @@ export class GestisciPrenotazione implements OnInit {
 
     const payload: Partial<prenotazione> = {
       ...this.form,
-      TOTALE:     totale,
+      TOTALE: totale,
       IDSERVIZIO: idServizioFirst as any,
     };
 
