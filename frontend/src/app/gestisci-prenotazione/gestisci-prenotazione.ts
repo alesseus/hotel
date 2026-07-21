@@ -56,6 +56,41 @@ export class GestisciPrenotazione implements OnInit {
   // Lista di IDSERVIZIO selezionati (uno per riga aggiunta)
   serviziSelezionati = signal<number[]>([]);
 
+  // ── Min date per checkout (giorno dopo il checkin) ───────────
+  get checkOutMin(): string {
+    const ci = this.form.CHECK_IN;
+    if (!ci) return '';
+    const d = new Date(ci as any);
+    d.setDate(d.getDate() + 1);
+    return d.toISOString().slice(0, 10);
+  }
+
+  // ── Stanze disponibili nell'intervallo selezionato ────────────
+  get stanzeFiltrate(): stanza[] {
+    const ci = this.form.CHECK_IN ? new Date(this.form.CHECK_IN as any) : null;
+    const co = this.form.CHECK_OUT ? new Date(this.form.CHECK_OUT as any) : null;
+    if (!ci || !co || co <= ci) return this.stanze();
+
+    const prenotazioniAttive = this.prenotazioni().filter(p =>
+      (p.STATO?.toLowerCase() !== 'cancellata') &&
+      (this.modalita() === 'modifica' ? p.IDPRE !== this.form.IDPRE : true)
+    );
+
+    return this.stanze().filter(s => {
+      if (s.STATO?.toLowerCase() === 'manutenzione') return false;
+      // Verifica conflitti con prenotazioni esistenti
+      const conflitto = prenotazioniAttive.some(p => {
+        if (p.IDSTANZA !== s.IDSTANZA) return false;
+        const pCi = p.CHECK_IN ? new Date(p.CHECK_IN) : null;
+        const pCo = p.CHECK_OUT ? new Date(p.CHECK_OUT) : null;
+        if (!pCi || !pCo) return false;
+        // Sovrapposizione: nuova CI < pCo E nuova CO > pCi
+        return ci < pCo && co > pCi;
+      });
+      return !conflitto;
+    });
+  }
+
   get totaleCalcolato(): number {
     const stanza = this.stanzaSelezionata();
     const checkIn = this.form.CHECK_IN ? new Date(this.form.CHECK_IN as any) : null;
@@ -141,6 +176,16 @@ export class GestisciPrenotazione implements OnInit {
     );
   }
 
+  onCheckInChange(): void {
+    // Se il checkout è <= al nuovo checkin, lo resetta
+    if (this.form.CHECK_OUT && this.form.CHECK_IN && this.form.CHECK_OUT <= this.form.CHECK_IN) {
+      this.form.CHECK_OUT = '' as any;
+      this.stanzaSelezionata.set(null);
+      this.form.IDSTANZA = null as any;
+    }
+    this.aggiornaFormTotale();
+  }
+
   onDataChange(): void {
     this.aggiornaFormTotale();
   }
@@ -196,6 +241,10 @@ export class GestisciPrenotazione implements OnInit {
   salva(ngForm: NgForm): void {
     this.formError.set('');
     if (ngForm.invalid) { this.formError.set('Compila tutti i campi obbligatori.'); return; }
+    if (this.form.CHECK_IN && this.form.CHECK_OUT && this.form.CHECK_OUT <= this.form.CHECK_IN) {
+      this.formError.set('La data di check-out deve essere successiva al check-in.');
+      return;
+    }
 
     this.invio.set(true);
 
@@ -265,7 +314,7 @@ export class GestisciPrenotazione implements OnInit {
       IDSTANZA: null as any, IDSERVIZIO: null as any,
       TOTALE: null as any, SPA: false,
       NOTE: '', CHECK_IN: '' as any, CHECK_OUT: '' as any,
-      STATO: ''
+      STATO: 'in attesa'
     };
   }
 
