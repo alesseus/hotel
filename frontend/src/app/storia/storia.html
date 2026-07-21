@@ -12,47 +12,39 @@
     <!-- Colonna sx: galleria foto -->
     <div class="storia-gallery">
       <div class="gallery-frame">
-        
-        <!-- CONTAINER PER IL CAROUSEL AUTOMATICO CSS -->
-        <div class="css-carousel-container">
-          <!-- Immagine 1 (quella che hai già) -->
-          <img src="image_0.png" alt="Blue Horizon Hotel Lobby" class="gallery-img slide-1">
-          <!-- Immagine 2 (placeholder - inserisci il tuo percorso) -->
-          <img src="assets/images/storia_2.jpg" alt="Blue Horizon Hotel Piscina" class="gallery-img slide-2">
-          <!-- Immagine 3 (placeholder) -->
-          <img src="assets/images/storia_3.jpg" alt="Blue Horizon Hotel Camere" class="gallery-img slide-3">
-          <!-- Immagine 4 (placeholder) -->
-          <img src="assets/images/storia_4.jpg" alt="Blue Horizon Hotel Esterno" class="gallery-img slide-4">
-        </div>
+
+        <!-- Immagine Principale -->
+        <img [src]="activeImage.src" [alt]="activeImage.alt" class="gallery-main-img">
 
         <div class="gallery-controls">
-          <button class="gal-btn" aria-label="Foto precedente">&#8592;</button>
+          <button class="gal-btn" aria-label="Foto precedente" (click)="prevSlide()">&#8592;</button>
           <span class="gal-label">Il nostro hotel</span>
-          <button class="gal-btn" aria-label="Foto successiva">&#8594;</button>
+          <button class="gal-btn" aria-label="Foto successiva" (click)="nextSlide()">&#8594;</button>
         </div>
       </div>
 
-      <!-- Thumbnails (ora funzionano come indicatori passivi del carousel automatico) -->
+      <!-- Thumbnails -->
       <div class="gallery-thumbs">
-        <div class="gallery-thumb auto-thumb-1"></div>
-        <div class="gallery-thumb auto-thumb-2"></div>
-        <div class="gallery-thumb auto-thumb-3"></div>
-        <div class="gallery-thumb auto-thumb-4"></div>
+        @for (img of images; track img.src; let i = $index) {
+          <img
+            [src]="img.src"
+            [alt]="'Thumb ' + (i + 1)"
+            class="gallery-thumb"
+            [class.active]="i === activeIndex"
+            (click)="setSlide(i)">
+        }
       </div>
     </div>
 
-    <!-- Colonna dx: testo storia (invariato) -->
+    <!-- Colonna dx: testo storia -->
     <div class="storia-content">
       <p class="storia-eyebrow">Dal 1987</p>
       <h2>Una tradizione di eccellenza</h2>
       <div class="divider"></div>
 
       <p>Il Blue Horizon Hotel nasce nel cuore di Portocervo con una visione semplice: offrire un rifugio di eleganza e tranquillità in una delle località di mare più belle e raffinate del mondo.</p>
-
       <p>Fondato con passione per l'ospitalità autentica, il nostro hotel unisce l'architettura classica italiana ai comfort più moderni, creando un'esperienza unica per ogni ospite.</p>
-
       <p>Nel corso degli anni abbiamo accolto ospiti da tutto il mondo, crescendo senza mai perdere l'attenzione al dettaglio che ci ha sempre contraddistinti.</p>
-
       <p>Oggi il Blue Horizon è il luogo dove il tuo viaggio diventa un ricordo indelebile.</p>
 
       <div class="storia-milestone">
