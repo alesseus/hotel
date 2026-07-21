@@ -12,23 +12,27 @@
     <!-- Colonna sx: galleria foto -->
     <div class="storia-gallery">
       <div class="gallery-frame">
-        
+
         <!-- Immagine Principale -->
-        <img id="main-gallery-img" src="/assets/images/adventure-albania-4VBZJ2JV54U-unsplash.jpg" alt="Blue Horizon Hotel" class="gallery-main-img">
+        <img [src]="activeImage.src" [alt]="activeImage.alt" class="gallery-main-img">
 
         <div class="gallery-controls">
-          <button class="gal-btn" id="prev-btn" aria-label="Foto precedente">&#8592;</button>
+          <button class="gal-btn" aria-label="Foto precedente" (click)="prevSlide()">&#8592;</button>
           <span class="gal-label">Il nostro hotel</span>
-          <button class="gal-btn" id="next-btn" aria-label="Foto successiva">&#8594;</button>
+          <button class="gal-btn" aria-label="Foto successiva" (click)="nextSlide()">&#8594;</button>
         </div>
       </div>
 
-      <!-- Thumbnails con le vere miniature -->
+      <!-- Thumbnails -->
       <div class="gallery-thumbs">
-        <img src="/assets/images/adventure-albania-4VBZJ2JV54U-unsplash.jpg" class="gallery-thumb active" onclick="setSlide(0)" alt="Thumb 1">
-        <img src="/assets/images/antonio-araujo-V1Wjy0Xg5tA-unsplash.jpg" class="gallery-thumb" onclick="setSlide(1)" alt="Thumb 2">
-        <img src="/assets/images/evangelos-mpikakis-ionHF5Qcnz0-unsplash.jpg" class="gallery-thumb" onclick="setSlide(2)" alt="Thumb 3">
-        <img src="/assets/images/gabriel-ghnassia-A9h6OsAxTyQ-unsplash.jpg" class="gallery-thumb" onclick="setSlide(3)" alt="Thumb 4">
+        @for (img of images; track img.src; let i = $index) {
+          <img
+            [src]="img.src"
+            [alt]="'Thumb ' + (i + 1)"
+            class="gallery-thumb"
+            [class.active]="i === activeIndex"
+            (click)="setSlide(i)">
+        }
       </div>
     </div>
 
