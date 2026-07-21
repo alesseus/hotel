@@ -15,8 +15,13 @@ export class Login implements OnInit {
   password = '';
   loading = false;
   errorMessage = '';
+  showPassword = false;
 
   constructor(private router: Router, private authService: AuthService) { }
+  
+  togglePassword(): void {   
+    this.showPassword = !this.showPassword;
+  }
 
   onSubmit(form: NgForm): void {
     if (form.invalid) return;
