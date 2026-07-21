@@ -52,7 +52,7 @@ export class GestisciStanza implements OnInit {
   // Stati riconosciuti dal <select>: se lo STATO salvato in DB non è
   // esattamente uno di questi (es. spazi, maiuscole diverse, valore legacy),
   // il template aggiunge un'opzione extra per non invalidare il form.
-  readonly statiValidi = ['Libera', 'Occupata', 'Manutenzione'];
+  readonly statiValidi = ['Disponibile', 'Occupata', 'Manutenzione'];
 
   // ── Conferma eliminazione ────────────────────────────────────
   eliminaTarget = signal<stanza | null>(null);
