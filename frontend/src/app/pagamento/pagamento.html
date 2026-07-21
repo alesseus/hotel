@@ -3,7 +3,7 @@
   <div class="pagamento-header">
     <h1>Pagamento caparra</h1>
     <div class="divider-gold"></div>
-    <p>Inserisci i dati della tua carta per completare la prenotazione</p>
+    <p>Inserisci i dati per completare la prenotazione</p>
   </div>
 
   @if (stato === 'form' || stato === 'errore') {
@@ -15,12 +15,31 @@
       <small>Caparra non rimborsabile (10% del totale)</small>
     </div>
 
+    <!-- Scelta metodo -->
+    @if (!metodoPagamento) {
+    <div class="metodo-scelta">
+      <p class="metodo-titolo">Scegli il metodo di pagamento</p>
+      <div class="metodo-opzioni">
+        <button class="metodo-btn" (click)="metodoPagamento = 'carta'">
+          <span class="metodo-icon">💳</span>
+          <span>Carta di credito / debito</span>
+        </button>
+        <button class="metodo-btn" (click)="metodoPagamento = 'bonifico'">
+          <span class="metodo-icon">🏦</span>
+          <span>Bonifico bancario</span>
+        </button>
+      </div>
+    </div>
+    }
+
+    <!-- Form carta -->
+    @if (metodoPagamento === 'carta') {
     <form #pagamentoForm="ngForm" (ngSubmit)="paga(pagamentoForm)" novalidate>
 
       <div class="field-group">
-        <label for="nomeTitolare">Nome titolare</label>
-        <input type="text" id="nomeTitolare" name="nomeTitolare"
-          [(ngModel)]="nomeTitolare" required placeholder="Mario Rossi"
+        <label>Nome titolare</label>
+        <input type="text" name="nomeTitolare" [(ngModel)]="nomeTitolare"
+          required placeholder="Mario Rossi"
           #nomeTitolareField="ngModel"
           [class.invalid]="nomeTitolareField.invalid && nomeTitolareField.touched">
         @if (nomeTitolareField.invalid && nomeTitolareField.touched) {
@@ -29,10 +48,9 @@
       </div>
 
       <div class="field-group">
-        <label for="numeroCarta">Numero carta</label>
-        <input type="text" id="numeroCarta" name="numeroCarta"
-          [(ngModel)]="numeroCarta" required minlength="16" maxlength="16"
-          placeholder="1234567890123456"
+        <label>Numero carta</label>
+        <input type="text" name="numeroCarta" [(ngModel)]="numeroCarta"
+          required minlength="16" maxlength="16" placeholder="1234567890123456"
           #numeroCartaField="ngModel"
           [class.invalid]="numeroCartaField.invalid && numeroCartaField.touched">
         @if (numeroCartaField.invalid && numeroCartaField.touched) {
@@ -42,10 +60,9 @@
 
       <div class="fields-2">
         <div class="field-group">
-          <label for="scadenza">Scadenza</label>
-          <input type="text" id="scadenza" name="scadenza"
-            [(ngModel)]="scadenza" required placeholder="MM/AA"
-            maxlength="5"
+          <label>Scadenza</label>
+          <input type="text" name="scadenza" [(ngModel)]="scadenza"
+            required placeholder="MM/AA" maxlength="5"
             (input)="formatScadenza($event)"
             #scadenzaField="ngModel"
             [class.invalid]="scadenzaField.touched && !scadenzaValida()">
@@ -54,10 +71,9 @@
           }
         </div>
         <div class="field-group">
-          <label for="cvv">CVV</label>
-          <input type="text" id="cvv" name="cvv"
-            [(ngModel)]="cvv" required minlength="3" maxlength="3"
-            placeholder="123"
+          <label>CVV</label>
+          <input type="text" name="cvv" [(ngModel)]="cvv"
+            required minlength="3" maxlength="3" placeholder="123"
             #cvvField="ngModel"
             [class.invalid]="cvvField.invalid && cvvField.touched">
           @if (cvvField.invalid && cvvField.touched) {
@@ -74,69 +90,104 @@
         <button type="submit" class="primary" [disabled]="pagamentoForm.invalid || !scadenzaValida()">
           Paga €{{ caparra }}
         </button>
-        <button type="button" class="secondary" (click)="annulla()">
-          Annulla
+        <button type="button" class="secondary" (click)="metodoPagamento = ''">
+          Cambia metodo
         </button>
+        <button type="button" class="secondary" (click)="annulla()">Annulla</button>
       </div>
 
-      <!-- Loghi circuiti carte SVG inline -->
       <div class="carte-loghi">
-
-        <!-- Visa -->
         <svg viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg" class="carta-logo">
           <rect width="60" height="40" rx="5" fill="#1a1f71"/>
           <text x="50%" y="58%" dominant-baseline="middle" text-anchor="middle"
-            font-family="Arial" font-size="13" font-weight="bold" fill="white"
-            letter-spacing="1">VISA</text>
+            font-family="Arial" font-size="13" font-weight="bold" fill="white" letter-spacing="1">VISA</text>
         </svg>
-
-        <!-- Mastercard -->
         <svg viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg" class="carta-logo">
           <rect width="60" height="40" rx="5" fill="#252525"/>
           <circle cx="23" cy="20" r="12" fill="#eb001b"/>
           <circle cx="37" cy="20" r="12" fill="#f79e1b"/>
           <path d="M30 10.5a12 12 0 0 1 0 19 12 12 0 0 1 0-19z" fill="#ff5f00"/>
         </svg>
-
-        <!-- Amex -->
         <svg viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg" class="carta-logo">
           <rect width="60" height="40" rx="5" fill="#2557d6"/>
-          <text x="50%" y="58%" dominant-baseline="middle" text-anchor="middle"
-            font-family="Arial" font-size="7.5" font-weight="bold" fill="white"
-            letter-spacing="0.5">AMERICAN</text>
-          <text x="50%" y="78%" dominant-baseline="middle" text-anchor="middle"
-            font-family="Arial" font-size="7.5" font-weight="bold" fill="white"
-            letter-spacing="0.5">EXPRESS</text>
+          <text x="50%" y="45%" dominant-baseline="middle" text-anchor="middle"
+            font-family="Arial" font-size="7.5" font-weight="bold" fill="white" letter-spacing="0.5">AMERICAN</text>
+          <text x="50%" y="68%" dominant-baseline="middle" text-anchor="middle"
+            font-family="Arial" font-size="7.5" font-weight="bold" fill="white" letter-spacing="0.5">EXPRESS</text>
         </svg>
-
-        <!-- PayPal -->
-        <svg viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg" class="carta-logo">
-          <rect width="60" height="40" rx="5" fill="#003087"/>
-          <text x="50%" y="58%" dominant-baseline="middle" text-anchor="middle"
-            font-family="Arial" font-size="11" font-weight="bold" fill="#009cde"
-            letter-spacing="0.5">Pay</text>
-          <text x="57%" y="58%" dominant-baseline="middle" text-anchor="middle"
-            font-family="Arial" font-size="11" font-weight="bold" fill="white"
-            letter-spacing="0.5">Pal</text>
-        </svg>
-
       </div>
 
     </form>
+    }
+
+    <!-- Bonifico -->
+    @if (metodoPagamento === 'bonifico') {
+    <form #bonificoForm="ngForm" (ngSubmit)="paga(bonificoForm)" novalidate>
+
+      <div class="bonifico-box">
+        <p class="bonifico-titolo">Dati per il bonifico</p>
+        <div class="bonifico-row">
+          <span>Intestatario</span>
+          <span>Hotel Bellavista S.r.l.</span>
+        </div>
+        <div class="bonifico-row">
+          <span>IBAN</span>
+          <span>IT60 X054 2811 1010 0000 0123 456</span>
+        </div>
+        <div class="bonifico-row">
+          <span>Causale</span>
+          <span>Caparra prenotazione</span>
+        </div>
+        <div class="bonifico-row">
+          <span>Importo</span>
+          <span>€{{ caparra }}</span>
+        </div>
+        <p class="bonifico-nota">Invia la ricevuta del bonifico via email per confermare la prenotazione.</p>
+      </div>
+
+      <!-- Campo fittizio per simulare la conferma -->
+      <div class="field-group" style="margin-top: 16px">
+        <label>Conferma di aver effettuato il bonifico</label>
+        <input type="text" name="confermaBonifico" [(ngModel)]="nomeTitolare"
+          required placeholder="Scrivi 'confermo' per procedere"
+          #confermaField="ngModel"
+          [class.invalid]="confermaField.invalid && confermaField.touched">
+        @if (confermaField.invalid && confermaField.touched) {
+        <span class="field-error">Campo obbligatorio</span>
+        }
+      </div>
+
+      @if (stato === 'errore') {
+      <div class="pagamento-error">{{ erroreMsg }}</div>
+      }
+
+      <div class="pagamento-actions">
+        <button type="submit" class="primary" [disabled]="bonificoForm.invalid">
+          Conferma prenotazione
+        </button>
+        <button type="button" class="secondary" (click)="metodoPagamento = ''">
+          Cambia metodo
+        </button>
+        <button type="button" class="secondary" (click)="annulla()">Annulla</button>
+      </div>
+
+    </form>
+    }
+
   </div>
   }
 
   @if (stato === 'loading') {
   <div class="pagamento-loading">
     <div class="spinner"></div>
-    <p>Elaborazione pagamento in corso...</p>
+    <p>Elaborazione in corso...</p>
   </div>
   }
 
   @if (stato === 'successo') {
   <div class="pagamento-successo">
     <div class="success-icon">✓</div>
-    <h2>Pagamento confermato!</h2>
+    <h2>Prenotazione confermata!</h2>
     <p>La tua prenotazione è stata registrata con successo.</p>
     <p class="success-redirect">Sarai reindirizzato alla home tra {{ conto }}...</p>
   </div>
