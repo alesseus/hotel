@@ -98,9 +98,17 @@
 .admin-card:nth-child(4)::before { background: linear-gradient(90deg, #2A6A44, #4DAF7A); }
 
 .card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 2.2rem;
   margin-bottom: 18px;
   line-height: 1;
+}
+.card-icon img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
 }
 .admin-card h2 {
   font-family: var(--font-display);
