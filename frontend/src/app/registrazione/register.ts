@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { firstValueFrom } from 'rxjs';
 import {
   AbstractControl,
   FormBuilder,
@@ -62,13 +61,13 @@ export class Register implements OnInit {
   ngOnInit(): void {
     this.registerForm = this.fb.group(
       {
-        nome: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50), Validators.pattern(/^[a-zA-ZÀ-ÿ\s'\-]+$/)]],
-        cognome: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50), Validators.pattern(/^[a-zA-ZÀ-ÿ\s'\-]+$/)]],
-        email: ['', [Validators.required, Validators.email, Validators.maxLength(100)]],
-        password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(128), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_\-#])[A-Za-z\d@$!%*?&_\-#]+$/)]],
+        nome:             ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50), Validators.pattern(/^[a-zA-ZÀ-ÿ\s'\-]+$/)]],
+        cognome:          ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50), Validators.pattern(/^[a-zA-ZÀ-ÿ\s'\-]+$/)]],
+        email:            ['', [Validators.required, Validators.email, Validators.maxLength(100)]],
+        password:         ['', [Validators.required, Validators.minLength(8), Validators.maxLength(128), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_\-#])[A-Za-z\d@$!%*?&_\-#]+$/)]],
         confermaPassword: ['', Validators.required],
-        telefono: ['', [Validators.required, Validators.pattern(/^\+?[\d\s\-(). ]{7,20}$/)]],
-        dataNascita: ['', [Validators.required, etaMinimaValidator]],
+        telefono:         ['', [Validators.required, Validators.pattern(/^\+?[\d\s\-(). ]{7,20}$/)]],
+        dataNascita:      ['', [Validators.required, etaMinimaValidator]],
       },
       { validators: passwordMatchValidator }
     );
@@ -84,7 +83,7 @@ export class Register implements OnInit {
   togglePassword():         void { this.showPassword        = !this.showPassword; }
   toggleConfermaPassword(): void { this.showConfermaPassword = !this.showConfermaPassword; }
 
-  async onSubmit(): Promise<void> {
+  onSubmit(): void {
     if (this.registerForm.invalid) {
       this.registerForm.markAllAsTouched();
       return;
@@ -94,32 +93,29 @@ export class Register implements OnInit {
     this.successMessage = '';
     this.errorMessage   = '';
 
-    try {
-      const { nome, cognome, email, password, telefono, dataNascita } = this.registerForm.value;
+    const { nome, cognome, email, password, telefono, dataNascita } = this.registerForm.value;
 
-      const payload: RegisterPayload = {
-        nome:         nome.trim(),
-        cognome:      cognome.trim(),
-        email:        email.trim().toLowerCase(),
-        passwordHash: password,
-        telefono:     telefono.trim(),
-        dataNascita,
-      };
+    const payload: RegisterPayload = {
+      nome:         nome.trim(),
+      cognome:      cognome.trim(),
+      email:        email.trim().toLowerCase(),
+      passwordHash: password,
+      telefono:     telefono.trim(),
+      dataNascita,
+    };
 
-      await firstValueFrom(
-        this.http.post<{ message: string }>(this.apiUrl, payload)
-      );
-
-      this.successMessage = "Registrazione completata! Controlla la tua email per confermare l'account.";
-      this.registerForm.reset();
-    } catch (err: any) {
-      if (err?.status === 409) {
-        this.errorMessage = 'Questa email è già registrata.';
-      } else {
-        this.errorMessage = 'Si è verificato un errore durante la registrazione. Riprova più tardi.';
+    this.http.post<{ message: string }>(this.apiUrl, payload).subscribe({
+      next: () => {
+        this.isLoading      = false;
+        this.successMessage = "Registrazione completata! Controlla la tua email per confermare l'account.";
+        this.registerForm.reset();
+      },
+      error: (err) => {
+        this.isLoading    = false;
+        this.errorMessage = err?.status === 409
+          ? 'Questa email è già registrata.'
+          : 'Si è verificato un errore durante la registrazione. Riprova più tardi.';
       }
-    } finally {
-      this.isLoading = false;
-    }
+    });
   }
 }
