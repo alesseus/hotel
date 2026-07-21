@@ -26,7 +26,7 @@ header {
   text-decoration: none;
 }
 .logo {
-  height: 40px;
+  height: 60px;
   width: auto;
   /* logo.png è navy scuro su trasparente:
      brightness(0) → tutto nero, invert(1) → tutto bianco */
@@ -178,5 +178,5 @@ footer {
   .btn-prenota { margin-left: 0; padding: 8px 18px; }
   footer { padding: 16px 18px; }
   .footer-inner { flex-direction: column; gap: 4px; }
-  .footer-contacts { flex-direction: column; gap: 2px; margin-top: 8px; }  
+  .footer-contacts { flex-direction: column; gap: 2px; margin-top: 8px; }
 }
