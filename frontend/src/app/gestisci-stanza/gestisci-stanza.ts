@@ -34,10 +34,26 @@ export class GestisciStanza implements OnInit, OnDestroy {
               this.filtroCheckOut() > this.filtroCheckIn());
   }
 
-  // ── Normalizzazione date (stringa YYYY-MM-DD, robusto vs UTC) ─
+  // ── Normalizzazione date → sempre YYYY-MM-DD ─────────────────
+  // Gestisce: ISO datetime (2026-07-29T00:00:00Z), ISO date (2026-07-29),
+  //           DD/MM/YYYY (29/07/2026), MM/DD/YYYY (07/29/2026 rilevato da contesto).
   private toDateStr(d: any): string {
     if (!d) return '';
-    return String(d).slice(0, 10);
+    const s = String(d).trim();
+    // ISO: inizia con 4 cifre → YYYY-MM-DD (i primi 10 char sono già ordinabili)
+    if (/^\d{4}-\d{2}-\d{2}/.test(s)) return s.slice(0, 10);
+    // DD/MM/YYYY  (formato europeo / italiano)
+    const eu = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+    if (eu) return `${eu[3]}-${eu[2].padStart(2, '0')}-${eu[1].padStart(2, '0')}`;
+    // Fallback: prova con Date (attenzione al timezone — usiamo metodi locali)
+    const dt = new Date(s);
+    if (!isNaN(dt.getTime())) {
+      const y = dt.getFullYear();
+      const m = String(dt.getMonth() + 1).padStart(2, '0');
+      const g = String(dt.getDate()).padStart(2, '0');
+      return `${y}-${m}-${g}`;
+    }
+    return s.slice(0, 10);
   }
 
   // ── Date uniche dalle prenotazioni attive ─────────────────────
@@ -50,25 +66,30 @@ export class GestisciStanza implements OnInit, OnDestroy {
     )].sort();
   }
 
+  /**
+   * Mostra SOLO i check-out delle prenotazioni che hanno esattamente
+   * il check-in selezionato. In questo modo il filtro rispecchia sempre
+   * un periodo reale e non mischia date di prenotazioni diverse.
+   */
   get checkOutOptions(): string[] {
     const ci = this.filtroCheckIn();
+    if (!ci) return [];
     return [...new Set(
       this.prenotazioni()
         .filter(p => {
           if (p.STATO?.toLowerCase() === 'cancellata') return false;
-          if (!p.CHECK_OUT) return false;
-          const co = this.toDateStr(p.CHECK_OUT);
-          return !ci || co > ci;
+          if (!p.CHECK_OUT || !p.CHECK_IN) return false;
+          // Il check-in di questa prenotazione deve corrispondere alla data scelta
+          return this.toDateStr(p.CHECK_IN) === ci;
         })
         .map(p => this.toDateStr(p.CHECK_OUT))
     )].sort();
   }
 
   onFiltroCheckInChange(): void {
-    if (this.filtroCheckOut() && this.filtroCheckIn() &&
-        this.filtroCheckOut() <= this.filtroCheckIn()) {
-      this.filtroCheckOut.set('');
-    }
+    // Reset sempre il check-out quando cambia il check-in,
+    // così l'utente non può mantenere una coppia di date incoerente
+    this.filtroCheckOut.set('');
   }
 
   // ── Verifica sovrapposizione (string YYYY-MM-DD, hotel convention) ─
