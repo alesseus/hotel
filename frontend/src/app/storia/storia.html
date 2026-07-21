@@ -1,4 +1,3 @@
-<!-- Wireframe: colonna sx = "Varie foto" (carousel), colonna dx = "La nostra storia" testo -->
 <div class="storia-page">
 
   <!-- Hero -->
@@ -13,25 +12,36 @@
     <!-- Colonna sx: galleria foto -->
     <div class="storia-gallery">
       <div class="gallery-frame">
-        <!-- Immagine principale carousel -->
-        <img src="assets/images/sfondo_home.avif" alt="Blue Horizon Hotel" class="gallery-main-img">
+        
+        <!-- CONTAINER PER IL CAROUSEL AUTOMATICO CSS -->
+        <div class="css-carousel-container">
+          <!-- Immagine 1 (quella che hai già) -->
+          <img src="image_0.png" alt="Blue Horizon Hotel Lobby" class="gallery-img slide-1">
+          <!-- Immagine 2 (placeholder - inserisci il tuo percorso) -->
+          <img src="assets/images/storia_2.jpg" alt="Blue Horizon Hotel Piscina" class="gallery-img slide-2">
+          <!-- Immagine 3 (placeholder) -->
+          <img src="assets/images/storia_3.jpg" alt="Blue Horizon Hotel Camere" class="gallery-img slide-3">
+          <!-- Immagine 4 (placeholder) -->
+          <img src="assets/images/storia_4.jpg" alt="Blue Horizon Hotel Esterno" class="gallery-img slide-4">
+        </div>
+
         <div class="gallery-controls">
           <button class="gal-btn" aria-label="Foto precedente">&#8592;</button>
-          <span class="gal-label">Varie foto</span>
+          <span class="gal-label">Il nostro hotel</span>
           <button class="gal-btn" aria-label="Foto successiva">&#8594;</button>
         </div>
       </div>
 
-      <!-- Thumbnails -->
+      <!-- Thumbnails (ora funzionano come indicatori passivi del carousel automatico) -->
       <div class="gallery-thumbs">
-        <div class="gallery-thumb active"></div>
-        <div class="gallery-thumb"></div>
-        <div class="gallery-thumb"></div>
-        <div class="gallery-thumb"></div>
+        <div class="gallery-thumb auto-thumb-1"></div>
+        <div class="gallery-thumb auto-thumb-2"></div>
+        <div class="gallery-thumb auto-thumb-3"></div>
+        <div class="gallery-thumb auto-thumb-4"></div>
       </div>
     </div>
 
-    <!-- Colonna dx: testo storia -->
+    <!-- Colonna dx: testo storia (invariato) -->
     <div class="storia-content">
       <p class="storia-eyebrow">Dal 1987</p>
       <h2>Una tradizione di eccellenza</h2>
