@@ -52,7 +52,7 @@
             <tr>
               <td colspan="10">
                 <div class="empty-state">
-                  <span>🛎️</span>
+                  <span><img src="../../assets/icons/warning-sign_big.png"></span>
                   <p>Nessuna prenotazione trovata.</p>
                 </div>
               </td>
@@ -163,7 +163,9 @@
                      (ngModelChange)="onDataChange()"
                      required>
               @if (form.CHECK_IN && form.CHECK_OUT && form.CHECK_OUT <= form.CHECK_IN) {
-                <span class="date-error">⚠️ Il check-out deve essere successivo al check-in.</span>
+                <span class="date-error">
+                  <img src="../../assets/icons/warning-sign.png" style="height: 1em; vertical-align: middle;">
+                  Il check-out deve essere successivo al check-in.</span>
               }
             </div>
 
@@ -182,7 +184,9 @@
                 }
               </select>
               @if (form.CHECK_IN && form.CHECK_OUT && stanzeFiltrate.length === 0) {
-                <p class="servizi-empty">⚠️ Nessuna stanza disponibile per le date selezionate.</p>
+                <p class="servizi-empty">
+                  <img src="../../assets/icons/warning-sign.png" style="height: 1em; vertical-align: middle;">
+                   Nessuna stanza disponibile per le date selezionate.</p>
               }
               @if (!form.CHECK_IN || !form.CHECK_OUT) {
                 <p class="servizi-empty">Seleziona prima le date di check-in e check-out per vedere le stanze disponibili.</p>
