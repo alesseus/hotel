@@ -65,13 +65,6 @@
   border-bottom: 1px solid var(--navy-100);
   gap: 12px;
 }
-.card-id {
-  font-size: 0.80rem;
-  font-weight: 700;
-  color: var(--navy-500);
-  margin-right: 10px;
-  letter-spacing: 0.05em;
-}
 .card-stato {
   font-size: 0.72rem;
   font-weight: 700;
