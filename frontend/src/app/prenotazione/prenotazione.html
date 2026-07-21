@@ -149,7 +149,7 @@
         <div class="stanza-card" (click)="selezionaStanza(s)"
           [class.stanza-selected]="stanzaSelezionata?.IDSTANZA === s.IDSTANZA">
           <div class="stanza-img-placeholder"
-            [style.background-image]="s.IMMAGINE ? 'url(assets/stanze/' + s.IMMAGINE + ')' : null">
+            [style.background-image]="s.IMMAGINE ? 'url(assets/stanza/' + s.IMMAGINE + ')' : null">
           </div>
           <div class="stanza-info">
             <h4>{{ s.DESCRIZIONE || s.DIMENSIONE || 'Stanza ' + s.IDSTANZA }}</h4>

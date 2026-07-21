@@ -16,6 +16,8 @@ export class Pagamento implements OnInit {
   caparra = 0;
   prenotazionePending: prenotazione | null = null;
 
+  metodoPagamento: 'carta' | 'bonifico' | '' = '';
+
   nomeTitolare = '';
   numeroCarta  = '';
   scadenza     = '';
@@ -55,6 +57,7 @@ export class Pagamento implements OnInit {
   }
 
   scadenzaValida(): boolean {
+    if (this.metodoPagamento !== 'carta') return true;
     if (!/^\d{2}\/\d{2}$/.test(this.scadenza)) return false;
     const [mm, yy] = this.scadenza.split('/').map(Number);
     if (mm < 1 || mm > 12) return false;
@@ -75,7 +78,6 @@ export class Pagamento implements OnInit {
     setTimeout(() => {
       this.prenotazioneServices.postUtente(this.prenotazionePending!).subscribe({
         next: (res) => {
-          console.log('SUCCESS', res);
           sessionStorage.removeItem('prenotazione_pending');
           sessionStorage.removeItem('caparra');
           this.stato = 'successo';
@@ -92,7 +94,6 @@ export class Pagamento implements OnInit {
           }, 1000);
         },
         error: (err) => {
-          console.log('ERROR', err);
           this.stato = 'errore';
           this.erroreMsg = 'Errore durante la conferma della prenotazione. Riprova.';
           this.cdr.detectChanges();
