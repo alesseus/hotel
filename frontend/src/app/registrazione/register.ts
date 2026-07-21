@@ -110,7 +110,7 @@ export class Register implements OnInit {
       .subscribe({
         next: () => {
           this.isLoading      = false;
-          this.successMessage = "Registrazione completata! Controlla la tua email per confermare l'account.";
+          this.successMessage = "Registrazione completata!";
           this.registerForm.reset();
         },
         error: (err) => {
