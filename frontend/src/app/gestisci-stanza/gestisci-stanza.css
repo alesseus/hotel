@@ -186,17 +186,44 @@ td {
 @media (max-width: 640px) {
   .modal-body .fields-2 { grid-template-columns: 1fr; }
 }
-/* ── Date filter bar ── */
+
+/* ══════════════════════════════════════════════════════════ */
+/* DATE FILTER BAR                                             */
+/* ══════════════════════════════════════════════════════════ */
 .date-filter-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding: 16px 18px;
+  background: #f4f6fb;
+  border: 1px solid #dde2ef;
+  border-radius: 10px;
+}
+
+.date-filter-intro {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.date-filter-label-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #1a2a5e;
+}
+
+.date-filter-sub {
+  font-size: 0.78rem;
+  color: #6b7a9e;
+}
+
+.date-filter-controls {
   display: flex;
   align-items: flex-end;
   flex-wrap: wrap;
   gap: 12px;
-  margin-bottom: 16px;
-  padding: 14px 16px;
-  background: #f8f9fc;
-  border: 1px solid #e2e6f0;
-  border-radius: 8px;
 }
 
 .date-filter-group {
@@ -213,7 +240,7 @@ td {
   letter-spacing: .04em;
 }
 
-.date-filter-group input[type="date"] {
+.date-filter-group select {
   padding: 7px 10px;
   border: 1px solid #cdd3e0;
   border-radius: 6px;
@@ -221,11 +248,18 @@ td {
   color: #1a2a5e;
   background: #fff;
   cursor: pointer;
+  min-width: 160px;
 }
 
-.date-filter-group input[type="date"]:focus {
+.date-filter-group select:focus {
   outline: none;
   border-color: #1a2a5e;
+}
+
+.date-filter-group select:disabled {
+  background: #f0f2f7;
+  color: #aaa;
+  cursor: not-allowed;
 }
 
 .btn-clear-dates {
@@ -237,18 +271,113 @@ td {
   color: #666;
   cursor: pointer;
   transition: background .15s;
+  align-self: flex-end;
 }
 
 .btn-clear-dates:hover {
   background: #f0f0f0;
 }
 
-.date-filter-info {
-  font-size: 0.85rem;
+/* Summary pills */
+.date-filter-summary {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 0.82rem;
   color: #555;
-  margin-left: auto;
+  padding-top: 4px;
+  border-top: 1px solid #dde2ef;
 }
 
-.date-filter-info strong {
+.date-filter-summary strong {
   color: #1a2a5e;
+}
+
+.summary-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.summary-pill-red    { background: #FDECEA; color: #C0392B; }
+.summary-pill-green  { background: #E6F4EA; color: #1E7E34; }
+.summary-pill-yellow { background: #FFF3CD; color: #856404; }
+
+/* ══════════════════════════════════════════════════════════ */
+/* GRUPPI STANZE (vista filtrata)                              */
+/* ══════════════════════════════════════════════════════════ */
+.gruppo-stanze {
+  margin-bottom: 24px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #e2e6f0;
+}
+
+.gruppo-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 18px;
+}
+
+.gruppo-header h3 {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  flex: 1;
+}
+
+.gruppo-icon {
+  font-size: 1rem;
+}
+
+.gruppo-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 28px;
+  padding: 0 8px;
+  border-radius: 14px;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.gruppo-header-red {
+  background: #fdecea;
+  border-bottom: 1px solid #f5b5ac;
+  color: #C0392B;
+}
+.gruppo-header-red .gruppo-count {
+  background: #C0392B;
+  color: #fff;
+}
+
+.gruppo-header-green {
+  background: #e6f4ea;
+  border-bottom: 1px solid #b2dfb8;
+  color: #1E7E34;
+}
+.gruppo-header-green .gruppo-count {
+  background: #1E7E34;
+  color: #fff;
+}
+
+.gruppo-header-yellow {
+  background: #fff8e1;
+  border-bottom: 1px solid #ffe082;
+  color: #856404;
+}
+.gruppo-header-yellow .gruppo-count {
+  background: #856404;
+  color: #fff;
+}
+
+@media (max-width: 640px) {
+  .date-filter-controls { flex-direction: column; align-items: flex-start; }
+  .date-filter-group select { min-width: 100%; }
 }

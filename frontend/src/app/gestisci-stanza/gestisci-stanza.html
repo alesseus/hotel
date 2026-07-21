@@ -15,37 +15,65 @@
 
     <div class="actions-bar">
       <div class="actions-bar-left">
+        @if (!filtroAttivo) {
         <div class="search-input">
           <input type="search" placeholder="Cerca stanza..." [value]="ricerca()"
             (input)="ricerca.set($any($event.target).value)">
         </div>
+        }
       </div>
       <div class="actions-bar-right">
         <button class="btn-add" type="button" (click)="apriModaleCreazione()">+ Nuova stanza</button>
       </div>
     </div>
 
-    <!-- ── Filtro disponibilità per date ── -->
+    <!-- ── Filtro disponibilità: seleziona date dalle prenotazioni esistenti ── -->
     <div class="date-filter-bar">
-      <div class="date-filter-group">
-        <label for="fci">Check-in</label>
-        <input id="fci" type="date" [value]="filtroCheckIn()"
-          (change)="filtroCheckIn.set($any($event.target).value); onFiltroCheckInChange()">
+      <div class="date-filter-intro">
+        <span class="date-filter-label-title">🔍 Filtra per periodo prenotazione</span>
+        <span class="date-filter-sub">Scegli check-in e check-out dalle prenotazioni esistenti</span>
       </div>
-      <div class="date-filter-group">
-        <label for="fco">Check-out</label>
-        <input id="fco" type="date" [value]="filtroCheckOut()" [min]="filtroCheckOutMin"
-          (change)="filtroCheckOut.set($any($event.target).value)">
+
+      <div class="date-filter-controls">
+        <div class="date-filter-group">
+          <label for="fci">Check-in</label>
+          <select id="fci" [value]="filtroCheckIn()"
+            (change)="filtroCheckIn.set($any($event.target).value); onFiltroCheckInChange()">
+            <option value="">-- Seleziona check-in --</option>
+            @for (d of checkInOptions; track d) {
+            <option [value]="d">{{ formatData(d) }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="date-filter-group">
+          <label for="fco">Check-out</label>
+          <select id="fco" [value]="filtroCheckOut()"
+            (change)="filtroCheckOut.set($any($event.target).value)"
+            [disabled]="!filtroCheckIn()">
+            <option value="">-- Seleziona check-out --</option>
+            @for (d of checkOutOptions; track d) {
+            <option [value]="d">{{ formatData(d) }}</option>
+            }
+          </select>
+        </div>
+
+        @if (filtroCheckIn() || filtroCheckOut()) {
+        <button class="btn-clear-dates" type="button"
+          (click)="filtroCheckIn.set(''); filtroCheckOut.set('')">
+          ✕ Rimuovi filtro
+        </button>
+        }
       </div>
-      @if (filtroCheckIn() || filtroCheckOut()) {
-      <button class="btn-clear-dates" type="button" (click)="filtroCheckIn.set(''); filtroCheckOut.set('')">
-        ✕ Rimuovi filtro
-      </button>
-      }
-      @if (filtroCheckIn() && filtroCheckOut()) {
-      <span class="date-filter-info">
-        Stanze disponibili: <strong>{{ stanzeFiltrate.length }}</strong>
-      </span>
+
+      @if (filtroAttivo) {
+      <div class="date-filter-summary">
+        Periodo: <strong>{{ formatData(filtroCheckIn()) }}</strong> → <strong>{{ formatData(filtroCheckOut()) }}</strong>
+        &nbsp;·&nbsp;
+        <span class="summary-pill summary-pill-red">Occupate: {{ stanzeOccupatePeriodo.length }}</span>
+        <span class="summary-pill summary-pill-green">Disponibili: {{ stanzeDisponibiliPeriodo.length }}</span>
+        <span class="summary-pill summary-pill-yellow">Manutenzione: {{ stanzeInManutenzione.length }}</span>
+      </div>
       }
     </div>
 
@@ -53,6 +81,138 @@
     <div class="form-error-banner">{{ erroreCaricamento() }}</div>
     }
 
+    <!-- ── Vista a 3 gruppi (solo quando il filtro è attivo) ── -->
+    @if (filtroAttivo) {
+
+    <!-- Stanze Occupate -->
+    <div class="gruppo-stanze">
+      <div class="gruppo-header gruppo-header-red">
+        <span class="gruppo-icon">🔴</span>
+        <h3>Stanze Occupate</h3>
+        <span class="gruppo-count">{{ stanzeOccupatePeriodo.length }}</span>
+      </div>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>N° Stanza</th>
+              <th>Tipo</th>
+              <th>Capienza</th>
+              <th>Prezzo / notte (€)</th>
+              <th>Piano</th>
+              <th>Stato</th>
+            </tr>
+          </thead>
+          <tbody>
+            @if (stanzeOccupatePeriodo.length === 0) {
+            <tr>
+              <td colspan="6" class="table-empty">Nessuna stanza occupata in questo periodo</td>
+            </tr>
+            }
+            @for (s of stanzeOccupatePeriodo; track s.IDSTANZA) {
+            <tr>
+              <td>{{ s.IDSTANZA }}</td>
+              <td>{{ s.DESCRIZIONE || s.DIMENSIONE }}</td>
+              <td>{{ s.CAPACITA }}</td>
+              <td>€{{ s.COSTO }}</td>
+              <td>{{ s.DIMENSIONE }}</td>
+              <td>
+                <span class="badge badge-no">Occupata</span>
+              </td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Stanze Disponibili -->
+    <div class="gruppo-stanze">
+      <div class="gruppo-header gruppo-header-green">
+        <span class="gruppo-icon">🟢</span>
+        <h3>Stanze Disponibili</h3>
+        <span class="gruppo-count">{{ stanzeDisponibiliPeriodo.length }}</span>
+      </div>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>N° Stanza</th>
+              <th>Tipo</th>
+              <th>Capienza</th>
+              <th>Prezzo / notte (€)</th>
+              <th>Piano</th>
+              <th>Stato</th>
+            </tr>
+          </thead>
+          <tbody>
+            @if (stanzeDisponibiliPeriodo.length === 0) {
+            <tr>
+              <td colspan="6" class="table-empty">Nessuna stanza disponibile in questo periodo</td>
+            </tr>
+            }
+            @for (s of stanzeDisponibiliPeriodo; track s.IDSTANZA) {
+            <tr>
+              <td>{{ s.IDSTANZA }}</td>
+              <td>{{ s.DESCRIZIONE || s.DIMENSIONE }}</td>
+              <td>{{ s.CAPACITA }}</td>
+              <td>€{{ s.COSTO }}</td>
+              <td>{{ s.DIMENSIONE }}</td>
+              <td>
+                <span class="badge badge-ok">Disponibile</span>
+              </td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Stanze in Manutenzione -->
+    <div class="gruppo-stanze">
+      <div class="gruppo-header gruppo-header-yellow">
+        <span class="gruppo-icon">🟡</span>
+        <h3>Stanze in Manutenzione</h3>
+        <span class="gruppo-count">{{ stanzeInManutenzione.length }}</span>
+      </div>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>N° Stanza</th>
+              <th>Tipo</th>
+              <th>Capienza</th>
+              <th>Prezzo / notte (€)</th>
+              <th>Piano</th>
+              <th>Stato</th>
+            </tr>
+          </thead>
+          <tbody>
+            @if (stanzeInManutenzione.length === 0) {
+            <tr>
+              <td colspan="6" class="table-empty">Nessuna stanza in manutenzione</td>
+            </tr>
+            }
+            @for (s of stanzeInManutenzione; track s.IDSTANZA) {
+            <tr>
+              <td>{{ s.IDSTANZA }}</td>
+              <td>{{ s.DESCRIZIONE || s.DIMENSIONE }}</td>
+              <td>{{ s.CAPACITA }}</td>
+              <td>€{{ s.COSTO }}</td>
+              <td>{{ s.DIMENSIONE }}</td>
+              <td>
+                <span class="badge badge-warn">Manutenzione</span>
+              </td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    } @else {
+
+    <!-- ── Elenco generale (nessun filtro attivo) ── -->
     <div class="table-wrapper">
       <table>
         <thead>
@@ -62,7 +222,7 @@
             <th>Capienza</th>
             <th>Prezzo / notte (€)</th>
             <th>Piano</th>
-            <th>Disponibile</th>
+            <th>Stato</th>
             <th>Azioni</th>
           </tr>
         </thead>
@@ -83,7 +243,7 @@
               <span class="badge" [class.badge-ok]="s.STATO === 'disponibile'"
                 [class.badge-warn]="s.STATO === 'manutenzione'" [class.badge-no]="s.STATO === 'occupata'">
                 {{ s.STATO }}
-            </span>
+              </span>
             </td>
             <td class="table-actions">
               <button class="btn-icon" type="button" (click)="apriModaleModifica(s)" title="Modifica">✎</button>
@@ -100,6 +260,8 @@
         </tbody>
       </table>
     </div>
+
+    }
 
   </div>
 
@@ -143,17 +305,6 @@
                 placeholder="120">
             </div>
           </div>
-
-          <label for="stato">Disponibilità</label>
-          <select id="stato" name="stato" [(ngModel)]="stanzaForm.STATO" required>
-            @if (stanzaForm.STATO && !statiValidi.includes(stanzaForm.STATO)) {
-            <option [value]="stanzaForm.STATO">{{ stanzaForm.STATO }} (valore attuale — seleziona uno stato valido)
-            </option>
-            }
-            <option value="disponibile">Disponibile</option>
-            <option value="occupata">Occupata</option>
-            <option value="manutenzione">In manutenzione</option>
-          </select>
 
           <label for="immagine">URL Immagine</label>
           <input type="text" id="immagine" name="immagine" [(ngModel)]="stanzaForm.IMMAGINE" placeholder="https://...">
