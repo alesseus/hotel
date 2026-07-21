@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, computed } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule, NgForm } from '@angular/forms';
 import { PrenotazioneServices } from './Services/services';
@@ -18,9 +18,9 @@ export class Prenotazione implements OnInit {
 
   private readonly http = inject(HttpClient);
   private readonly API = 'https://hotel-4n9x.onrender.com';
-  private readonly router = inject(Router)
+  private readonly router = inject(Router);
 
-  constructor(private _PrenotazioneServices: PrenotazioneServices) { }
+  constructor(private _PrenotazioneServices: PrenotazioneServices) {}
 
   // ── Wizard ────────────────────────────────────────────────────
   step = 0;
@@ -30,11 +30,35 @@ export class Prenotazione implements OnInit {
   invio = false;
 
   // ── Dati remoti ───────────────────────────────────────────────
-  stanzeDisponibili = signal<stanza[]>([]);
+  tutteLeStanze = signal<stanza[]>([]);
   serviziDisponibili = signal<servizio[]>([]);
   listaPrenotazioni = signal<prenotazione[]>([]);
 
-  // ── Selezioni ────────────────────────────────────────────────
+  // ── Filtro stanze ─────────────────────────────────────────────
+  filtroCapacita: number | null = null;
+  filtroPrezzo: 'asc' | 'desc' | null = null;
+
+  get stanzeDisponibili(): stanza[] {
+    let risultato = this.tutteLeStanze().filter(s =>
+      s.STATO?.toUpperCase() === 'DISPONIBILE'
+    );
+    if (this.filtroCapacita) {
+      risultato = risultato.filter(s => s.CAPACITA >= this.filtroCapacita!);
+    }
+    if (this.filtroPrezzo === 'asc') {
+      risultato = [...risultato].sort((a, b) => a.COSTO - b.COSTO);
+    } else if (this.filtroPrezzo === 'desc') {
+      risultato = [...risultato].sort((a, b) => b.COSTO - a.COSTO);
+    }
+    return risultato;
+  }
+
+  resetFiltri(): void {
+    this.filtroCapacita = null;
+    this.filtroPrezzo = null;
+  }
+
+  // ── Selezioni ─────────────────────────────────────────────────
   stanzaSelezionata: stanza | null = null;
   serviziSelezionati: servizio[] = [];
 
@@ -56,7 +80,7 @@ export class Prenotazione implements OnInit {
 
   caricaStanze(): void {
     this.http.get<stanza[]>(`${this.API}/stanza/elenco`).subscribe({
-      next: (data) => this.stanzeDisponibili.set(data),
+      next: (data) => this.tutteLeStanze.set(data),
       error: (err) => console.error('Errore caricamento stanze', err)
     });
   }
@@ -71,7 +95,7 @@ export class Prenotazione implements OnInit {
   // ── Wizard methods ────────────────────────────────────────────
   scegliTipo(tipo: 'spa' | 'stanza'): void {
     this.tipoPrenotazione = tipo;
-    this.step = tipo === 'spa' ? 3 : 1;  // SPA → step 3 diretto
+    this.step = tipo === 'spa' ? 3 : 1;
   }
 
   selezionaStanza(s: stanza): void {
@@ -111,7 +135,6 @@ export class Prenotazione implements OnInit {
     return this.serviziSelezionati.reduce((sum, s) => sum + s.COSTO, 0);
   }
 
-  // ── Servizio SPA 
   get spaServizio(): servizio | undefined {
     return this.serviziDisponibili().find(s =>
       s.NOTE?.toUpperCase().replace(/\./g, '') === 'SPA'
@@ -123,9 +146,7 @@ export class Prenotazione implements OnInit {
   }
 
   get totale(): number {
-    if (this.tipoPrenotazione === 'spa') {
-      return this.costoSpa;
-    }
+    if (this.tipoPrenotazione === 'spa') return this.costoSpa;
     return this.costoStanza + this.costoServizi;
   }
 

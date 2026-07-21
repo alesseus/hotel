@@ -1,4 +1,3 @@
-<!-- WIZARD PRENOTAZIONE — Angular 22 / sintassi moderna @if / @for -->
 <div class="prenota-page">
 
   <!-- ── Hero + Progress ── -->
@@ -9,7 +8,6 @@
     @if (!confermata) {
     <div class="progress-bar">
 
-      <!-- Step 1: Tipo — sempre visibile -->
       <div class="progress-step" [class.done]="step > 0" [class.active]="step === 0">
         <span class="step-num">1</span>
         <span class="step-lbl">Tipo</span>
@@ -61,24 +59,19 @@
     }
   </div>
 
-  <!-- ══════════════════════════════════════════════════════════ -->
-  <!-- STEP 0 — Scelta tipo                                       -->
-  <!-- ══════════════════════════════════════════════════════════ -->
+  <!-- STEP 0 — Scelta tipo -->
   @if (step === 0 && !confermata) {
   <div class="step-panel">
     <div class="tipo-wrapper">
       <h2>Come vuoi prenotare?</h2>
       <p>Scegli il tipo di soggiorno che desideri</p>
-
       <div class="tipo-cards">
-
         <div class="tipo-card" (click)="scegliTipo('spa')">
           <span class="tipo-icon">💆</span>
           <h3>Solo S.P.A.</h3>
           <p>Accesso al centro benessere senza pernottamento</p>
           <button class="secondary" type="button">Seleziona</button>
         </div>
-
         <div class="tipo-card tipo-card--featured" (click)="scegliTipo('stanza')">
           <span class="tipo-badge">Più scelto</span>
           <span class="tipo-icon">🏨</span>
@@ -86,15 +79,12 @@
           <p>Pernottamento con eventuale SPA inclusa</p>
           <button class="primary" type="button">Seleziona</button>
         </div>
-
       </div>
     </div>
   </div>
   }
 
-  <!-- ══════════════════════════════════════════════════════════ -->
-  <!-- STEP 1 — Scelta stanza                                     -->
-  <!-- ══════════════════════════════════════════════════════════ -->
+  <!-- STEP 1 — Scelta stanza -->
   @if (step === 1 && !confermata) {
   <div class="step-panel">
     <div class="scelta-wrapper">
@@ -103,8 +93,33 @@
         <p>Seleziona la stanza più adatta alle tue esigenze</p>
       </div>
 
+      <!-- Filtri -->
+      <div class="filtri-bar">
+        <div class="filtro-group">
+          <label>Capacità minima</label>
+          <select [(ngModel)]="filtroCapacita" name="filtroCapacita">
+            <option [ngValue]="null">Tutte</option>
+            <option [ngValue]="1">1+</option>
+            <option [ngValue]="2">2+</option>
+            <option [ngValue]="3">3+</option>
+            <option [ngValue]="4">4+</option>
+          </select>
+        </div>
+        <div class="filtro-group">
+          <label>Prezzo</label>
+          <select [(ngModel)]="filtroPrezzo" name="filtroPrezzo">
+            <option [ngValue]="null">Nessun ordine</option>
+            <option value="asc">Dal più economico</option>
+            <option value="desc">Dal più costoso</option>
+          </select>
+        </div>
+        <button class="secondary filtro-reset" type="button" (click)="resetFiltri()">
+          Reset filtri
+        </button>
+      </div>
+
       <div class="stanze-grid">
-        @for (s of stanzeDisponibili(); track s.IDSTANZA) {
+        @for (s of stanzeDisponibili; track s.IDSTANZA) {
         <div class="stanza-card" (click)="selezionaStanza(s)"
           [class.stanza-selected]="stanzaSelezionata?.IDSTANZA === s.IDSTANZA">
           <div class="stanza-img-placeholder"></div>
@@ -118,7 +133,7 @@
         } @empty {
         <div class="list-empty">
           <span>🏨</span>
-          <p>Caricamento stanze in corso...</p>
+          <p>Nessuna stanza disponibile con i filtri selezionati</p>
         </div>
         }
       </div>
@@ -130,9 +145,7 @@
   </div>
   }
 
-  <!-- ══════════════════════════════════════════════════════════ -->
-  <!-- STEP 2 — Scelta servizi                                    -->
-  <!-- ══════════════════════════════════════════════════════════ -->
+  <!-- STEP 2 — Scelta servizi -->
   @if (step === 2 && !confermata) {
   <div class="step-panel">
     <div class="scelta-wrapper">
@@ -140,7 +153,6 @@
         <h2>Servizi aggiuntivi</h2>
         <p>Aggiungi i servizi che desideri al tuo soggiorno</p>
       </div>
-
       <div class="servizi-list">
         @for (s of serviziDisponibili(); track s.IDSERVIZIO) {
         <label class="servizio-row" [class.checked]="isServizioSelezionato(s)">
@@ -158,43 +170,32 @@
         </div>
         }
       </div>
-
       <div class="step-nav">
-        <button class="secondary" type="button" (click)="step = 1">
-          ← Indietro
-        </button>
-        <button class="primary" type="button" (click)="step = 3">
-          Continua →
-        </button>
+        <button class="secondary" type="button" (click)="step = 1">← Indietro</button>
+        <button class="primary" type="button" (click)="step = 3">Continua →</button>
       </div>
     </div>
   </div>
   }
 
-  <!-- ══════════════════════════════════════════════════════════ -->
-  <!-- STEP 3 — Dati personali + Riepilogo                        -->
-  <!-- ══════════════════════════════════════════════════════════ -->
+  <!-- STEP 3 — Dati personali + Riepilogo -->
   @if (step === 3 && !confermata) {
   <div class="step-panel">
     <form class="confirm-wrapper" #datiForm="ngForm" (ngSubmit)="confermaPrenotazione(datiForm)">
 
-      <!-- Colonna sx: Dati personali -->
       <div class="confirm-form">
         <h3>Dati personali</h3>
-
         <div class="fields-2">
           <div>
             <label for="nome">Nome</label>
-            <input type="text" id="nome" name="nome" [(ngModel)]="nome" #nomeField="ngModel" required
-              placeholder="Mario">
+            <input type="text" id="nome" name="nome" [(ngModel)]="nome" #nomeField="ngModel" required placeholder="Mario">
             @if (nomeField.invalid && (nomeField.touched || datiForm.submitted)) {
             <small class="field-error">Il nome è obbligatorio</small>
             }
           </div>
           <div>
             <label for="cognome">Cognome</label>
-            <input type="text" id="cognome" name="cognome" [(ngModel)]="cognome" #cognomeField="ngModel" required
-              placeholder="Rossi">
+            <input type="text" id="cognome" name="cognome" [(ngModel)]="cognome" #cognomeField="ngModel" required placeholder="Rossi">
             @if (cognomeField.invalid && (cognomeField.touched || datiForm.submitted)) {
             <small class="field-error">Il cognome è obbligatorio</small>
             }
@@ -202,8 +203,7 @@
         </div>
 
         <label for="email">Email</label>
-        <input type="email" id="email" name="email" [(ngModel)]="email" #emailField="ngModel" required
-          placeholder="mario.rossi@email.com">
+        <input type="email" id="email" name="email" [(ngModel)]="email" #emailField="ngModel" required placeholder="mario.rossi@email.com">
         @if (emailField.invalid && (emailField.touched || datiForm.submitted)) {
         <small class="field-error">Inserisci un'email valida</small>
         }
@@ -228,9 +228,9 @@
             @if (checkOutField.invalid && (checkOutField.touched || datiForm.submitted)) {
             <small class="field-error">Seleziona la data di check-out</small>
             }
-            @if (tipoPrenotazione === 'stanza' && checkIn && checkOut && notti <= 0) { <small class="field-error">Il
-              check-out deve essere dopo il check-in</small>
-              }
+            @if (tipoPrenotazione === 'stanza' && checkIn && checkOut && notti <= 0) {
+            <small class="field-error">Il check-out deve essere dopo il check-in</small>
+            }
           </div>
         </div>
 
@@ -238,31 +238,25 @@
         <textarea id="note" name="note" rows="3" [(ngModel)]="note" placeholder="Richieste particolari..."></textarea>
       </div>
 
-      <!-- Colonna dx: Riepilogo -->
       <div class="confirm-riepilogo">
         <h3>Riepilogo</h3>
-
         <div class="riepilogo-box">
-
           <div class="riepilogo-row">
             <span>Tipo</span>
             <span>{{ tipoPrenotazione === 'spa' ? 'Solo SPA' : 'Soggiorno' }}</span>
           </div>
-
           @if (tipoPrenotazione === 'spa') {
           <div class="riepilogo-row">
             <span>Costo SPA</span>
             <span>€{{ costoSpa }}</span>
           </div>
           }
-
           @if (stanzaSelezionata) {
           <div class="riepilogo-row">
             <span>Stanza</span>
             <span>{{ stanzaSelezionata.DESCRIZIONE || stanzaSelezionata.DIMENSIONE }}</span>
           </div>
           }
-
           <div class="riepilogo-row">
             <span>Check-in</span>
             <span>{{ checkIn || '—' }}</span>
@@ -271,7 +265,6 @@
             <span>Check-out</span>
             <span>{{ checkOut || '—' }}</span>
           </div>
-
           @if (tipoPrenotazione === 'stanza') {
           <div class="riepilogo-row">
             <span>Notti</span>
@@ -282,20 +275,17 @@
             <span>€{{ costoStanza }}</span>
           </div>
           }
-
           @if (serviziSelezionati.length > 0) {
           <div class="riepilogo-row">
             <span>Servizi extra</span>
             <span>+€{{ costoServizi }}</span>
           </div>
           }
-
           <div class="riepilogo-divider"></div>
           <div class="riepilogo-total">
             <span>Totale</span>
             <span>€{{ totale }}</span>
           </div>
-
           <div class="riepilogo-row riepilogo-caparra">
             <span>Caparra (10%, dovuta ora)</span>
             <span>€{{ caparra }}</span>
@@ -321,16 +311,13 @@
   </div>
   }
 
-  <!-- ══════════════════════════════════════════════════════════ -->
-  <!-- CONFERMA — schermata di successo in-page                   -->
-  <!-- ══════════════════════════════════════════════════════════ -->
   @if (confermata) {
   <div class="step-panel">
     <div class="success-wrapper">
       <div class="success-icon">✓</div>
       <h2>Prenotazione confermata!</h2>
       <p>Ti abbiamo inviato una email di conferma a <strong>{{ email }}</strong>.</p>
-      <p class="success-redirect">Verrai reindirizzato alla home tra pochi secondi...</p>
+      <p class="success-redirect">Verrei reindirizzato alla home tra pochi secondi...</p>
     </div>
   </div>
   }
