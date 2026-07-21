@@ -11,7 +11,7 @@ export interface LoginResponse {
 @Injectable({ providedIn: 'root' })
 export class AuthService {
 
-  private apiUrl = 'http://localhost:8080/auth/login';
+    private apiUrl = 'https://hotel-4n9x.onrender.com/auth/login';
 
   constructor(private http: HttpClient) {}
 
