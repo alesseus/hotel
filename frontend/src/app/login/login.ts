@@ -32,7 +32,7 @@ export class Login implements OnInit {
         if (response.admin) {
           this.router.navigate(['/amministrazione']);
         } else {
-          this.router.navigate(['/home']);
+          this.router.navigate(['/']);
         }
       },
       error: () => {
