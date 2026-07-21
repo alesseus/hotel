@@ -142,7 +142,6 @@ export class Prenotazione implements OnInit {
       return;
     }
 
-
     if (this.tipoPrenotazione === 'stanza' && this.notti <= 0) {
       this.formError = 'La data di check-out deve essere successiva al check-in.';
       return;
@@ -168,21 +167,8 @@ export class Prenotazione implements OnInit {
       STATO: 'In attesa'
     };
 
-    this.invio = true;
-
-    this._PrenotazioneServices.postUtente(nuova).subscribe({
-      next: () => {
-        this.invio = false;
-        this.confermata = true;
-        setTimeout(() => {
-          this.router.navigate(['/']);
-        }, 3000);
-      },
-      error: (err: any) => {
-        this.invio = false;
-        console.error('Errore conferma prenotazione', err);
-        this.formError = 'Errore durante l\'invio della prenotazione. Riprova.';
-      }
-    });
+    sessionStorage.setItem('prenotazione_pending', JSON.stringify(nuova));
+    sessionStorage.setItem('caparra', String(this.caparra));
+    this.router.navigate(['/pagamento']);
   }
 }

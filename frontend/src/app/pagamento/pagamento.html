@@ -1,1 +1,101 @@
-<p>pagamento works!</p>
+<div class="pagamento-page">
+
+  <div class="pagamento-header">
+    <h1>Pagamento caparra</h1>
+    <div class="divider-gold"></div>
+    <p>Inserisci i dati della tua carta per completare la prenotazione</p>
+  </div>
+
+  @if (stato === 'form' || stato === 'errore') {
+  <div class="pagamento-card">
+
+    <div class="caparra-box">
+      <span>Importo da pagare</span>
+      <span class="caparra-importo">€{{ caparra }}</span>
+      <small>Caparra non rimborsabile (10% del totale)</small>
+    </div>
+
+    <form #pagamentoForm="ngForm" (ngSubmit)="paga(pagamentoForm)" novalidate>
+
+      <div class="field-group">
+        <label for="nomeTitolare">Nome titolare</label>
+        <input type="text" id="nomeTitolare" name="nomeTitolare"
+          [(ngModel)]="nomeTitolare" required placeholder="Mario Rossi"
+          #nomeTitolareField="ngModel"
+          [class.invalid]="nomeTitolareField.invalid && nomeTitolareField.touched">
+        @if (nomeTitolareField.invalid && nomeTitolareField.touched) {
+        <span class="field-error">Campo obbligatorio</span>
+        }
+      </div>
+
+      <div class="field-group">
+        <label for="numeroCarta">Numero carta</label>
+        <input type="text" id="numeroCarta" name="numeroCarta"
+          [(ngModel)]="numeroCarta" required minlength="16" maxlength="16"
+          placeholder="1234 5678 9012 3456"
+          #numeroCartaField="ngModel"
+          [class.invalid]="numeroCartaField.invalid && numeroCartaField.touched">
+        @if (numeroCartaField.invalid && numeroCartaField.touched) {
+        <span class="field-error">Inserisci un numero carta valido (16 cifre)</span>
+        }
+      </div>
+
+      <div class="fields-2">
+        <div class="field-group">
+          <label for="scadenza">Scadenza</label>
+          <input type="text" id="scadenza" name="scadenza"
+            [(ngModel)]="scadenza" required placeholder="MM/AA"
+            maxlength="5"
+            #scadenzaField="ngModel"
+            [class.invalid]="scadenzaField.invalid && scadenzaField.touched">
+          @if (scadenzaField.invalid && scadenzaField.touched) {
+          <span class="field-error">Campo obbligatorio</span>
+          }
+        </div>
+        <div class="field-group">
+          <label for="cvv">CVV</label>
+          <input type="text" id="cvv" name="cvv"
+            [(ngModel)]="cvv" required minlength="3" maxlength="3"
+            placeholder="123"
+            #cvvField="ngModel"
+            [class.invalid]="cvvField.invalid && cvvField.touched">
+          @if (cvvField.invalid && cvvField.touched) {
+          <span class="field-error">CVV non valido</span>
+          }
+        </div>
+      </div>
+
+      @if (stato === 'errore') {
+      <div class="pagamento-error">{{ erroreMsg }}</div>
+      }
+
+      <div class="pagamento-actions">
+        <button type="submit" class="primary" [disabled]="pagamentoForm.invalid">
+          Paga €{{ caparra }}
+        </button>
+        <button type="button" class="secondary" (click)="annulla()">
+          Annulla
+        </button>
+      </div>
+
+    </form>
+  </div>
+  }
+
+  @if (stato === 'loading') {
+  <div class="pagamento-loading">
+    <div class="spinner"></div>
+    <p>Elaborazione pagamento in corso...</p>
+  </div>
+  }
+
+  @if (stato === 'successo') {
+  <div class="pagamento-successo">
+    <div class="success-icon">✓</div>
+    <h2>Pagamento effettuato!</h2>
+    <p>La tua prenotazione è stata confermata.</p>
+    <p class="success-redirect">Verrai reindirizzato alla home tra pochi secondi...</p>
+  </div>
+  }
+
+</div>
