@@ -116,6 +116,37 @@
   box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.10);
 }
 
+/* Input con toggle occhio */
+.input-with-toggle {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-with-toggle input {
+  padding-right: 42px;
+}
+
+.toggle-eye {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: var(--ink-faint);
+  line-height: 0;
+  transition: color var(--fast);
+}
+
+.toggle-eye:hover { color: var(--navy-700); }
+
+.toggle-eye svg {
+  width: 17px;
+  height: 17px;
+  stroke: currentColor;
+}
+
 /* ── Messaggio di errore campo ── */
 .field-error {
   font-size: 0.75rem;
