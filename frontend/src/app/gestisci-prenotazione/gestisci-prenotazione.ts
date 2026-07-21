@@ -6,10 +6,11 @@ import { GestisciPrenotazioneServices } from './Services/services';
 import { prenotazione } from '../prenotazione/interfacce/prenotazione_i';
 import { stanza } from '../gestisci-stanza/interfacce/stanza_i';
 import { servizio } from './interfacce/servizio_i';
+import { ServizioByIdPipe } from './pipes/servizio-by-id.pipe';
 
 @Component({
   selector: 'app-gestisci-prenotazione',
-  imports: [RouterLink, FormsModule, DecimalPipe],
+  imports: [RouterLink, FormsModule, DecimalPipe, ServizioByIdPipe],
   templateUrl: './gestisci-prenotazione.html',
   styleUrl: './gestisci-prenotazione.css',
   providers: [GestisciPrenotazioneServices]
@@ -51,6 +52,50 @@ export class GestisciPrenotazione implements OnInit {
   stanzaSelezionata   = signal<stanza   | null>(null);
   servizioSelezionato = signal<servizio | null>(null);
 
+  // ── Multi-servizio ────────────────────────────────────────────
+  // Lista di IDSERVIZIO selezionati (uno per riga aggiunta)
+  serviziSelezionati = signal<number[]>([]);
+
+  get totaleCalcolato(): number {
+    const stanza = this.stanzaSelezionata();
+    const checkIn  = this.form.CHECK_IN  ? new Date(this.form.CHECK_IN as any)  : null;
+    const checkOut = this.form.CHECK_OUT ? new Date(this.form.CHECK_OUT as any) : null;
+
+    let notti = 0;
+    if (checkIn && checkOut && checkOut > checkIn) {
+      notti = Math.round((checkOut.getTime() - checkIn.getTime()) / (1000 * 60 * 60 * 24));
+    }
+
+    const costoStanza = stanza ? (stanza.COSTO ?? 0) * notti : 0;
+
+    const costoServizi = this.serviziSelezionati().reduce((acc, id) => {
+      const sv = this.servizi().find(s => s.IDSERVIZIO === id);
+      return acc + (sv ? (sv.COSTO ?? 0) : 0);
+    }, 0);
+
+    return costoStanza + costoServizi;
+  }
+
+  aggiungiServizio(): void {
+    this.serviziSelezionati.update(list => [...list, null as any]);
+  }
+
+  rimuoviServizio(index: number): void {
+    this.serviziSelezionati.update(list => list.filter((_, i) => i !== index));
+  }
+
+  aggiornaServizio(index: number, id: number | null): void {
+    this.serviziSelezionati.update(list => {
+      const copy = [...list];
+      copy[index] = id as any;
+      return copy;
+    });
+  }
+
+  get serviziRows(): { index: number; idServizio: number | null }[] {
+    return this.serviziSelezionati().map((id, i) => ({ index: i, idServizio: id }));
+  }
+
   // ── Modale conferma elimina ───────────────────────────────────
   eliminaTarget  = signal<prenotazione | null>(null);
   eliminaInCorso = signal(false);
@@ -87,6 +132,7 @@ export class GestisciPrenotazione implements OnInit {
     this.stanzaSelezionata.set(
       id ? (this.stanze().find(s => s.IDSTANZA === +id) ?? null) : null
     );
+    this.aggiornaFormTotale();
   }
 
   onServizioChange(id: number | null): void {
@@ -95,12 +141,24 @@ export class GestisciPrenotazione implements OnInit {
     );
   }
 
+  onDataChange(): void {
+    this.aggiornaFormTotale();
+  }
+
+  aggiornaFormTotale(): void {
+    // Piccolo timeout per attendere che Angular aggiorni form.CHECK_IN / CHECK_OUT
+    setTimeout(() => {
+      this.form.TOTALE = this.totaleCalcolato;
+    }, 0);
+  }
+
   // ── Apertura modali ───────────────────────────────────────────
   apriModaleCreazione(): void {
     this.modalita.set('crea');
     this.form = this.vuota();
     this.stanzaSelezionata.set(null);
     this.servizioSelezionato.set(null);
+    this.serviziSelezionati.set([]);
     this.formError.set('');
     this.modaleAperto.set(true);
   }
@@ -115,6 +173,12 @@ export class GestisciPrenotazione implements OnInit {
     } as any;
     this.stanzaSelezionata.set(this.stanze().find(s => s.IDSTANZA === p.IDSTANZA) ?? null);
     this.servizioSelezionato.set(this.servizi().find(s => s.IDSERVIZIO === p.IDSERVIZIO) ?? null);
+    // Ripristina lista servizi: se la prenotazione ne aveva uno, lo precarica
+    if (p.IDSERVIZIO) {
+      this.serviziSelezionati.set([p.IDSERVIZIO]);
+    } else {
+      this.serviziSelezionati.set([]);
+    }
     this.formError.set('');
     this.modaleAperto.set(true);
   }
@@ -124,6 +188,7 @@ export class GestisciPrenotazione implements OnInit {
     this.form = this.vuota();
     this.stanzaSelezionata.set(null);
     this.servizioSelezionato.set(null);
+    this.serviziSelezionati.set([]);
     this.formError.set('');
   }
 
@@ -134,9 +199,22 @@ export class GestisciPrenotazione implements OnInit {
 
     this.invio.set(true);
 
+    // Calcola il totale finale e lo include nel payload
+    const totale = this.totaleCalcolato;
+    // IDSERVIZIO: primo servizio della lista (compatibilità DB)
+    const idServizioFirst = this.serviziSelezionati().find(id => id != null) ?? null;
+
+    const payload: Partial<prenotazione> = {
+      ...this.form,
+      TOTALE:     totale,
+      IDSERVIZIO: idServizioFirst as any,
+      // Eventuali servizi aggiuntivi (se il backend li supporta)
+      SERVIZI_IDS: this.serviziSelezionati().filter(id => id != null) as any,
+    };
+
     const obs = this.modalita() === 'crea'
-      ? this.srv.addPrenotazione(this.form)
-      : this.srv.cambiaPrenotazione(this.form as prenotazione);
+      ? this.srv.addPrenotazione(payload)
+      : this.srv.cambiaPrenotazione(payload as prenotazione);
 
     obs.subscribe({
       next: () => {
@@ -191,6 +269,14 @@ export class GestisciPrenotazione implements OnInit {
       NOTE: '', CHECK_IN: '' as any, CHECK_OUT: '' as any,
       STATO: ''
     };
+  }
+
+  calcolaNotti(checkIn: any, checkOut: any): number {
+    if (!checkIn || !checkOut) return 0;
+    const ci = new Date(checkIn);
+    const co = new Date(checkOut);
+    if (co <= ci) return 0;
+    return Math.round((co.getTime() - ci.getTime()) / (1000 * 60 * 60 * 24));
   }
 
   formatData(d: string | Date | undefined): string {

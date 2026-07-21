@@ -261,6 +261,140 @@
 .confirm-text { font-size: 0.95rem; color: var(--ink); line-height: 1.5; margin-bottom: 6px; }
 .confirm-sub  { font-size: 0.80rem; color: var(--ink-faint); }
 
+/* ══════════════════════════════════════════════
+   MULTI-SERVIZIO
+   ══════════════════════════════════════════════ */
+
+/* Header con label + pulsante affiancati */
+.servizi-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.servizi-header label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--navy-700);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 0;
+}
+
+/* Riga singola servizio */
+.servizio-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+  animation: fadeSlideIn .15s ease;
+}
+
+/* Select dentro la riga */
+.servizio-select {
+  flex: 1;
+  border: 1.5px solid var(--navy-100);
+  border-radius: var(--r-md, 8px);
+  padding: 9px 12px;
+  font-size: 0.88rem;
+  color: var(--ink);
+  background: var(--white);
+  transition: border-color .15s;
+  box-sizing: border-box;
+}
+.servizio-select:focus {
+  outline: none;
+  border-color: var(--navy-500);
+}
+
+/* Costo visualizzato accanto alla select */
+.servizio-costo {
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--navy-700);
+  white-space: nowrap;
+  min-width: 72px;
+  text-align: right;
+}
+
+/* Pulsante + Aggiungi servizio */
+.btn-add-service {
+  background: transparent;
+  border: 1.5px solid var(--navy-300);
+  color: var(--navy-700);
+  border-radius: var(--r-pill);
+  padding: 6px 14px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background .15s, border-color .15s;
+  white-space: nowrap;
+}
+.btn-add-service:hover {
+  background: var(--navy-50);
+  border-color: var(--navy-600);
+}
+
+/* Pulsante ✕ rimuovi servizio */
+.btn-remove-service {
+  background: transparent;
+  border: 1.5px solid #F5C6C2;
+  color: #C0392B;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background .15s, border-color .15s;
+}
+.btn-remove-service:hover {
+  background: #FEF2F0;
+  border-color: #E57368;
+}
+
+/* Testo vuoto */
+.servizi-empty {
+  font-size: 0.82rem;
+  color: var(--ink-faint);
+  font-style: italic;
+  margin: 4px 0 8px;
+}
+
+/* ══════════════════════════════════════════════
+   TOTALE CALCOLATO DINAMICO
+   ══════════════════════════════════════════════ */
+.totale-display {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: linear-gradient(135deg, var(--navy-950, #0d1b3e) 0%, var(--navy-800, #1e3a5f) 100%);
+  border-radius: var(--r-md, 8px);
+  padding: 14px 18px;
+  border: none;
+}
+
+.totale-value {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #f0c040;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.totale-hint {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.55);
+  flex: 1;
+  line-height: 1.4;
+}
+
 /* ── Responsive ── */
 @media (max-width: 600px) {
   .form-grid          { grid-template-columns: 1fr; }
