@@ -35,7 +35,12 @@
   flex-direction: column;
   gap: 4px;
 }
-.caparra-box span:first-child { font-size: 0.82rem; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.07em; }
+.caparra-box span:first-child {
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
 .caparra-importo {
   font-family: var(--font-display);
   font-size: 2.4rem;
@@ -73,13 +78,20 @@ input.invalid { border-color: #d33; }
 .carte-loghi {
   display: flex;
   justify-content: center;
-  gap: 12px;
-  margin-top: 20px;
-  font-size: 2rem;
-  color: var(--navy-300);
+  align-items: center;
+  gap: 10px;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--navy-100);
 }
-.carte-loghi span { transition: color var(--fast); cursor: default; }
-.carte-loghi span:hover { color: var(--navy-600); }
+.carta-logo {
+  width: 52px;
+  height: 34px;
+  border-radius: 4px;
+  opacity: 0.75;
+  transition: opacity var(--fast);
+}
+.carta-logo:hover { opacity: 1; }
 
 .pagamento-loading {
   max-width: 480px;

@@ -43,8 +43,30 @@ export class Pagamento implements OnInit {
     this.caparra = parseFloat(cap);
   }
 
+  formatScadenza(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    let val = input.value.replace(/\D/g, '');
+    if (val.length >= 2) {
+      val = val.slice(0, 2) + '/' + val.slice(2, 4);
+    }
+    input.value = val;
+    this.scadenza = val;
+  }
+
+  scadenzaValida(): boolean {
+    if (!/^\d{2}\/\d{2}$/.test(this.scadenza)) return false;
+    const [mm, yy] = this.scadenza.split('/').map(Number);
+    if (mm < 1 || mm > 12) return false;
+    const now = new Date();
+    const annoCorrente = now.getFullYear() % 100;
+    const meseCorrente = now.getMonth() + 1;
+    if (yy < annoCorrente) return false;
+    if (yy === annoCorrente && mm < meseCorrente) return false;
+    return true;
+  }
+
   paga(form: NgForm): void {
-    if (form.invalid) return;
+    if (form.invalid || !this.scadenzaValida()) return;
 
     this.stato = 'loading';
 
