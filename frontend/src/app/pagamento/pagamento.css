@@ -1,0 +1,134 @@
+:host { display: block; }
+
+.pagamento-page {
+  background: var(--bg);
+  min-height: 100%;
+}
+
+/* ── Header ── */
+.pagamento-header {
+  background: linear-gradient(135deg, var(--navy-950) 0%, var(--navy-800) 100%);
+  padding: 52px 40px 44px;
+  text-align: center;
+}
+.pagamento-header h1 { color: var(--white); margin-bottom: 10px; }
+.pagamento-header .divider-gold { margin: 0 auto 12px; }
+.pagamento-header p { color: rgba(255,255,255,0.55); font-size: 0.92rem; }
+
+/* ── Card ── */
+.pagamento-card {
+  max-width: 480px;
+  margin: 52px auto 72px;
+  background: var(--white);
+  border-radius: var(--r-xl);
+  border: 1px solid var(--navy-100);
+  box-shadow: var(--shadow-1);
+  padding: 36px;
+}
+
+/* ── Importo ── */
+.caparra-box {
+  background: var(--navy-50);
+  border: 1px solid var(--navy-100);
+  border-radius: var(--r-md);
+  padding: 20px;
+  text-align: center;
+  margin-bottom: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.caparra-box span:first-child { font-size: 0.82rem; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.07em; }
+.caparra-importo {
+  font-family: var(--font-display);
+  font-size: 2.4rem;
+  font-weight: 600;
+  color: var(--navy-900);
+}
+.caparra-box small { font-size: 0.75rem; color: var(--ink-faint); }
+
+/* ── Form ── */
+.field-group { display: flex; flex-direction: column; margin-bottom: 16px; }
+.field-group label { font-size: 0.82rem; font-weight: 600; color: var(--navy-800); margin-bottom: 6px; }
+
+.fields-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; }
+
+.field-error {
+  color: #d33;
+  font-size: 0.75rem;
+  margin-top: 4px;
+}
+input.invalid { border-color: #d33; }
+
+.pagamento-error {
+  background: #fdecea;
+  color: #d33;
+  border: 1px solid #f5b5ac;
+  border-radius: var(--r-md);
+  padding: 10px 14px;
+  font-size: 0.85rem;
+  margin-bottom: 14px;
+}
+
+/* ── Azioni ── */
+.pagamento-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 24px;
+}
+.pagamento-actions button { width: 100%; justify-content: center; }
+
+/* ── Loading ── */
+.pagamento-loading {
+  max-width: 480px;
+  margin: 80px auto;
+  text-align: center;
+  color: var(--ink-soft);
+}
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 3px solid var(--navy-100);
+  border-top-color: var(--navy-700);
+  border-radius: 50%;
+  margin: 0 auto 20px;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Successo ── */
+.pagamento-successo {
+  max-width: 480px;
+  margin: 80px auto;
+  text-align: center;
+}
+.success-icon {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 24px;
+  border-radius: 50%;
+  background: var(--navy-700);
+  color: var(--white);
+  font-size: 2.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: popIn 0.4s var(--ease) both;
+}
+.pagamento-successo h2 { margin-bottom: 12px; color: var(--navy-900); }
+.pagamento-successo p { color: var(--ink-soft); margin-bottom: 6px; }
+.success-redirect { font-size: 0.82rem; color: var(--ink-faint); margin-top: 20px; }
+
+@keyframes popIn {
+  from { transform: scale(0.6); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
+@media (max-width: 768px) {
+  .pagamento-header { padding: 40px 20px 36px; }
+  .pagamento-card { margin: 40px 20px 56px; padding: 28px 20px; }
+  .fields-2 { grid-template-columns: 1fr; }
+}
