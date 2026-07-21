@@ -120,7 +120,8 @@ export class GestisciStanza implements OnInit {
       CAPACITA:    undefined,
       COSTO:       undefined,
       NOTE:        '',
-      STATO:       'Libera'
+      STATO:       'Libera',
+      IMMAGINE:    ''
     };
     this.formError.set('');
     this.modaleAperto.set(true);
