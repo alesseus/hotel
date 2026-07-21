@@ -47,8 +47,9 @@ td {
   font-weight: 700;
   letter-spacing: 0.03em;
 }
-.badge-ok { background: #E6F4EA; color: #1E7E34; }
-.badge-no { background: #FDECEA; color: #C0392B; }
+.badge-ok   { background: #E6F4EA; color: #1E7E34; }
+.badge-no   { background: #FDECEA; color: #C0392B; }
+.badge-warn { background: #FFF3CD; color: #856404; }
 
 /* Azioni riga */
 .table-actions {

@@ -65,8 +65,8 @@ export class Prenotazione implements OnInit {
     let risultato = this.tutteLeStanze().filter(s => {
       const stato = s.STATO?.toLowerCase() ?? '';
 
-      // Escludi sempre stanze in manutenzione
-      if (stato === 'manutenzione') return false;
+      // Escludi sempre stanze in manutenzione o occupate (a prescindere dalle date)
+      if (stato === 'manutenzione' || stato === 'occupata') return false;
 
       // Se le date sono inserite, controlla sovrapposizione con prenotazioni attive
       if (ci && co && co > ci) {
@@ -81,8 +81,8 @@ export class Prenotazione implements OnInit {
         return !conflitto;
       }
 
-      // Senza date: mostra solo quelle con stato 'disponibile'
-      return stato === 'disponibile';
+      // Senza date: mostra solo le stanze con stato 'libera'
+      return stato === 'libera';
     });
 
     if (this.filtroCapacita) {
