@@ -21,14 +21,6 @@ export interface RegisterPayload {
   dataNascita: string;
 }
 
-async function sha256(value: string): Promise<string> {
-  const data = new TextEncoder().encode(value);
-  const buf  = await crypto.subtle.digest('SHA-256', data);
-  return Array.from(new Uint8Array(buf))
-    .map(b => b.toString(16).padStart(2, '0'))
-    .join('');
-}
-
 function passwordMatchValidator(group: AbstractControl): ValidationErrors | null {
   const pw  = group.get('password')?.value;
   const cpw = group.get('confermaPassword')?.value;
@@ -70,53 +62,19 @@ export class Register implements OnInit {
   ngOnInit(): void {
     this.registerForm = this.fb.group(
       {
-        nome: [
-          '',
-          [
-            Validators.required,
-            Validators.minLength(2),
-            Validators.maxLength(50),
-            Validators.pattern(/^[a-zA-ZÀ-ÿ\s'\-]+$/),
-          ],
-        ],
-        cognome: [
-          '',
-          [
-            Validators.required,
-            Validators.minLength(2),
-            Validators.maxLength(50),
-            Validators.pattern(/^[a-zA-ZÀ-ÿ\s'\-]+$/),
-          ],
-        ],
-        email: [
-          '',
-          [Validators.required, Validators.email, Validators.maxLength(100)],
-        ],
-        password: [
-          '',
-          [
-            Validators.required,
-            Validators.minLength(8),
-            Validators.maxLength(128),
-            Validators.pattern(
-              /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_\-#])[A-Za-z\d@$!%*?&_\-#]+$/
-            ),
-          ],
-        ],
+        nome: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50), Validators.pattern(/^[a-zA-ZÀ-ÿ\s'\-]+$/)]],
+        cognome: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50), Validators.pattern(/^[a-zA-ZÀ-ÿ\s'\-]+$/)]],
+        email: ['', [Validators.required, Validators.email, Validators.maxLength(100)]],
+        password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(128), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_\-#])[A-Za-z\d@$!%*?&_\-#]+$/)]],
         confermaPassword: ['', Validators.required],
-        telefono: [
-          '',
-          [Validators.required, Validators.pattern(/^\+?[\d\s\-(). ]{7,20}$/)],
-        ],
+        telefono: ['', [Validators.required, Validators.pattern(/^\+?[\d\s\-(). ]{7,20}$/)]],
         dataNascita: ['', [Validators.required, etaMinimaValidator]],
       },
       { validators: passwordMatchValidator }
     );
   }
 
-  get f() {
-    return this.registerForm.controls;
-  }
+  get f() { return this.registerForm.controls; }
 
   isInvalid(field: string): boolean {
     const ctrl = this.registerForm.get(field);
@@ -137,17 +95,14 @@ export class Register implements OnInit {
     this.errorMessage   = '';
 
     try {
-      const { nome, cognome, email, password, telefono, dataNascita } =
-        this.registerForm.value;
-
-      const passwordHash = await sha256(password);
+      const { nome, cognome, email, password, telefono, dataNascita } = this.registerForm.value;
 
       const payload: RegisterPayload = {
-        nome:      nome.trim(),
-        cognome:   cognome.trim(),
-        email:     email.trim().toLowerCase(),
-        passwordHash,
-        telefono:  telefono.trim(),
+        nome:         nome.trim(),
+        cognome:      cognome.trim(),
+        email:        email.trim().toLowerCase(),
+        passwordHash: password,
+        telefono:     telefono.trim(),
         dataNascita,
       };
 
@@ -155,12 +110,14 @@ export class Register implements OnInit {
         this.http.post<{ message: string }>(this.apiUrl, payload)
       );
 
-      this.successMessage =
-        "Registrazione completata!";
+      this.successMessage = "Registrazione completata! Controlla la tua email per confermare l'account.";
       this.registerForm.reset();
-    } catch {
-      this.errorMessage =
-        'Si è verificato un errore durante la registrazione. Riprova più tardi.';
+    } catch (err: any) {
+      if (err?.status === 409) {
+        this.errorMessage = 'Questa email è già registrata.';
+      } else {
+        this.errorMessage = 'Si è verificato un errore durante la registrazione. Riprova più tardi.';
+      }
     } finally {
       this.isLoading = false;
     }
