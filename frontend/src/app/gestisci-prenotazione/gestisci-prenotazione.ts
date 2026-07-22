@@ -56,6 +56,36 @@ export class GestisciPrenotazione implements OnInit {
   // ── Multi-servizio ────────────────────────────────────────────
   serviziSelezionati = signal<number[]>([]);
 
+  // ── Ospiti (nome + cognome) ───────────────────────────────────
+  ospiti = signal<{ nome: string; cognome: string }[]>([]);
+
+  aggiungiOspite(): void { this.ospiti.update(l => [...l, { nome: '', cognome: '' }]); }
+  rimuoviOspite(index: number): void { this.ospiti.update(l => l.filter((_, i) => i !== index)); }
+  aggiornaOspiteNome(index: number, val: string): void {
+    this.ospiti.update(l => { const c = [...l]; c[index] = { ...c[index], nome: val }; return c; });
+  }
+  aggiornaOspiteCognome(index: number, val: string): void {
+    this.ospiti.update(l => { const c = [...l]; c[index] = { ...c[index], cognome: val }; return c; });
+  }
+
+  private parseOspiti(ospiti: string | undefined): { nome: string; cognome: string }[] {
+    if (!ospiti) return [];
+    return ospiti.split(',')
+      .map(s => s.trim())
+      .filter(s => s.length > 0)
+      .map(full => {
+        const parti = full.split(' ');
+        return { nome: parti[0] ?? '', cognome: parti.slice(1).join(' ') };
+      });
+  }
+
+  private buildOspiti(): string {
+    return this.ospiti()
+      .map(o => `${o.nome} ${o.cognome}`.trim())
+      .filter(s => s.length > 0)
+      .join(', ');
+  }
+
   // ── Min date per checkout ─────────────────────────────────────
   get checkOutMin(): string {
     const ci = this.form.CHECK_IN;
@@ -193,11 +223,13 @@ export class GestisciPrenotazione implements OnInit {
     this.stanzaSelezionata.set(null);
     this.servizioSelezionato.set(null);
     this.serviziSelezionati.set([]);
+    this.ospiti.set([]);
     this.formError.set('');
     this.modaleAperto.set(true);
   }
 
   apriModaleModifica(p: prenotazione): void {
+
     this.modalita.set('modifica');
     this.form = {
       ...p,
@@ -208,6 +240,7 @@ export class GestisciPrenotazione implements OnInit {
     this.stanzaSelezionata.set(this.stanze().find(s => s.IDSTANZA === p.IDSTANZA) ?? null);
     this.servizioSelezionato.set(this.servizi().find(s => s.IDSERVIZIO === p.IDSERVIZIO) ?? null);
     this.serviziSelezionati.set(p.IDSERVIZIO ? [p.IDSERVIZIO] : []);
+    this.ospiti.set(this.parseOspiti(p.OSPITI));
     this.formError.set('');
     this.modaleAperto.set(true);
   }
@@ -218,8 +251,10 @@ export class GestisciPrenotazione implements OnInit {
     this.stanzaSelezionata.set(null);
     this.servizioSelezionato.set(null);
     this.serviziSelezionati.set([]);
+    this.ospiti.set([]);
     this.formError.set('');
   }
+
 
   // ── Salva (crea o modifica) ───────────────────────────────────
   salva(ngForm: NgForm): void {
@@ -260,7 +295,9 @@ export class GestisciPrenotazione implements OnInit {
       CHECK_IN:    this.form.CHECK_IN    ? new Date(this.form.CHECK_IN  as any) : null as any,
       CHECK_OUT:   this.form.CHECK_OUT   ? new Date(this.form.CHECK_OUT as any) : null as any,
       STATO:       this.form.STATO       ?? 'In attesa',
+      OSPITI:      this.buildOspiti(),
     };
+
 
     const obs = this.modalita() === 'crea'
       ? this.srv.addPrenotazione(payload)
@@ -280,8 +317,33 @@ export class GestisciPrenotazione implements OnInit {
     });
   }
 
+  // ── Conferma / Rifiuta prenotazione ───────────────────────────
+  cambiaStatoInCorso = signal<number | null>(null);
+
+  confermaPrenotazione(p: prenotazione): void { this.cambiaStato(p, 'Confermata'); }
+  rifiutaPrenotazione(p: prenotazione):  void { this.cambiaStato(p, 'Cancellata'); }
+
+  private cambiaStato(p: prenotazione, nuovoStato: string): void {
+    this.cambiaStatoInCorso.set(p.IDPRE);
+    const aggiornata: prenotazione = { ...p, STATO: nuovoStato };
+    this.srv.cambiaPrenotazione(aggiornata).subscribe({
+      next: () => {
+        this.cambiaStatoInCorso.set(null);
+        this.prenotazioni.update(list =>
+          list.map(x => x.IDPRE === p.IDPRE ? aggiornata : x)
+        );
+      },
+      error: (err) => {
+        console.error('Errore cambio stato', err);
+        this.cambiaStatoInCorso.set(null);
+        this.erroreCaricamento.set("Errore durante l'aggiornamento dello stato. Riprova.");
+      }
+    });
+  }
+
   // ── Elimina ───────────────────────────────────────────────────
   apriConfermaEliminazione(p: prenotazione): void { this.eliminaTarget.set(p); }
+
   annullaEliminazione():                     void { this.eliminaTarget.set(null); }
 
   confermaEliminazione(): void {

@@ -148,7 +148,40 @@ export class Prenotazione implements OnInit {
 
   selezionaStanza(s: stanza): void {
     this.stanzaSelezionata = s;
+    this.aggiornaOspiti();
     this.step = 2;
+  }
+
+  // ── Ospiti aggiuntivi (in base alla capacità della stanza) ────
+  // L'intestatario (nome/cognome) è il primo ospite: qui gestiamo gli
+  // ospiti aggiuntivi fino a riempire la capacità della stanza.
+  ospiti: { nome: string; cognome: string }[] = [];
+
+  get numeroOspitiAggiuntivi(): number {
+    if (this.tipoPrenotazione !== 'stanza' || !this.stanzaSelezionata) return 0;
+    return Math.max(0, (this.stanzaSelezionata.CAPACITA ?? 1) - 1);
+  }
+
+  private aggiornaOspiti(): void {
+    const n = this.numeroOspitiAggiuntivi;
+    const nuovi: { nome: string; cognome: string }[] = [];
+    for (let i = 0; i < n; i++) {
+      nuovi.push(this.ospiti[i] ?? { nome: '', cognome: '' });
+    }
+    this.ospiti = nuovi;
+  }
+
+  // Costruisce la stringa OSPITI: elenco "Nome Cognome" separati da ","
+  // include l'intestatario come primo ospite.
+  private buildOspiti(): string {
+    const lista: string[] = [];
+    const intest = `${this.nome} ${this.cognome}`.trim();
+    if (intest) lista.push(intest);
+    for (const o of this.ospiti) {
+      const full = `${o.nome} ${o.cognome}`.trim();
+      if (full) lista.push(full);
+    }
+    return lista.join(', ');
   }
 
   toggleServizio(s: servizio): void {
@@ -233,8 +266,10 @@ export class Prenotazione implements OnInit {
       NOTE: this.note,
       CHECK_IN: new Date(this.checkIn),
       CHECK_OUT: new Date(this.checkOut),
-      STATO: 'In attesa'
+      STATO: 'In attesa',
+      OSPITI: this.buildOspiti()
     };
+
 
     sessionStorage.setItem('prenotazione_pending', JSON.stringify(nuova));
     sessionStorage.setItem('caparra', String(this.caparra));

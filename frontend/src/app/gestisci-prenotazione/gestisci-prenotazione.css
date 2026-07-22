@@ -60,7 +60,7 @@
   color: var(--ink-faint); font-size: 0.88rem;
 }
 
-.btn-edit, .btn-delete {
+.btn-edit, .btn-delete, .btn-confirm, .btn-reject {
   font-size: 0.70rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
   border-radius: var(--r-pill); padding: 6px 14px; border: 1.5px solid;
   cursor: pointer; transition: background var(--fast), color var(--fast);
@@ -69,7 +69,13 @@
 .btn-edit:hover  { background: var(--navy-50); border-color: var(--navy-600); }
 .btn-delete      { color: #C0392B; border-color: #F5C6C2; background: transparent; }
 .btn-delete:hover { background: #FEF2F0; border-color: #E57368; }
-.actions-cell    { display: flex; gap: 6px; align-items: center; }
+.btn-confirm       { color: #1E7E34; border-color: #B7E1C1; background: transparent; }
+.btn-confirm:hover:not(:disabled) { background: #EAF7EE; border-color: #2E9E4A; }
+.btn-reject        { color: #C0392B; border-color: #F5C6C2; background: transparent; }
+.btn-reject:hover:not(:disabled)  { background: #FEF2F0; border-color: #E57368; }
+.btn-confirm:disabled, .btn-reject:disabled { opacity: 0.5; cursor: not-allowed; }
+.actions-cell    { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+
 
 /* ── Empty state ── */
 .empty-state { text-align: center; padding: 72px 32px; color: var(--ink-faint); }

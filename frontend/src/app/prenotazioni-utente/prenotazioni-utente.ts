@@ -27,8 +27,10 @@ export class PrenotazioniUtente implements OnInit {
   formCognome = '';
   formTelefono = '';
   formEmail = '';
+  formOspiti: { nome: string; cognome: string }[] = [];
   invio = false;
   formError = '';
+
 
   // Modale conferma cancellazione
   cancellaTarget: prenotazione | null = null;
@@ -71,9 +73,33 @@ export class PrenotazioniUtente implements OnInit {
     this.formCognome = p.COGNOME;
     this.formTelefono = p.TELEFONO;
     this.formEmail = p.EMAIL;
+    this.formOspiti = this.parseOspiti(p.OSPITI);
     this.formError = '';
     this.modaleAperto = true;
   }
+
+  // ── Ospiti ────────────────────────────────────────────────────
+  aggiungiOspite(): void { this.formOspiti = [...this.formOspiti, { nome: '', cognome: '' }]; }
+  rimuoviOspite(index: number): void { this.formOspiti = this.formOspiti.filter((_, i) => i !== index); }
+
+  private parseOspiti(ospiti: string | undefined): { nome: string; cognome: string }[] {
+    if (!ospiti) return [];
+    return ospiti.split(',')
+      .map(s => s.trim())
+      .filter(s => s.length > 0)
+      .map(full => {
+        const parti = full.split(' ');
+        return { nome: parti[0] ?? '', cognome: parti.slice(1).join(' ') };
+      });
+  }
+
+  private buildOspiti(): string {
+    return this.formOspiti
+      .map(o => `${o.nome} ${o.cognome}`.trim())
+      .filter(s => s.length > 0)
+      .join(', ');
+  }
+
 
   chiudiModale(): void {
     this.modaleAperto = false;
@@ -91,8 +117,10 @@ export class PrenotazioniUtente implements OnInit {
       NOME: this.formNome,
       COGNOME: this.formCognome,
       TELEFONO: this.formTelefono,
-      EMAIL: this.formEmail
+      EMAIL: this.formEmail,
+      OSPITI: this.buildOspiti()
     };
+
 
     this.http.put(`${this.API}/cambia`, aggiornata, {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })

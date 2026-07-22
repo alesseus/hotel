@@ -77,9 +77,18 @@
                   </span>
                 </td>
                 <td class="actions-cell">
+                  @if (p.STATO?.toLowerCase() === 'in attesa') {
+                    <button class="btn-confirm" type="button"
+                            [disabled]="cambiaStatoInCorso() === p.IDPRE"
+                            (click)="confermaPrenotazione(p)">Conferma</button>
+                    <button class="btn-reject" type="button"
+                            [disabled]="cambiaStatoInCorso() === p.IDPRE"
+                            (click)="rifiutaPrenotazione(p)">Rifiuta</button>
+                  }
                   <button class="btn-edit"   type="button" (click)="apriModaleModifica(p)">Modifica</button>
                   <button class="btn-delete" type="button" (click)="apriConfermaEliminazione(p)">Elimina</button>
                 </td>
+
               </tr>
             }
           }
@@ -293,6 +302,39 @@
               <input type="hidden" name="TOTALE" [ngModel]="totaleCalcolato">
             </div>
 
+            <!-- ── Ospiti (nome + cognome) ── -->
+            <div class="form-group full-width">
+              <div class="servizi-header">
+                <label>Ospiti (nome e cognome)</label>
+                <button class="btn-add-service" type="button" (click)="aggiungiOspite()">
+                  + Aggiungi ospite
+                </button>
+              </div>
+
+              @if (ospiti().length === 0) {
+                <p class="servizi-empty">Nessun ospite aggiunto. Clicca "+ Aggiungi ospite" per includerne uno.</p>
+              }
+
+              @for (o of ospiti(); track $index) {
+                <div class="servizio-row">
+                  <input type="text" class="servizio-select"
+                         [name]="'ospiteNome_' + $index"
+                         [ngModel]="o.nome"
+                         (ngModelChange)="aggiornaOspiteNome($index, $event)"
+                         placeholder="Nome">
+                  <input type="text" class="servizio-select"
+                         [name]="'ospiteCognome_' + $index"
+                         [ngModel]="o.cognome"
+                         (ngModelChange)="aggiornaOspiteCognome($index, $event)"
+                         placeholder="Cognome">
+                  <button class="btn-remove-service" type="button"
+                          (click)="rimuoviOspite($index)">
+                    ✕
+                  </button>
+                </div>
+              }
+            </div>
+
             <!-- ── Note (riga intera) ── -->
             <div class="form-group full-width">
               <label for="f-note">Note</label>
@@ -300,6 +342,7 @@
                         [(ngModel)]="form.NOTE"
                         rows="3" placeholder="Note aggiuntive..."></textarea>
             </div>
+
 
           </div>
         </div>

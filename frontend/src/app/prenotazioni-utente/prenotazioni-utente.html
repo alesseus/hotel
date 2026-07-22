@@ -37,7 +37,8 @@
       <div class="prenotazione-card">
 
         <div class="card-header">
-          <span class="card-stato" [class]="'stato-' + p.STATO?.toLowerCase().replace(' ', '-')">
+          <span class="card-stato" [class]="'stato-' + (p.STATO || '').toLowerCase().replace(' ', '-')">
+
             {{ p.STATO }}
           </span>
           <span class="card-totale">€{{ p.TOTALE }}</span>
@@ -114,9 +115,31 @@
           </div>
         </div>
 
+        <div class="ospiti-block">
+          <div class="ospiti-head">
+            <label>Ospiti (nome e cognome)</label>
+            <button type="button" class="secondary btn-add-ospite" (click)="aggiungiOspite()">+ Aggiungi ospite</button>
+          </div>
+          @if (formOspiti.length === 0) {
+          <p class="ospiti-empty">Nessun ospite aggiunto.</p>
+          }
+          @for (o of formOspiti; track $index) {
+          <div class="fields-2 ospite-row">
+            <div class="field-group">
+              <input type="text" [name]="'ospiteNome' + $index" [(ngModel)]="o.nome" placeholder="Nome">
+            </div>
+            <div class="field-group ospite-cognome">
+              <input type="text" [name]="'ospiteCognome' + $index" [(ngModel)]="o.cognome" placeholder="Cognome">
+              <button type="button" class="btn-remove-ospite" (click)="rimuoviOspite($index)">✕</button>
+            </div>
+          </div>
+          }
+        </div>
+
         @if (formError) {
         <div class="form-error-banner">{{ formError }}</div>
         }
+
 
         <div class="modale-actions">
           <button type="submit" class="primary" [disabled]="modificaForm.invalid || invio">

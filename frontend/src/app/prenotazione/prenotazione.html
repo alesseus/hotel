@@ -269,9 +269,34 @@
           </div>
         </div>
 
+        @if (tipoPrenotazione === 'stanza' && numeroOspitiAggiuntivi > 0) {
+        <div class="ospiti-section">
+          <h3>Altri ospiti</h3>
+          <p class="ospiti-hint">
+            La stanza selezionata ha una capacità di {{ stanzaSelezionata?.CAPACITA }} persone.
+            Inserisci nome e cognome degli altri {{ numeroOspitiAggiuntivi }} ospiti (l'intestatario è già incluso).
+          </p>
+          @for (o of ospiti; track $index) {
+          <div class="fields-2 ospite-row">
+            <div>
+              <label [attr.for]="'ospite-nome-' + $index">Nome ospite {{ $index + 2 }}</label>
+              <input type="text" [id]="'ospite-nome-' + $index" [name]="'ospiteNome' + $index"
+                [(ngModel)]="o.nome" placeholder="Nome">
+            </div>
+            <div>
+              <label [attr.for]="'ospite-cognome-' + $index">Cognome ospite {{ $index + 2 }}</label>
+              <input type="text" [id]="'ospite-cognome-' + $index" [name]="'ospiteCognome' + $index"
+                [(ngModel)]="o.cognome" placeholder="Cognome">
+            </div>
+          </div>
+          }
+        </div>
+        }
+
         <label for="note">Note</label>
         <textarea id="note" name="note" rows="3" [(ngModel)]="note" placeholder="Richieste particolari..."></textarea>
       </div>
+
 
       <div class="confirm-riepilogo">
         <h3>Riepilogo</h3>
