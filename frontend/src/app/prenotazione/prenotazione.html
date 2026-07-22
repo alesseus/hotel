@@ -254,7 +254,7 @@
           <div>
             <label for="checkIn">Check-in</label>
             <input type="date" id="checkIn" name="checkIn" [(ngModel)]="checkIn" #checkInField="ngModel"
-              [required]="tipoPrenotazione !== 'spa'">
+              required>
             @if (checkInField.invalid && (checkInField.touched || datiForm.submitted)) {
             <small class="field-error">Seleziona la data di check-in</small>
             }
@@ -262,7 +262,7 @@
           <div>
             <label for="checkOut">Check-out</label>
             <input type="date" id="checkOut" name="checkOut" [(ngModel)]="checkOut" #checkOutField="ngModel"
-              [required]="tipoPrenotazione !== 'spa'">
+              required>
             @if (checkOutField.invalid && (checkOutField.touched || datiForm.submitted)) {
             <small class="field-error">Seleziona la data di check-out</small>
             }
