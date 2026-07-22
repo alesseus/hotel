@@ -1,15 +1,16 @@
 @import url('../gestisci-prenotazione/gestisci-prenotazione.css');
 
 /* ── Tabella: righe + celle ── */
-table {
+.table-wrapper table {
+  min-width: 700px;
   width: 100%;
   border-collapse: collapse;
 }
-thead tr {
+.table-wrapper thead tr {
   background: var(--navy-50);
   border-bottom: 1.5px solid var(--navy-100);
 }
-th {
+.table-wrapper th {
   text-align: left;
   font-size: 0.70rem;
   font-weight: 700;
@@ -19,13 +20,13 @@ th {
   padding: 14px 18px;
   white-space: nowrap;
 }
-tbody tr {
+.table-wrapper tbody tr {
   border-bottom: 1px solid var(--navy-50);
   transition: background var(--fast);
 }
-tbody tr:last-child { border-bottom: none; }
-tbody tr:hover { background: var(--navy-50); }
-td {
+.table-wrapper tbody tr:last-child { border-bottom: none; }
+.table-wrapper tbody tr:hover { background: var(--navy-50); }
+.table-wrapper td {
   padding: 14px 18px;
   font-size: 0.86rem;
   color: var(--ink-soft);
