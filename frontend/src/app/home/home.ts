@@ -177,18 +177,32 @@ export class Home implements OnInit, OnDestroy {
     this.invioInCorso.set(true);
     this.erroreInvio.set('');
 
-    const token = sessionStorage.getItem('token') ?? '';
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
-    });
+    const mailLoggato = this.authService.getMail();
 
-    const body = {
-      DESCRIZIONE: this.nuovaDescrizione().trim(),
-      RATING:      this.nuovoRating()
-    };
+    // 1. Recupera IDCLIENTE dalla mail dell'utente loggato
+    this.http.get<any[]>('https://hotel-4n9x.onrender.com/cliente/lista').subscribe({
+      next: (clienti) => {
+        const cliente = clienti.find((c: any) => c.MAIL === mailLoggato);
+        if (!cliente) {
+          this.invioInCorso.set(false);
+          this.erroreInvio.set('Utente non trovato. Effettua di nuovo il login.');
+          return;
+        }
 
-    this.http.post('https://hotel-4n9x.onrender.com/recensione/add', body, { headers }).subscribe({
+        const token = sessionStorage.getItem('token') ?? '';
+        const headers = new HttpHeaders({
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        });
+
+        const body = {
+          DESCRIZIONE: this.nuovaDescrizione().trim(),
+          RATING:      this.nuovoRating(),
+          IDCLIENTE:   cliente.IDCLIENTE
+        };
+
+        // 2. Invia la recensione con IDCLIENTE reale
+        this.http.post('https://hotel-4n9x.onrender.com/recensione/add', body, { headers }).subscribe({
       next: () => {
         this.invioInCorso.set(false);
         this.invioRiuscito.set(true);
@@ -209,6 +223,12 @@ export class Home implements OnInit, OnDestroy {
         } else {
           this.erroreInvio.set('Si è verificato un errore. Riprova più tardi.');
         }
+      }
+        });
+      },
+      error: () => {
+        this.invioInCorso.set(false);
+        this.erroreInvio.set('Impossibile recuperare i dati utente. Riprova più tardi.');
       }
     });
   }
