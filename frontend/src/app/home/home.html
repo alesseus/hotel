@@ -34,31 +34,36 @@
   </div>
 </div>
 
-<!-- RECENSIONI -->
+<!-- RECENSIONI DAL DB -->
 <div class="recensioni-strip">
   <div class="recensioni-strip-inner">
     <h2>Recensioni</h2>
     <div class="divider-gold"></div>
 
-    <div class="rec-grid">
-      <div class="rec-card">
-        <div class="rec-stars">★★★★★</div>
-        <p>"Un soggiorno indimenticabile. La vista sul mare e il personale cordiale hanno reso tutto perfetto."</p>
-        <span class="rec-author">— Laura M.</span>
+    <!-- Carosello: mostra 3 card per volta, scorre ogni 4s -->
+    @if (recensioniVisibili().length > 0) {
+      <div class="rec-grid">
+        @for (rec of recensioniVisibili(); track rec.IDRECE) {
+          <div class="rec-card rec-card-animate">
+            <div class="rec-stars">
+              @for (s of stellePerRating(rec.RATING); track $index) {
+                <span [class.stella-gold]="s === '★'">{{ s }}</span>
+              }
+            </div>
+            <p>"{{ rec.DESCRIZIONE }}"</p>
+          </div>
+        }
       </div>
-      <div class="rec-card">
-        <div class="rec-stars">★★★★★</div>
-        <p>"Camere eleganti, colazione eccellente e una posizione invidiabile. Torneremo sicuramente."</p>
-        <span class="rec-author">— Marco T.</span>
+    } @else {
+      <!-- Skeleton loader mentre arrivano i dati -->
+      <div class="rec-grid">
+        <div class="rec-card rec-skeleton"></div>
+        <div class="rec-card rec-skeleton"></div>
+        <div class="rec-card rec-skeleton"></div>
       </div>
-      <div class="rec-card">
-        <div class="rec-stars">★★★★☆</div>
-        <p>"Struttura curata nei minimi dettagli, servizio impeccabile. Un'esperienza di vero lusso."</p>
-        <span class="rec-author">— Sofia R.</span>
-      </div>
-    </div>
+    }
 
-    <!-- CTA bottone -->
+    <!-- CTA -->
     <div class="rec-cta">
       @if (!isLoggato()) {
         <p class="rec-cta-hint">
@@ -82,7 +87,6 @@
 
     <div class="modale-box">
 
-      <!-- Header -->
       <div class="modale-header">
         <h2 id="modale-titolo">La tua recensione</h2>
         <button class="modale-chiudi" (click)="chiudiModale()" aria-label="Chiudi modale">
@@ -96,7 +100,6 @@
 
       <div class="divider-gold modale-divider"></div>
 
-      <!-- Successo -->
       @if (invioRiuscito) {
         <div class="modale-successo">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -110,7 +113,6 @@
 
         <form #recensioneForm="ngForm" (ngSubmit)="inviaRecensione(recensioneForm)" novalidate>
 
-          <!-- Stelle -->
           <div class="field-group">
             <label>Valutazione <span class="required">*</span></label>
             <div class="stelle-input" (mouseleave)="resetHover()">
@@ -128,7 +130,6 @@
             }
           </div>
 
-          <!-- Testo -->
           <div class="field-group">
             <label for="descrizione">Descrizione <span class="required">*</span></label>
             <textarea
@@ -153,12 +154,10 @@
             </div>
           </div>
 
-          <!-- Errore globale -->
           @if (erroreInvio) {
             <div class="modale-errore">{{ erroreInvio }}</div>
           }
 
-          <!-- Azioni -->
           <div class="modale-azioni">
             <button type="button" class="btn-annulla" (click)="chiudiModale()">Annulla</button>
             <button type="submit" class="btn-rec" [disabled]="invioInCorso">
