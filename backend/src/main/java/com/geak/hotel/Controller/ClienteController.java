@@ -36,7 +36,7 @@ public class ClienteController {
 		return dipendenzacli.aggCliente(cliaggiornato);
 	}
 
-	@RequestMapping(value = "cancella/{idDaCancellare}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "cancella/{idclientecanc}", method = RequestMethod.DELETE)
 	public void delCliente(@PathVariable Long idclientecanc) {
 		dipendenzacli.delCliente(idclientecanc);
 	}
