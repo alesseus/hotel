@@ -139,6 +139,7 @@ input.invalid { border-color: #d33; }
 
 /* ── Metodo pagamento ── */
 .metodo-titolo {
+  font-family: var(--font-body, inherit);
   font-size: 0.85rem;
   font-weight: 600;
   color: var(--navy-800);

@@ -20,7 +20,7 @@ export class AuthService {
     return this.http.post<LoginResponse>(this.apiUrl, {
       email: email,
       password: password
-    }).pipe(timeout(15000));
+    }).pipe(timeout(40000))
   }
 
   salvaSessione(response: LoginResponse): void {
