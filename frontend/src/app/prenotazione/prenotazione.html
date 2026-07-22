@@ -189,8 +189,7 @@
         <label class="servizio-row" [class.checked]="isServizioSelezionato(s)">
           <input type="checkbox" [checked]="isServizioSelezionato(s)" (change)="toggleServizio(s)">
           <div class="servizio-info">
-            <span class="servizio-nome">Servizio #{{ s.IDSERVIZIO }}</span>
-            <span class="servizio-desc">{{ s.NOTE }}</span>
+            <span class="servizio-nome">Servizio {{ s.NOTE }}</span>
           </div>
           <span class="servizio-price">€{{ s.COSTO }}</span>
         </label>
