@@ -1,7 +1,6 @@
 import { Component, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 import { RecensioneServices } from './Services/services';
 import { AuthService } from '../login/Services/auth.service';
 import { Recensione } from './interfacce/recensione';
@@ -19,8 +18,7 @@ export class Recensioni implements OnInit {
   constructor(
     private _RecensioniService: RecensioneServices,
     private authService: AuthService,
-    private router: Router,
-    private http: HttpClient
+    private router: Router
   ) {}
 
   listaRecensioni = signal(<Array<Recensione>>[]);
@@ -84,49 +82,34 @@ export class Recensioni implements OnInit {
     this.invioInCorso.set(true);
     this.erroreInvio.set('');
 
-    const mailLoggato = this.authService.getMail();
+    const idCliente = parseInt(sessionStorage.getItem('token') ?? '0', 10);
 
-    // 1. Recupera IDCLIENTE dalla mail dell'utente loggato
-    this.http.get<any[]>('https://hotel-4n9x.onrender.com/cliente/lista').subscribe({
-      next: (clienti) => {
-        const cliente = clienti.find(c => c.MAIL === mailLoggato);
-        if (!cliente) {
-          this.invioInCorso.set(false);
-          this.erroreInvio.set('Utente non trovato. Effettua di nuovo il login.');
-          return;
-        }
+    const nuovaRecensione: Recensione = {
+      DESCRIZIONE: this.nuovaDescrizione().trim(),
+      RATING:      this.nuovoRating(),
+      IDCLIENTE:   idCliente
+    };
 
-        // 2. Invia la recensione con IDCLIENTE reale
-        const nuovaRecensione: Recensione = {
-          DESCRIZIONE: this.nuovaDescrizione().trim(),
-          RATING:      this.nuovoRating(),
-          IDCLIENTE:   cliente.IDCLIENTE
-        };
-
-        this._RecensioniService.postUtente(nuovaRecensione).subscribe({
-          next: () => {
-            this.invioInCorso.set(false);
-            this.invioRiuscito.set(true);
-            this.caricaRecensioni();
-            setTimeout(() => {
-              this.chiudiModale();
-              this.invioRiuscito.set(false);
-            }, 1800);
-          },
-          error: (err) => {
-            this.invioInCorso.set(false);
-            console.error('Errore invio recensione:', err.status, err.error);
-            if (err.status === 401 || err.status === 403) {
-              this.erroreInvio.set('Sessione scaduta. Effettua di nuovo il login.');
-            } else {
-              this.erroreInvio.set('Si è verificato un errore. Riprova più tardi.');
-            }
-          }
-        });
-      },
-      error: () => {
+    this._RecensioniService.postUtente(nuovaRecensione).subscribe({
+      next: () => {
         this.invioInCorso.set(false);
-        this.erroreInvio.set('Impossibile recuperare i dati utente. Riprova più tardi.');
+        this.invioRiuscito.set(true);
+        this.caricaRecensioni();
+        setTimeout(() => {
+          this.chiudiModale();
+          this.invioRiuscito.set(false);
+        }, 1800);
+      },
+      error: (err) => {
+        this.invioInCorso.set(false);
+        console.error('Errore invio recensione:', err.status, err.error);
+        if (err.status === 401 || err.status === 403) {
+          this.erroreInvio.set('Sessione scaduta. Effettua di nuovo il login.');
+        } else if (err.status === 0) {
+          this.erroreInvio.set('Impossibile raggiungere il server. Controlla la connessione.');
+        } else {
+          this.erroreInvio.set('Si è verificato un errore. Riprova più tardi.');
+        }
       }
     });
   }
