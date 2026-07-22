@@ -1,4 +1,3 @@
-
 :host { display: block; }
 
 .admin-page {
@@ -39,7 +38,7 @@
   text-transform: uppercase;
   color: var(--navy-200);
 }
-.admin-badge::before { content: 'â—'; color: #4CAF50; font-size: 0.6rem; }
+.admin-badge::before { content: '\25CF'; color: #4CAF50; font-size: 0.6rem; }
 
 
 .dashboard {
@@ -68,7 +67,7 @@
   text-decoration: none;
 }
 .admin-card::after {
-  content: 'â†’';
+  content: '\2192';
   position: absolute;
   bottom: 20px; right: 24px;
   font-size: 1.2rem;

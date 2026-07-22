@@ -133,10 +133,9 @@ export class Prenotazione implements OnInit {
     this.tipoPrenotazione = tipo;
     if (tipo === 'spa') {
       this.stanzaSelezionata = null;
-      this.checkIn = '';
-      this.checkOut = '';
       this.ospiti = [];
       this.serviziSelezionati = [];
+    
     }
     this.step = tipo === 'spa' ? 3 : 1;
   }
@@ -237,6 +236,11 @@ export class Prenotazione implements OnInit {
       return;
     }
 
+    if (this.tipoPrenotazione === 'spa' && !this.checkIn) {
+      this.formError = 'Seleziona la data della visita SPA.';
+      return;
+    }
+
     const nuova: prenotazione = {
       IDPRE: 0,
       NOME: this.nome,
@@ -252,8 +256,8 @@ export class Prenotazione implements OnInit {
       CAPARRA: this.caparra,
       SPA: this.tipoPrenotazione === 'spa',
       NOTE: this.note?.trim() || (this.tipoPrenotazione === 'spa' ? 'solo spa' : ''),
-      CHECK_IN: this.tipoPrenotazione === 'stanza' && this.checkIn ? new Date(this.checkIn) : null,
-      CHECK_OUT: this.tipoPrenotazione === 'stanza' && this.checkOut ? new Date(this.checkOut) : null,
+      CHECK_IN: this.checkIn ? new Date(this.checkIn) : null,
+      CHECK_OUT: this.checkOut ? new Date(this.checkOut) : null,
       STATO: 'In attesa',
       OSPITI: this.buildOspiti()
     };

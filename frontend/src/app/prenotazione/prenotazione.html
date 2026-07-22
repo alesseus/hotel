@@ -251,23 +251,30 @@
 
         <div class="fields-2">
           <div>
-            <label for="checkIn">Check-in</label>
-            <input type="date" id="checkIn" name="checkIn" [(ngModel)]="checkIn" #checkInField="ngModel"
-              [required]="tipoPrenotazione === 'stanza'">
-            @if (tipoPrenotazione === 'stanza' && checkInField.invalid && (checkInField.touched || datiForm.submitted)) {
-            <small class="field-error">Seleziona la data di check-in</small>
+            <label for="checkIn">
+              {{ tipoPrenotazione === 'spa' ? 'Data visita SPA' : 'Check-in' }}
+              <span class="required">*</span>
+            </label>
+            <input type="date" id="checkIn" name="checkIn" [(ngModel)]="checkIn" #checkInField="ngModel" required>
+            @if (checkInField.invalid && (checkInField.touched || datiForm.submitted)) {
+            <small class="field-error">
+              {{ tipoPrenotazione === 'spa' ? 'Seleziona la data della visita SPA' : 'Seleziona la data di check-in' }}
+            </small>
             }
           </div>
           <div>
-            <label for="checkOut">Check-out</label>
+            <label for="checkOut">
+              {{ tipoPrenotazione === 'spa' ? 'Data fine SPA (opzionale)' : 'Check-out' }}
+              @if (tipoPrenotazione === 'stanza') { <span class="required">*</span> }
+            </label>
             <input type="date" id="checkOut" name="checkOut" [(ngModel)]="checkOut" #checkOutField="ngModel"
-              [required]="tipoPrenotazione === 'stanza'">
+              [required]="tipoPrenotazione === 'stanza'" [min]="checkOutMin">
             @if (tipoPrenotazione === 'stanza' && checkOutField.invalid && (checkOutField.touched || datiForm.submitted)) {
             <small class="field-error">Seleziona la data di check-out</small>
             }
-            @if (tipoPrenotazione === 'stanza' && checkIn && checkOut && notti <= 0) { <small class="field-error">Il
-              check-out deve essere dopo il check-in</small>
-              }
+            @if (tipoPrenotazione === 'stanza' && checkIn && checkOut && notti <= 0) {
+            <small class="field-error">Il check-out deve essere dopo il check-in</small>
+            }
           </div>
         </div>
 
