@@ -391,12 +391,12 @@ export class GestisciPrenotazione implements OnInit {
     return Math.round((co.getTime() - ci.getTime()) / (1000 * 60 * 60 * 24));
   }
 
-  formatData(d: string | Date | null | undefined): string {
+  formatData(d: string | Date | undefined): string {
     if (!d) return '—';
     return new Date(d).toLocaleDateString('it-IT');
   }
 
-  private toDateInputString(d: string | Date | null | undefined): string {
+  private toDateInputString(d: string | Date | undefined): string {
     if (!d) return '';
     return new Date(d).toISOString().slice(0, 10);
   }
