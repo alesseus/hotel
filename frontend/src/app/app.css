@@ -48,6 +48,17 @@ nav {
   flex: 1;
 }
 
+#contatti {
+  font-size: 0.74rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.68);
+  padding: 6px 14px;
+  border-radius: var(--r-sm);
+  transition: color var(--fast), background var(--fast);
+}
+
 nav a {
   position: relative;
   font-size: 0.74rem;
