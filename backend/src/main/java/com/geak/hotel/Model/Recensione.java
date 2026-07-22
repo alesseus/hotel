@@ -15,12 +15,12 @@ public class Recensione {
 	private long IDRECE;
 	private String DESCRIZIONE;
 	private int RATING;
-	private int IDCLIENTE;
+	private long IDCLIENTE;
 
 	public Recensione() {
 	}
 
-	public Recensione(long IDRECE, String DESCRIZIONE, int RATING, int IDCLIENTE) {
+	public Recensione(long IDRECE, String DESCRIZIONE, int RATING, long IDCLIENTE) {
 		setIDRECE(IDRECE);
 		setDESCRIZIONE(DESCRIZIONE);
 		setRATING(RATING);
@@ -51,11 +51,11 @@ public class Recensione {
 		RATING = rATING;
 	}
 
-	public int getIDCLIENTE() {
+	public long getIDCLIENTE() {
 		return IDCLIENTE;
 	}
 
-	public void setIDCLIENTE(int iDCLIENTE) {
+	public void setIDCLIENTE(long iDCLIENTE) {
 		IDCLIENTE = iDCLIENTE;
 	}
 
