@@ -71,6 +71,11 @@
   text-transform: none;
 }
 .gal-btn:hover { background: rgba(255,255,255,0.22); transform: scale(1.08); }
+.gal-btn svg {
+  width: 16px;
+  height: 16px;
+  display: block;
+}
 
 .gal-label {
   font-size: 0.74rem;
