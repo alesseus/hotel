@@ -160,7 +160,6 @@
         </div>
         } @empty {
         <div class="list-empty">
-          <span>🏨</span>
           @if (!checkIn || !checkOut) {
           <p>Inserisci le date di check-in e check-out per vedere le stanze disponibili.</p>
           } @else {
@@ -197,7 +196,9 @@
         </label>
         } @empty {
         <div class="list-empty">
-          <span>⭐</span>
+          <span>
+            <img src="../../assets/icons/circle-warning.svg" alt="Circle_warning_icon">
+          </span>
           <p>Nessun servizio aggiuntivo disponibile</p>
         </div>
         }

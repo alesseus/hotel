@@ -24,7 +24,9 @@
 
     @if (!caricamento() && !errore() && prenotazioni().length === 0) {
     <div class="stato-box">
-      <span class="stato-icon">📋</span>
+      <span class="stato-icon">
+        <img src="../../assets/icons/warning-sign_big.png" alt="Warning_Sign_Icon">
+      </span>
       <p>Nessuna prenotazione trovata.</p>
     </div>
     }
@@ -132,7 +134,9 @@
   @if (cancellaTarget) {
   <div class="overlay" (click)="annullaCancella()">
     <div class="modale modale-cancella" (click)="$event.stopPropagation()">
-      <div class="cancella-icon">⚠️</div>
+      <div class="cancella-icon">
+        <img src="../../assets/icons/warning-sign_big.png" alt="Warning_Sign_Icon">
+      </div>
       <h3>Cancella prenotazione</h3>
       <p>Stai per cancellare questa prenotazione.</p>
       <p class="avviso-caparra">La caparra di <strong>€{{ cancellaTarget.CAPARRA }}</strong> non sarà rimborsata.</p>
