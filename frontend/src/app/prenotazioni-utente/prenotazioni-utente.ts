@@ -78,11 +78,9 @@ export class PrenotazioniUtente implements OnInit {
     this.modaleAperto = true;
   }
 
-  // ── Ospiti ────────────────────────────────────────────────────
-  aggiungiOspite(): void { this.formOspiti = [...this.formOspiti, { nome: '', cognome: '' }]; }
-  rimuoviOspite(index: number): void { this.formOspiti = this.formOspiti.filter((_, i) => i !== index); }
-
+  // ── Ospiti (solo modifica dei dati, no aggiunta/rimozione) ────
   private parseOspiti(ospiti: string | undefined): { nome: string; cognome: string }[] {
+
     if (!ospiti) return [];
     return ospiti.split(',')
       .map(s => s.trim())

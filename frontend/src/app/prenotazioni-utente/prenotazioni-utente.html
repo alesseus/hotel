@@ -115,26 +115,25 @@
           </div>
         </div>
 
+        @if (formOspiti.length > 0) {
         <div class="ospiti-block">
           <div class="ospiti-head">
             <label>Ospiti (nome e cognome)</label>
-            <button type="button" class="secondary btn-add-ospite" (click)="aggiungiOspite()">+ Aggiungi ospite</button>
           </div>
-          @if (formOspiti.length === 0) {
-          <p class="ospiti-empty">Nessun ospite aggiunto.</p>
-          }
+          <p class="ospiti-empty">Puoi modificare i dati degli ospiti inseriti; non è possibile aggiungerne o rimuoverne.</p>
           @for (o of formOspiti; track $index) {
           <div class="fields-2 ospite-row">
             <div class="field-group">
               <input type="text" [name]="'ospiteNome' + $index" [(ngModel)]="o.nome" placeholder="Nome">
             </div>
-            <div class="field-group ospite-cognome">
+            <div class="field-group">
               <input type="text" [name]="'ospiteCognome' + $index" [(ngModel)]="o.cognome" placeholder="Cognome">
-              <button type="button" class="btn-remove-ospite" (click)="rimuoviOspite($index)">✕</button>
             </div>
           </div>
           }
         </div>
+        }
+
 
         @if (formError) {
         <div class="form-error-banner">{{ formError }}</div>
