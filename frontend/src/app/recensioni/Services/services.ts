@@ -34,7 +34,7 @@ export class RecensioneServices {
   /** Invia una nuova recensione (richiede autenticazione) */
   postUtente(nuovaRecensione: Recensione): Observable<any> {
     return this.http.post(
-      `${this.baseUrl}/aggiungi`,
+      `${this.baseUrl}/add`,
       nuovaRecensione,
       { headers: this.authHeaders }
     );
