@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, signal, computed } from '@angular/core';
+import { Component, OnInit, OnDestroy, signal } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -27,11 +27,12 @@ export class Home implements OnInit, OnDestroy {
 
   // ── Carosello recensioni ───────────────────────────────────────
   recensioni = signal<Recensione[]>([]);
-  recensioniVisibili = signal<Recensione[]>([]);   // 3 card visibili
+  recensioniVisibili = signal<Recensione[]>([]);
   indiceCorrente = 0;
+  caricamento = true;           // true finché il DB non risponde
   private caroselloTimer: any;
-  private readonly VISIBILI = 3;                   // card mostrate
-  private readonly INTERVALLO_MS = 4000;           // 4 sec tra scorrimenti
+  private readonly VISIBILI    = 3;      // max card mostrate
+  private readonly INTERVALLO_MS = 5500; // ms tra uno scorrimento e l'altro
 
   // ── Stelle helper ─────────────────────────────────────────────
   stellePerRating(rating: number): string[] {
@@ -60,26 +61,31 @@ export class Home implements OnInit, OnDestroy {
 
   // ── Caricamento DB ────────────────────────────────────────────
   caricaRecensioni(): void {
+    this.caricamento = true;
     this.http.get<Recensione[]>('https://hotel-4n9x.onrender.com/recensione/lista').subscribe({
       next: (data) => {
-        // Shuffle casuale all'avvio
+        this.caricamento = false;
         const mescolate = this.shuffle([...data]);
         this.recensioni.set(mescolate);
         this.indiceCorrente = 0;
         this.aggiornaVisibili();
+        // Avvia carosello solo se ci sono più card di quelle visibili
         if (mescolate.length > this.VISIBILI) {
           this.avviaCarosello();
         }
       },
-      error: (err) => console.error('Errore caricamento recensioni', err)
+      error: (err) => {
+        this.caricamento = false;
+        console.error('Errore caricamento recensioni', err);
+      }
     });
   }
 
   // ── Carosello ─────────────────────────────────────────────────
   avviaCarosello(): void {
+    this.fermaCarosello();
     this.caroselloTimer = setInterval(() => {
-      const lista = this.recensioni();
-      this.indiceCorrente = (this.indiceCorrente + 1) % lista.length;
+      this.indiceCorrente = (this.indiceCorrente + 1) % this.recensioni().length;
       this.aggiornaVisibili();
     }, this.INTERVALLO_MS);
   }
@@ -87,14 +93,20 @@ export class Home implements OnInit, OnDestroy {
   fermaCarosello(): void {
     if (this.caroselloTimer) {
       clearInterval(this.caroselloTimer);
+      this.caroselloTimer = null;
     }
   }
 
   aggiornaVisibili(): void {
     const lista = this.recensioni();
-    if (!lista.length) return;
+    if (!lista.length) {
+      this.recensioniVisibili.set([]);
+      return;
+    }
+    // Mostra fino a VISIBILI card (meno se il DB ne ha meno)
+    const quante = Math.min(this.VISIBILI, lista.length);
     const visibili: Recensione[] = [];
-    for (let i = 0; i < this.VISIBILI; i++) {
+    for (let i = 0; i < quante; i++) {
       visibili.push(lista[(this.indiceCorrente + i) % lista.length]);
     }
     this.recensioniVisibili.set(visibili);
@@ -168,7 +180,6 @@ export class Home implements OnInit, OnDestroy {
       next: () => {
         this.invioInCorso  = false;
         this.invioRiuscito = true;
-        // Ricarica le recensioni così la nuova appare nel carosello
         this.fermaCarosello();
         this.caricaRecensioni();
         setTimeout(() => {
