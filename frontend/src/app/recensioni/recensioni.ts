@@ -82,11 +82,9 @@ export class Recensioni implements OnInit {
     this.invioInCorso.set(true);
     this.erroreInvio.set('');
 
-    const nuovaRecensione: Recensione = {
-      IDRECE:      0,
+    const nuovaRecensione = {
       DESCRIZIONE: this.nuovaDescrizione().trim(),
-      RATING:      this.nuovoRating(),
-      IDCLIENTE:   0
+      RATING:      this.nuovoRating()
     };
 
     this._RecensioniService.postUtente(nuovaRecensione).subscribe({

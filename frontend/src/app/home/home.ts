@@ -185,11 +185,10 @@ export class Home implements OnInit, OnDestroy {
 
     const body = {
       DESCRIZIONE: this.nuovaDescrizione().trim(),
-      RATING:      this.nuovoRating(),
-      IDCLIENTE:   0
+      RATING:      this.nuovoRating()
     };
 
-    this.http.post('https://hotel-4n9x.onrender.com/recensione/aggiungi', body, { headers }).subscribe({
+    this.http.post('https://hotel-4n9x.onrender.com/recensione/add', body, { headers }).subscribe({
       next: () => {
         this.invioInCorso.set(false);
         this.invioRiuscito.set(true);
