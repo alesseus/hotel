@@ -1,0 +1,184 @@
+<div class="gestisci-page">
+
+  <!-- Header -->
+  <div class="gestisci-header-band">
+    <div>
+      <h2>Gestione Utenti</h2>
+      <div class="divider-gold"></div>
+      <p>Aggiungi, modifica o rimuovi gli utenti dell'hotel</p>
+    </div>
+    <button class="back-link" routerLink="/amministrazione">Pannello admin</button>
+  </div>
+
+  <!-- Body -->
+  <div class="gestisci-wrapper">
+
+    <div class="actions-bar">
+      <div class="actions-bar-left">
+        <div class="search-input">
+          <input type="search" placeholder="Cerca per nome, email o ID..."
+                 [value]="ricerca()" (input)="ricerca.set($any($event.target).value)">
+        </div>
+      </div>
+      <div class="actions-bar-right">
+        <button class="btn-add" type="button" (click)="apriModaleCreazione()">+ Nuovo utente</button>
+      </div>
+    </div>
+
+    @if (erroreCaricamento()) {
+      <div class="form-error-banner">{{ erroreCaricamento() }}</div>
+    }
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>Telefono</th>
+            <th>Ruolo</th>
+            <th>Azioni</th>
+          </tr>
+        </thead>
+        <tbody>
+          @if (caricamento()) {
+            <tr>
+              <td colspan="6" class="table-empty">Caricamento utenti in corso...</td>
+            </tr>
+          } @else {
+            @for (u of utentiFiltrati; track u.IDCLIENTE) {
+              <tr>
+                <td>{{ u.IDCLIENTE }}</td>
+                <td>{{ u.NOME }} {{ u.COGNOME }}</td>
+                <td>{{ u.MAIL }}</td>
+                <td>{{ u.TELEFONO }}</td>
+                <td><span class="badge-codice">{{ u.ADMIN ? 'Admin' : 'Cliente' }}</span></td>
+                <td class="table-actions">
+                  <button class="btn-icon" type="button" (click)="apriModaleModifica(u)" title="Modifica">✎</button>
+                  <button class="btn-icon btn-icon-danger" type="button" (click)="chiediConfermaEliminazione(u)" title="Elimina">🗑</button>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="6" class="table-empty">Nessun utente trovato</td>
+              </tr>
+            }
+          }
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── Modale crea / modifica ─────────────────────────────────── -->
+@if (modaleAperto()) {
+  <div class="modal-overlay" (click)="chiudiModale()">
+    <div class="modal-box" (click)="$event.stopPropagation()">
+
+      <div class="modal-header">
+        <h3>{{ modaleModalita() === 'crea' ? 'Nuovo utente' : 'Modifica utente' }}</h3>
+        <button class="modal-close" type="button" (click)="chiudiModale()">✕</button>
+      </div>
+
+      <form #utenteFormRef="ngForm" (ngSubmit)="salvaUtente(utenteFormRef)">
+        <div class="modal-body">
+
+          <label for="nome">Nome <span class="required">*</span></label>
+          <input type="text" id="nome" name="NOME"
+                 [(ngModel)]="utenteForm.NOME"
+                 required placeholder="Nome">
+
+          <label for="cognome">Cognome <span class="required">*</span></label>
+          <input type="text" id="cognome" name="COGNOME"
+                 [(ngModel)]="utenteForm.COGNOME"
+                 required placeholder="Cognome">
+
+          <label for="mail">Email <span class="required">*</span></label>
+          <input type="email" id="mail" name="MAIL"
+                 [(ngModel)]="utenteForm.MAIL"
+                 required placeholder="utente@hotel.it">
+
+          <label for="telefono">Telefono</label>
+          <input type="tel" id="telefono" name="TELEFONO"
+                 [(ngModel)]="utenteForm.TELEFONO"
+                 placeholder="Numero di telefono">
+
+          <label for="datanascita">Data di nascita</label>
+          <input type="date" id="datanascita" name="DATANASCITA"
+                 [(ngModel)]="utenteForm.DATANASCITA">
+
+          <label for="pass">
+            Password{{ modaleModalita() === 'modifica' ? ' (lascia vuota per non cambiarla)' : '' }}
+            @if (modaleModalita() === 'crea') { <span class="required">*</span> }
+          </label>
+          <div class="password-field">
+            <input [type]="mostraPassword() ? 'text' : 'password'"
+                   id="pass" name="PASS"
+                   [(ngModel)]="utenteForm.PASS"
+                   [required]="modaleModalita() === 'crea'"
+                   placeholder="••••••••">
+            <button type="button" class="toggle-eye" (click)="mostraPassword.update(v => !v)"
+                    [attr.aria-label]="mostraPassword() ? 'Nascondi password' : 'Mostra password'">
+              @if (mostraPassword()) {
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/>
+                  <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/>
+                  <line x1="1" y1="1" x2="23" y2="23"/>
+                </svg>
+              } @else {
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+              }
+            </button>
+          </div>
+
+          <label class="checkbox-inline">
+            <input type="checkbox" name="ADMIN" [(ngModel)]="utenteForm.ADMIN">
+            È amministratore
+          </label>
+
+          @if (formError()) {
+            <div class="form-error-banner">{{ formError() }}</div>
+          }
+
+        </div>
+
+        <div class="modal-footer">
+          <button class="secondary" type="button" (click)="chiudiModale()">Annulla</button>
+          <button class="primary" type="submit" [disabled]="invio()">
+            {{ invio() ? 'Salvataggio...' : (modaleModalita() === 'crea' ? 'Crea utente' : 'Salva modifiche') }}
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+}
+
+<!-- ── Conferma eliminazione ─────────────────────────────────── -->
+@if (eliminaTarget()) {
+  <div class="modal-overlay" (click)="annullaEliminazione()">
+    <div class="modal-box modal-box-sm" (click)="$event.stopPropagation()">
+
+      <div class="modal-header">
+        <h3>Elimina utente</h3>
+        <button class="modal-close" type="button" (click)="annullaEliminazione()">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <p>Sei sicuro di voler eliminare l'utente <strong>{{ eliminaTarget()!.MAIL }}</strong>?
+           L'operazione non è reversibile.</p>
+      </div>
+
+      <div class="modal-footer">
+        <button class="secondary" type="button" (click)="annullaEliminazione()">Annulla</button>
+        <button class="danger" type="button" (click)="confermaEliminazione()">Elimina</button>
+      </div>
+
+    </div>
+  </div>
+}
