@@ -170,7 +170,7 @@
       </div>
 
       <div class="step-nav">
-        <button class="secondary" type="button" (click)="step = 0">â† Indietro</button>
+        <button class="secondary" type="button" (click)="step = 0">← Indietro</button>
       </div>
     </div>
   </div>
@@ -203,8 +203,8 @@
         }
       </div>
       <div class="step-nav">
-        <button class="secondary" type="button" (click)="step = 1">â† Indietro</button>
-        <button class="primary" type="button" (click)="step = 3">Continua â†’</button>
+        <button class="secondary" type="button" (click)="step = 1">← Indietro</button>
+        <button class="primary" type="button" (click)="step = 3">Continua →</button>
       </div>
     </div>
   </div>
@@ -365,7 +365,7 @@
             {{ invio ? 'Invio in corso...' : 'Paga caparra e conferma (€' + caparra + ')' }}
           </button>
           <button type="button" class="secondary" (click)="step = tipoPrenotazione === 'spa' ? 0 : 2">
-            â† Modifica
+            ← Modifica
           </button>
         </div>
       </div>
@@ -377,7 +377,7 @@
   @if (confermata) {
   <div class="step-panel">
     <div class="success-wrapper">
-      <div class="success-icon">âœ“</div>
+      <div class="success-icon">✓</div>
       <h2>Prenotazione confermata!</h2>
       <p>Ti abbiamo inviato una email di conferma a <strong>{{ email }}</strong>.</p>
       <p class="success-redirect">Verrei reindirizzato alla home tra pochi secondi...</p>

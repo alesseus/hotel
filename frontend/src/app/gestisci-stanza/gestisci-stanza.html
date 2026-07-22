@@ -63,14 +63,14 @@
         @if (filtroCheckIn() || filtroCheckOut()) {
         <button class="btn-clear-dates" type="button"
           (click)="filtroCheckIn.set(''); filtroCheckOut.set('')">
-          âœ• Rimuovi filtro
+          ✕ Rimuovi filtro
         </button>
         }
       </div>
 
       @if (filtroAttivo) {
       <div class="date-filter-summary">
-        Periodo: <strong>{{ formatData(filtroCheckIn()) }}</strong> â†’ <strong>{{ formatData(filtroCheckOut()) }}</strong>
+        Periodo: <strong>{{ formatData(filtroCheckIn()) }}</strong> → <strong>{{ formatData(filtroCheckOut()) }}</strong>
         &nbsp;·&nbsp;
         <span class="summary-pill summary-pill-red"> Occupate: {{ stanzeOccupatePeriodo.length }}</span>
         <span class="summary-pill summary-pill-green"> Disponibili: {{ stanzeDisponibiliPeriodo.length }}</span>
@@ -227,9 +227,9 @@
             <td>€{{ s.COSTO }}</td>
             <td>{{ s.DIMENSIONE }}</td>
             <td class="table-actions">
-              <button class="btn-icon" type="button" (click)="apriModaleModifica(s)" title="Modifica">âœŽ</button>
+              <button class="btn-icon" type="button" (click)="apriModaleModifica(s)" title="Modifica">✎</button>
               <button class="btn-icon btn-icon-danger" type="button" (click)="chiediConfermaEliminazione(s)"
-                title="Elimina">ðŸ—‘</button>
+                title="Elimina">🗑</button>
             </td>
           </tr>
           } @empty {
@@ -253,7 +253,7 @@
 
       <div class="modal-header">
         <h3>{{ modaleModalita() === 'crea' ? 'Nuova stanza' : 'Modifica stanza' }}</h3>
-        <button class="modal-close" type="button" (click)="chiudiModale()">âœ•</button>
+        <button class="modal-close" type="button" (click)="chiudiModale()">✕</button>
       </div>
 
       <form #stanzaFormRef="ngForm" (ngSubmit)="salvaStanza(stanzaFormRef)">
@@ -317,7 +317,7 @@
     <div class="modal-box modal-box-sm" (click)="$event.stopPropagation()">
       <div class="modal-header">
         <h3>Elimina stanza</h3>
-        <button class="modal-close" type="button" (click)="annullaEliminazione()">âœ•</button>
+        <button class="modal-close" type="button" (click)="annullaEliminazione()">✕</button>
       </div>
       <div class="modal-body">
         <p>Sei sicuro di voler eliminare la stanza

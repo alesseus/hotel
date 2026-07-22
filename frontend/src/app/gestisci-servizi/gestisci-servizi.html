@@ -50,8 +50,8 @@
                 <td>{{ s.NOTE }}</td>
                 <td>€{{ s.COSTO | number:'1.2-2' }}</td>
                 <td class="table-actions">
-                  <button class="btn-icon" type="button" (click)="apriModaleModifica(s)" title="Modifica">âœŽ</button>
-                  <button class="btn-icon btn-icon-danger" type="button" (click)="chiediConfermaEliminazione(s)" title="Elimina">ðŸ—‘</button>
+                  <button class="btn-icon" type="button" (click)="apriModaleModifica(s)" title="Modifica">✎</button>
+                  <button class="btn-icon btn-icon-danger" type="button" (click)="chiediConfermaEliminazione(s)" title="Elimina">🗑</button>
                 </td>
               </tr>
             } @empty {
@@ -74,7 +74,7 @@
 
       <div class="modal-header">
         <h3>{{ modaleModalita() === 'crea' ? 'Nuovo servizio' : 'Modifica servizio' }}</h3>
-        <button class="modal-close" type="button" (click)="chiudiModale()">âœ•</button>
+        <button class="modal-close" type="button" (click)="chiudiModale()">✕</button>
       </div>
 
       <form #servizioFormRef="ngForm" (ngSubmit)="salvaServizio(servizioFormRef)">
@@ -113,7 +113,7 @@
 
       <div class="modal-header">
         <h3>Elimina servizio</h3>
-        <button class="modal-close" type="button" (click)="annullaEliminazione()">âœ•</button>
+        <button class="modal-close" type="button" (click)="annullaEliminazione()">✕</button>
       </div>
 
       <div class="modal-body">

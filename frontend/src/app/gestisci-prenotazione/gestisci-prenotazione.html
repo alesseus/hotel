@@ -106,7 +106,7 @@
 
       <div class="modal-header">
         <h3>{{ modalita() === 'crea' ? 'Nuova prenotazione' : 'Modifica prenotazione' }}</h3>
-        <button class="modal-close" type="button" (click)="chiudiModale()">âœ•</button>
+        <button class="modal-close" type="button" (click)="chiudiModale()">✕</button>
       </div>
 
       <form #prenotazioneForm="ngForm" (ngSubmit)="salva(prenotazioneForm)">
@@ -275,7 +275,7 @@
 
                   <button class="btn-remove-service" type="button"
                           (click)="rimuoviServizio(row.index); aggiornaFormTotale()">
-                    âœ•
+                    ✕
                   </button>
                 </div>
               }
@@ -334,7 +334,7 @@
                          placeholder="Cognome">
                   <button class="btn-remove-service" type="button"
                           (click)="rimuoviOspite($index)">
-                    âœ•
+                    ✕
                   </button>
                 </div>
               }
@@ -371,7 +371,7 @@
 
       <div class="modal-header">
         <h3>Conferma eliminazione</h3>
-        <button class="modal-close" type="button" (click)="annullaEliminazione()">âœ•</button>
+        <button class="modal-close" type="button" (click)="annullaEliminazione()">✕</button>
       </div>
 
       <div class="modal-body">
