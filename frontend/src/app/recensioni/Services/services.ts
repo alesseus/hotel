@@ -3,30 +3,40 @@ import { inject, Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { Recensione } from "../interfacce/recensione";
 
-@Injectable(
-  {
-    providedIn: 'root'
-  })
-
+@Injectable({
+  providedIn: 'root'
+})
 export class RecensioneServices {
 
-  //creare una proprietà per l'url
-  private url: string = "https://hotel-4n9x.onrender.com/recensione/lista"
+  private baseUrl: string = "https://hotel-4n9x.onrender.com/recensione";
 
-  //creo l'oggetto per effettuare la chiamata
-  //utilizzando l'injection importata
   private readonly http = inject(HttpClient);
 
-  httpOptions = {
-    headers: new HttpHeaders({
-      "Content-type": "application/json",
-    })
-  }
-  getUtenti(): Observable<Array<Recensione>> {
-    return this.http.get<Array<Recensione>>(this.url);
+  // Headers standard JSON
+  private get jsonHeaders(): HttpHeaders {
+    return new HttpHeaders({ "Content-Type": "application/json" });
   }
 
-  postUtente(nuovaRecensione: Recensione): any {
-    return this.http.post(this.url, nuovaRecensione, this.httpOptions);
+  // Headers con token JWT (necessario per le richieste autenticate)
+  private get authHeaders(): HttpHeaders {
+    const token = sessionStorage.getItem('token') ?? '';
+    return new HttpHeaders({
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
+    });
+  }
+
+  /** Recupera tutte le recensioni */
+  getUtenti(): Observable<Array<Recensione>> {
+    return this.http.get<Array<Recensione>>(`${this.baseUrl}/lista`);
+  }
+
+  /** Invia una nuova recensione (richiede autenticazione) */
+  postUtente(nuovaRecensione: Recensione): Observable<any> {
+    return this.http.post(
+      `${this.baseUrl}/aggiungi`,
+      nuovaRecensione,
+      { headers: this.authHeaders }
+    );
   }
 }

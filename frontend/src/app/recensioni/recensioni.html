@@ -39,53 +39,165 @@
 
 <div class="recensioni-wrapper">
   <div class="recensioni-grid">
-    <div class="recensione-card">
-      <div class="recensione-header">
-        <div class="recensione-avatar">LM</div>
-        <div class="stelle">★★★★★</div>
+    @for (rec of listaRecensioni(); track rec.IDRECE) {
+      <div class="recensione-card">
+        <div class="recensione-header">
+          <div class="recensione-avatar">
+            {{ rec.IDCLIENTE }}
+          </div>
+          <div class="stelle">
+            @for (s of stelleArray(rec.RATING); track $index) {
+              {{ s }}
+            }
+          </div>
+        </div>
+        <p>{{ rec.DESCRIZIONE }}</p>
       </div>
-      <p>Un soggiorno indimenticabile. La vista sul mare e il personale cordiale hanno reso tutto perfetto.</p>
-      <span class="recensione-autore">Laura M. · Milano</span>
-    </div>
-    <div class="recensione-card">
-      <div class="recensione-header">
-        <div class="recensione-avatar">MT</div>
-        <div class="stelle">★★★★★</div>
+    } @empty {
+      <!-- Fallback statico mentre i dati si caricano -->
+      <div class="recensione-card">
+        <div class="recensione-header">
+          <div class="recensione-avatar">LM</div>
+          <div class="stelle">★★★★★</div>
+        </div>
+        <p>Un soggiorno indimenticabile. La vista sul mare e il personale cordiale hanno reso tutto perfetto.</p>
+        <span class="recensione-autore">Laura M. · Milano</span>
       </div>
-      <p>Camere eleganti, colazione eccellente e una posizione invidiabile. Torneremo sicuramente.</p>
-      <span class="recensione-autore">Marco T. · Roma</span>
-    </div>
-    <div class="recensione-card">
-      <div class="recensione-header">
-        <div class="recensione-avatar">SR</div>
-        <div class="stelle">★★★★☆</div>
+      <div class="recensione-card">
+        <div class="recensione-header">
+          <div class="recensione-avatar">MT</div>
+          <div class="stelle">★★★★★</div>
+        </div>
+        <p>Camere eleganti, colazione eccellente e una posizione invidiabile. Torneremo sicuramente.</p>
+        <span class="recensione-autore">Marco T. · Roma</span>
       </div>
-      <p>Struttura curata nei minimi dettagli, servizio impeccabile. Un'esperienza di vero lusso.</p>
-      <span class="recensione-autore">Sofia R. · Torino</span>
-    </div>
-    <div class="recensione-card">
-      <div class="recensione-header">
-        <div class="recensione-avatar">AG</div>
-        <div class="stelle">★★★★★</div>
+      <div class="recensione-card">
+        <div class="recensione-header">
+          <div class="recensione-avatar">SR</div>
+          <div class="stelle">★★★★☆</div>
+        </div>
+        <p>Struttura curata nei minimi dettagli, servizio impeccabile. Un'esperienza di vero lusso.</p>
+        <span class="recensione-autore">Sofia R. · Torino</span>
       </div>
-      <p>Ho soggiornato per una settimana intera. La vista dalla camera e il silenzio la sera sono stati meravigliosi.</p>
-      <span class="recensione-autore">Anna G. · Firenze</span>
-    </div>
-    <div class="recensione-card">
-      <div class="recensione-header">
-        <div class="recensione-avatar">PB</div>
-        <div class="stelle">★★★★★</div>
-      </div>
-      <p>Il ristorante gourmet è una vera eccellenza. Ingredienti freschi e cantina vini di livello.</p>
-      <span class="recensione-autore">Paolo B. · Napoli</span>
-    </div>
-    <div class="recensione-card">
-      <div class="recensione-header">
-        <div class="recensione-avatar">CF</div>
-        <div class="stelle">★★★★★</div>
-      </div>
-      <p>Perfetto per una luna di miele. L'hotel ha organizzato una sorpresa romantica che non dimenticherò.</p>
-      <span class="recensione-autore">Chiara F. · Bologna</span>
-    </div>
+    }
+  </div>
+
+  <!-- ── CTA: bottone "Lascia una recensione" ── -->
+  <div class="recensioni-cta">
+    @if (!isLoggato()) {
+      <p class="cta-hint">
+        <a routerLink="/login">Accedi</a> per lasciare la tua recensione.
+      </p>
+    }
+    <button class="btn-scopri" (click)="apriModale()">
+      Lascia una recensione
+    </button>
   </div>
 </div>
+
+
+<!-- ══════════════════════════════════════════════════════════════
+     MODALE – Aggiungi recensione
+══════════════════════════════════════════════════════════════ -->
+@if (mostraModale) {
+  <div class="modale-overlay" (click)="chiudiSuOverlay($event)" role="dialog" aria-modal="true" aria-labelledby="modale-titolo">
+
+    <div class="modale-box">
+
+      <!-- Header modale -->
+      <div class="modale-header">
+        <h2 id="modale-titolo">La tua recensione</h2>
+        <button class="modale-chiudi" (click)="chiudiModale()" aria-label="Chiudi modale">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="divider-gold modale-divider"></div>
+
+      <!-- Successo -->
+      @if (invioRiuscito) {
+        <div class="modale-successo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+               stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+            <polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+          <p>Grazie! La tua recensione è stata inviata con successo.</p>
+        </div>
+      } @else {
+
+        <!-- Form -->
+        <form #recensioneForm="ngForm" (ngSubmit)="inviaRecensione(recensioneForm)" novalidate>
+
+          <!-- Stelle -->
+          <div class="field-group">
+            <label>Valutazione <span class="required">*</span></label>
+            <div class="stelle-input" (mouseleave)="resetHover()">
+              @for (i of [1,2,3,4,5]; track i) {
+                <button type="button"
+                        class="stella-btn"
+                        [class.attiva]="stellaAttiva(i)"
+                        (mouseenter)="setHover(i)"
+                        (click)="setRating(i)"
+                        [attr.aria-label]="'Dai ' + i + ' stelle su 5'">
+                  ★
+                </button>
+              }
+            </div>
+            @if (recensioneForm.submitted && nuovoRating === 0) {
+              <span class="field-error">Seleziona almeno una stella</span>
+            }
+          </div>
+
+          <!-- Testo recensione -->
+          <div class="field-group">
+            <label for="descrizione">Descrizione <span class="required">*</span></label>
+            <textarea
+              id="descrizione"
+              name="descrizione"
+              [(ngModel)]="nuovaDescrizione"
+              required
+              minlength="10"
+              maxlength="600"
+              rows="5"
+              placeholder="Racconta la tua esperienza al Blue Horizon Hotel…"
+              #descField="ngModel"
+              [class.invalid]="descField.invalid && descField.touched">
+            </textarea>
+            <div class="textarea-meta">
+              @if (descField.invalid && descField.touched) {
+                <span class="field-error">Inserisci almeno 10 caratteri</span>
+              } @else {
+                <span></span>
+              }
+              <span class="char-count">{{ nuovaDescrizione.length }}/600</span>
+            </div>
+          </div>
+
+          <!-- Errore globale -->
+          @if (erroreInvio) {
+            <div class="modale-errore">{{ erroreInvio }}</div>
+          }
+
+          <!-- Azioni -->
+          <div class="modale-azioni">
+            <button type="button" class="btn-annulla" (click)="chiudiModale()">Annulla</button>
+            <button type="submit" class="btn-scopri" [disabled]="invioInCorso">
+              @if (invioInCorso) {
+                Invio in corso…
+              } @else {
+                Invia recensione
+              }
+            </button>
+          </div>
+
+        </form>
+      }
+
+    </div>
+  </div>
+}
