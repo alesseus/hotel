@@ -1,8 +1,8 @@
 export interface Recensione{
-  IDRECE:number,
+  IDRECE?:number,
   DESCRIZIONE:string,
   RATING:number,
-  IDCLIENTE:number,
+  IDCLIENTE?:number,
   NOME?:string,
   COGNOME?:string
 }
