@@ -187,25 +187,7 @@
 }
 
 .rec-header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
   margin-bottom: 14px;
-}
-
-.rec-avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: var(--gold-500);
-  color: var(--navy-900, #0d1b2a);
-  font-weight: 700;
-  font-size: 0.85rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  text-transform: uppercase;
 }
 
 .rec-autore-info {

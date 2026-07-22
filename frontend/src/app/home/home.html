@@ -53,9 +53,8 @@
         @for (rec of recensioniVisibili(); track rec.IDRECE) {
           <div class="rec-card rec-card-animate">
             <div class="rec-header">
-              <div class="rec-avatar">{{ (rec.NOME ? rec.NOME[0] : '?') }}{{ (rec.COGNOME ? rec.COGNOME[0] : '') }}</div>
               <div class="rec-autore-info">
-                <span class="rec-nome">{{ rec.NOME ?? 'Ospite' }} {{ rec.COGNOME ?? '' }}</span>
+                <span class="rec-nome">{{ rec.NOME }} {{ rec.COGNOME }}</span>
                 <div class="rec-stars">
                   @for (s of stellePerRating(rec.RATING); track $index) {
                     <span [class.stella-gold]="s === '★'" [class.stella-vuota]="s === '☆'">{{ s }}</span>

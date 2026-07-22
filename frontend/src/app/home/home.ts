@@ -3,6 +3,9 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from '../login/Services/auth.service';
+import { ClienteServices } from '../gestisci-staff/Services/services';
+import { cliente } from '../gestisci-staff/interfacce/cliente_i';
+import { forkJoin } from 'rxjs';
 
 interface Recensione {
   IDRECE: number;
@@ -18,6 +21,7 @@ interface Recensione {
   imports: [RouterLink, FormsModule],
   templateUrl: './home.html',
   styleUrl: './home.css',
+  providers: [ClienteServices],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Home implements OnInit, OnDestroy {
@@ -25,7 +29,8 @@ export class Home implements OnInit, OnDestroy {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private http: HttpClient
+    private http: HttpClient,
+    private clienteServices: ClienteServices
   ) {}
 
   // ── Carosello recensioni ───────────────────────────────────────
@@ -34,7 +39,7 @@ export class Home implements OnInit, OnDestroy {
   indiceCorrente = 0;
   caricamento = signal(true);
   private caroselloTimer: any;
-  private readonly VISIBILI    = 3;
+  private readonly VISIBILI     = 3;
   private readonly INTERVALLO_MS = 5500;
 
   // ── Stelle helper ─────────────────────────────────────────────
@@ -62,13 +67,28 @@ export class Home implements OnInit, OnDestroy {
     this.fermaCarosello();
   }
 
-  // ── Caricamento DB ────────────────────────────────────────────
+  // ── Caricamento DB: recensioni + clienti in parallelo ─────────
   caricaRecensioni(): void {
     this.caricamento.set(true);
-    this.http.get<Recensione[]>('https://hotel-4n9x.onrender.com/recensione/lista').subscribe({
-      next: (data) => {
+
+    forkJoin({
+      recensioni: this.http.get<Recensione[]>('https://hotel-4n9x.onrender.com/recensione/lista'),
+      clienti:    this.clienteServices.getClienti()
+    }).subscribe({
+      next: ({ recensioni, clienti }) => {
+        // Mappa IDCLIENTE → { NOME, COGNOME }
+        const mapClienti = new Map<number, Pick<cliente, 'NOME' | 'COGNOME'>>();
+        clienti.forEach(c => mapClienti.set(c.IDCLIENTE, { NOME: c.NOME, COGNOME: c.COGNOME }));
+
+        // Arricchisce ogni recensione con i dati del cliente
+        const arricchite: Recensione[] = recensioni.map(r => ({
+          ...r,
+          NOME:    mapClienti.get(r.IDCLIENTE)?.NOME    ?? '',
+          COGNOME: mapClienti.get(r.IDCLIENTE)?.COGNOME ?? ''
+        }));
+
         this.caricamento.set(false);
-        const mescolate = this.shuffle([...data]);
+        const mescolate = this.shuffle([...arricchite]);
         this.recensioni.set(mescolate);
         this.indiceCorrente = 0;
         this.aggiornaVisibili();
@@ -78,7 +98,7 @@ export class Home implements OnInit, OnDestroy {
       },
       error: (err) => {
         this.caricamento.set(false);
-        console.error('Errore caricamento recensioni', err);
+        console.error('Errore caricamento recensioni/clienti', err);
       }
     });
   }
@@ -101,10 +121,7 @@ export class Home implements OnInit, OnDestroy {
 
   aggiornaVisibili(): void {
     const lista = this.recensioni();
-    if (!lista.length) {
-      this.recensioniVisibili.set([]);
-      return;
-    }
+    if (!lista.length) { this.recensioniVisibili.set([]); return; }
     const quante = Math.min(this.VISIBILI, lista.length);
     const visibili: Recensione[] = [];
     for (let i = 0; i < quante; i++) {
@@ -123,16 +140,11 @@ export class Home implements OnInit, OnDestroy {
   }
 
   // ── Auth ───────────────────────────────────────────────────────
-  isLoggato(): boolean {
-    return this.authService.isLoggedIn();
-  }
+  isLoggato(): boolean { return this.authService.isLoggedIn(); }
 
   // ── Modale ────────────────────────────────────────────────────
   apriModale(): void {
-    if (!this.isLoggato()) {
-      this.router.navigate(['/login']);
-      return;
-    }
+    if (!this.isLoggato()) { this.router.navigate(['/login']); return; }
     this.resetForm();
     this.mostraModale.set(true);
     document.body.style.overflow = 'hidden';
@@ -173,11 +185,10 @@ export class Home implements OnInit, OnDestroy {
 
     const body = {
       DESCRIZIONE: this.nuovaDescrizione().trim(),
-      RATING:      this.nuovoRating(),
-      IDCLIENTE:   0
+      RATING:      this.nuovoRating()
     };
 
-    this.http.post('https://hotel-4n9x.onrender.com/recensione/aggiungi', body, { headers }).subscribe({
+    this.http.post('https://hotel-4n9x.onrender.com/recensione/add', body, { headers }).subscribe({
       next: () => {
         this.invioInCorso.set(false);
         this.invioRiuscito.set(true);
