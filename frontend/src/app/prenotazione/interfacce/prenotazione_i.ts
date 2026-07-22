@@ -5,16 +5,16 @@ export interface prenotazione {
     "EMAIL": string,
     "TELEFONO": string,
     "DATANASCITA": Date,
-    "IDSTANZA": number,
-    "IDSERVIZIO": number,
+    "IDSTANZA"?: number,
+    "IDSERVIZIO"?: number,
     "TOTALE": number,
-    "SPA": boolean,
+    "SPA"?: boolean,
     "NOTE": string,
     "CHECK_IN": Date,
     "CHECK_OUT": Date,
-    "STATO": string,
+    "STATO"?: string,
     "CAPARRA": number,
-    "OSPITI": string
+    "OSPITI"?: string
 }
 
 
