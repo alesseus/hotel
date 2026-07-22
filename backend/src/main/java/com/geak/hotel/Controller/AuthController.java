@@ -47,7 +47,8 @@ public class AuthController {
         LoginResponse response = new LoginResponse(
                 String.valueOf(cliente.getIDCLIENTE()),
                 cliente.getMAIL(),
-                cliente.getADMIN());
+                Boolean.TRUE.equals(cliente.getADMIN())
+        );
 
         return ResponseEntity.ok(response);
     }

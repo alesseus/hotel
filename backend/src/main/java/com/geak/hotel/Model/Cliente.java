@@ -16,7 +16,7 @@ public class Cliente {
 	private String PASS;
 	private String TELEFONO;
 	private LocalDate DATANASCITA;
-	private boolean ADMIN;
+	private Boolean ADMIN;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long IDCLIENTE;
@@ -24,11 +24,11 @@ public class Cliente {
 	public Cliente () {}
 
 	
-	public boolean getADMIN() { 
+	public Boolean getADMIN() { 
 		return ADMIN; 
 	}
 
-	public void setADMIN(boolean ADMIN) { 
+	public void setADMIN(Boolean ADMIN) { 
 		this.ADMIN = ADMIN; 
 	}
 
