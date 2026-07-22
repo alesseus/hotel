@@ -40,8 +40,15 @@
     <h2>Recensioni</h2>
     <div class="divider-gold"></div>
 
-    <!-- Carosello: mostra 3 card per volta, scorre ogni 4s -->
-    @if (recensioniVisibili().length > 0) {
+    <!-- 1. Caricamento in corso -->
+    @if (caricamento) {
+      <div class="rec-empty">
+        <div class="rec-spinner"></div>
+      </div>
+    }
+
+    <!-- 2. DB risposto, recensioni presenti → carosello -->
+    @else if (recensioniVisibili().length > 0) {
       <div class="rec-grid">
         @for (rec of recensioniVisibili(); track rec.IDRECE) {
           <div class="rec-card rec-card-animate">
@@ -54,12 +61,16 @@
           </div>
         }
       </div>
-    } @else {
-      <!-- Skeleton loader mentre arrivano i dati -->
-      <div class="rec-grid">
-        <div class="rec-card rec-skeleton"></div>
-        <div class="rec-card rec-skeleton"></div>
-        <div class="rec-card rec-skeleton"></div>
+    }
+
+    <!-- 3. DB risposto, nessuna recensione -->
+    @else {
+      <div class="rec-empty">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+             stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>
+        <p>Nessuna recensione presente.<br>Sii il primo a condividere la tua esperienza!</p>
       </div>
     }
 
