@@ -127,6 +127,9 @@ td {
   font-size: 0.9rem;
   cursor: pointer;
   transition: background var(--fast);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 .modal-close:hover { background: var(--navy-100); }
 
