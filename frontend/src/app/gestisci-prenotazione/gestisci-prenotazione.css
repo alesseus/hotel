@@ -1,4 +1,3 @@
-
 :host { display: block; }
 
 .gestisci-page { background: var(--bg); min-height: 100%; }
@@ -15,7 +14,7 @@
 .gestisci-header-band .divider-gold { margin: 0; width: 36px; height: 2px; }
 
 
-.gestisci-wrapper { padding: 40px 48px 72px; max-width: 1280px; margin: 0 auto; }
+.gestisci-wrapper { padding: 40px 32px 72px; max-width: 1560px; margin: 0 auto; }
 
 
 .actions-bar {
@@ -91,7 +90,7 @@
   background: none; border: none; padding: 0;
 }
 .back-link:hover { color: var(--white); }
-.back-link::before { content: 'â†'; }
+.back-link::before { content: '←'; }
 
 
 .form-error-banner {
