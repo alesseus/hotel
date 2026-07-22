@@ -82,7 +82,14 @@ export class Recensioni implements OnInit {
     this.invioInCorso.set(true);
     this.erroreInvio.set('');
 
-    const idCliente = parseInt(sessionStorage.getItem('token') ?? '0', 10);
+    const idClienteRaw = sessionStorage.getItem('token');
+    const idCliente = idClienteRaw ? Number(idClienteRaw) : NaN;
+
+    if (!Number.isInteger(idCliente) || idCliente <= 0) {
+      this.invioInCorso.set(false);
+      this.erroreInvio.set('Sessione non valida. Effettua di nuovo il login.');
+      return;
+    }
 
     const nuovaRecensione: Recensione = {
       DESCRIZIONE: this.nuovaDescrizione().trim(),
