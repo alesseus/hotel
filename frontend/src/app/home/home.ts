@@ -32,8 +32,6 @@ export class Home implements OnInit, OnDestroy {
     private http: HttpClient,
     private clienteServices: ClienteServices
   ) {}
-
-  // ── Carosello recensioni ───────────────────────────────────────
   recensioni = signal<Recensione[]>([]);
   recensioniVisibili = signal<Recensione[]>([]);
   indiceCorrente = 0;
@@ -41,24 +39,16 @@ export class Home implements OnInit, OnDestroy {
   private caroselloTimer: any;
   private readonly VISIBILI     = 3;
   private readonly INTERVALLO_MS = 5500;
-
-  // ── Stelle helper ─────────────────────────────────────────────
   stellePerRating(rating: number): string[] {
-    return Array.from({ length: 5 }, (_, i) => i < rating ? '★' : '☆');
+    return Array.from({ length: 5 }, (_, i) => i < rating ? 'â˜…' : 'â˜†');
   }
-
-  // ── Stato modale ───────────────────────────────────────────────
   mostraModale  = signal(false);
   invioInCorso  = signal(false);
   invioRiuscito = signal(false);
   erroreInvio   = signal('');
-
-  // ── Campi form ─────────────────────────────────────────────────
   nuovaDescrizione = signal('');
   nuovoRating      = signal(0);
   ratingHover      = signal(0);
-
-  // ── Lifecycle ─────────────────────────────────────────────────
   ngOnInit(): void {
     this.caricaRecensioni();
   }
@@ -66,8 +56,6 @@ export class Home implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.fermaCarosello();
   }
-
-  // ── Caricamento DB: recensioni + clienti in parallelo ─────────
   caricaRecensioni(): void {
     this.caricamento.set(true);
 
@@ -76,11 +64,8 @@ export class Home implements OnInit, OnDestroy {
       clienti:    this.clienteServices.getClienti()
     }).subscribe({
       next: ({ recensioni, clienti }) => {
-        // Mappa IDCLIENTE → { NOME, COGNOME }
         const mapClienti = new Map<number, Pick<cliente, 'NOME' | 'COGNOME'>>();
         clienti.forEach(c => mapClienti.set(c.IDCLIENTE, { NOME: c.NOME, COGNOME: c.COGNOME }));
-
-        // Arricchisce ogni recensione con i dati del cliente
         const arricchite: Recensione[] = recensioni.map(r => ({
           ...r,
           NOME:    mapClienti.get(r.IDCLIENTE)?.NOME    ?? '',
@@ -102,8 +87,6 @@ export class Home implements OnInit, OnDestroy {
       }
     });
   }
-
-  // ── Carosello ─────────────────────────────────────────────────
   avviaCarosello(): void {
     this.fermaCarosello();
     this.caroselloTimer = setInterval(() => {
@@ -129,8 +112,6 @@ export class Home implements OnInit, OnDestroy {
     }
     this.recensioniVisibili.set(visibili);
   }
-
-  // ── Fisher-Yates shuffle ──────────────────────────────────────
   private shuffle<T>(arr: T[]): T[] {
     for (let i = arr.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -138,11 +119,7 @@ export class Home implements OnInit, OnDestroy {
     }
     return arr;
   }
-
-  // ── Auth ───────────────────────────────────────────────────────
   isLoggato(): boolean { return this.authService.isLoggedIn(); }
-
-  // ── Modale ────────────────────────────────────────────────────
   apriModale(): void {
     if (!this.isLoggato()) { this.router.navigate(['/login']); return; }
     this.resetForm();
@@ -160,8 +137,6 @@ export class Home implements OnInit, OnDestroy {
       this.chiudiModale();
     }
   }
-
-  // ── Stelle ────────────────────────────────────────────────────
   setRating(valore: number): void  { this.nuovoRating.set(valore); }
   setHover(valore: number): void   { this.ratingHover.set(valore); }
   resetHover(): void               { this.ratingHover.set(0); }
@@ -169,8 +144,6 @@ export class Home implements OnInit, OnDestroy {
   stellaAttiva(indice: number): boolean {
     return indice <= (this.ratingHover() || this.nuovoRating());
   }
-
-  // ── Invio recensione ──────────────────────────────────────────
   inviaRecensione(form: NgForm): void {
     if (form.invalid || this.nuovoRating() === 0) return;
 
@@ -204,7 +177,7 @@ export class Home implements OnInit, OnDestroy {
         } else if (err.status === 0) {
           this.erroreInvio.set('Impossibile raggiungere il server. Controlla la connessione.');
         } else {
-          this.erroreInvio.set('Si è verificato un errore. Riprova più tardi.');
+          this.erroreInvio.set('Si Ã¨ verificato un errore. Riprova piÃ¹ tardi.');
         }
       }
     });

@@ -1,8 +1,8 @@
-/* ── App Shell ────────────────────────────────────────────────── */
+
 :host { display: flex; flex-direction: column; min-height: 100vh; }
 main { flex: 1; }
 
-/* ── Header ───────────────────────────────────────────────────── */
+
 header {
   position: sticky;
   top: 0;
@@ -17,7 +17,7 @@ header {
   box-shadow: 0 2px 16px rgba(7, 15, 34, 0.45);
 }
 
-/* ── Logo ── */
+
 .logo-link {
   display: flex;
   align-items: center;
@@ -28,8 +28,7 @@ header {
 .logo {
   height: 60px;
   width: auto;
-  /* logo.png è navy scuro su trasparente:
-     brightness(0) → tutto nero, invert(1) → tutto bianco */
+  
   filter: brightness(0) invert(1);
   opacity: 0.92;
   transition: opacity var(--fast), transform var(--fast);
@@ -40,7 +39,7 @@ header {
   transform: scale(1.03);
 }
 
-/* ── Nav ── */
+
 nav {
   display: flex;
   align-items: center;
@@ -84,7 +83,7 @@ nav a.active { color: var(--white); }
 nav a.active::after,
 nav a:hover::after { transform: scaleX(1); }
 
-/* ── Prenota button ── */
+
 .btn-prenota {
   margin-left: auto;
   font-family: var(--font-body);
@@ -111,34 +110,34 @@ nav a:hover::after { transform: scaleX(1); }
 
 .btn-hero-ghost {
   font-family: var(--font-body);
-  font-size: 0.72rem;                /* uguale a .btn-prenota */
-  font-weight: 700;                  /* uguale a .btn-prenota */
-  letter-spacing: 0.08em;            /* uguale a .btn-prenota */
+  font-size: 0.72rem;                
+  font-weight: 700;                  
+  letter-spacing: 0.08em;            
   text-transform: uppercase;
   background: rgba(255,255,255,0.10);
   color: var(--white);
   border: 1.5px solid rgba(255,255,255,0.32);
   border-radius: var(--r-pill);
-  padding: 9px 24px;                 /* uguale a .btn-prenota */
+  padding: 9px 24px;                 
   cursor: pointer;
   white-space: nowrap;
   backdrop-filter: blur(6px);
-  margin-right: 12px;                  /* distanza da .btn-prenota */
+  margin-right: 12px;                  
   transition: background var(--fast), border-color var(--fast), transform var(--fast), box-shadow var(--fast);
 }
 
 .btn-hero-ghost:hover {
   background: rgba(255,255,255,0.18);
   border-color: rgba(255,255,255,0.55);
-  transform: translateY(-1px);       /* stesso spostamento di .btn-prenota */
-  box-shadow: 0 6px 20px rgba(0,0,0,0.12); /* ombra più sottile adatta al ghost */
+  transform: translateY(-1px);       
+  box-shadow: 0 6px 20px rgba(0,0,0,0.12); 
 }
 
 .btn-hero-ghost:active {
   transform: translateY(0);
 }
 
-/* ── Footer ── */
+
 footer {
   background: var(--navy-900);
   border-top: 1px solid rgba(255,255,255,0.07);
@@ -177,7 +176,7 @@ footer {
   opacity: 0.55;
 }
 
-/* ── Responsive ─────────────────────────────────────────────── */
+
 @media (max-width: 768px) {
   header { padding: 0 18px; height: auto; flex-wrap: wrap; padding-top: 12px; padding-bottom: 10px; gap: 8px; }
   .logo-link { margin-right: 0; }

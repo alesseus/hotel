@@ -1,4 +1,4 @@
-/* ── AMMINISTRAZIONE (Dashboard) ──────────────────────────────── */
+
 :host { display: block; }
 
 .admin-page {
@@ -6,7 +6,7 @@
   background: var(--bg);
 }
 
-/* Header admin */
+
 .admin-header {
   background: linear-gradient(135deg, var(--navy-950) 0%, var(--navy-900) 100%);
   padding: 44px 48px 40px;
@@ -39,9 +39,9 @@
   text-transform: uppercase;
   color: var(--navy-200);
 }
-.admin-badge::before { content: '●'; color: #4CAF50; font-size: 0.6rem; }
+.admin-badge::before { content: 'â—'; color: #4CAF50; font-size: 0.6rem; }
 
-/* Dashboard grid */
+
 .dashboard {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -68,7 +68,7 @@
   text-decoration: none;
 }
 .admin-card::after {
-  content: '→';
+  content: 'â†’';
   position: absolute;
   bottom: 20px; right: 24px;
   font-size: 1.2rem;
@@ -85,7 +85,7 @@
   transform: translateX(4px);
 }
 
-/* Strip colorata in cima */
+
 .admin-card::before {
   content: '';
   position: absolute;

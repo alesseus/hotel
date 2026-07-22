@@ -16,22 +16,16 @@ import { servizio } from './interfacce/servizi_i';
 export class GestisciServizi implements OnInit {
 
   private readonly servizioServices = inject(ServizioServices);
-
-  // ── Dati ──────────────────────────────────────────────────────
   servizi          = signal<servizio[]>([]);
   ricerca          = signal('');
   caricamento      = signal(true);
   erroreCaricamento = signal('');
-
-  // ── Modale ────────────────────────────────────────────────────
   modaleAperto    = signal(false);
   modaleModalita  = signal<'crea' | 'modifica'>('crea');
   formError       = signal('');
   invio           = signal(false);
 
   servizioForm: Partial<servizio> = {};
-
-  // ── Conferma eliminazione ────────────────────────────────────
   eliminaTarget = signal<servizio | null>(null);
 
   ngOnInit(): void {
@@ -48,13 +42,11 @@ export class GestisciServizi implements OnInit {
       },
       error: (err) => {
         console.error('Errore caricamento servizi', err);
-        this.erroreCaricamento.set('Impossibile caricare i servizi. Riprova più tardi.');
+        this.erroreCaricamento.set('Impossibile caricare i servizi. Riprova piÃ¹ tardi.');
         this.caricamento.set(false);
       }
     });
   }
-
-  // ── Filtro ricerca ────────────────────────────────────────────
   get serviziFiltrati(): servizio[] {
     const q = this.ricerca().trim().toLowerCase();
     if (!q) return this.servizi();
@@ -63,8 +55,6 @@ export class GestisciServizi implements OnInit {
       String(s.IDSERVIZIO).includes(q)
     );
   }
-
-  // ── Apertura modale ───────────────────────────────────────────
   apriModaleCreazione(): void {
     this.modaleModalita.set('crea');
     this.servizioForm = { NOTE: '', COSTO: 0 };
@@ -84,8 +74,6 @@ export class GestisciServizi implements OnInit {
     this.servizioForm = {};
     this.formError.set('');
   }
-
-  // ── Salvataggio (crea o modifica) ────────────────────────────
   salvaServizio(form: NgForm): void {
     this.formError.set('');
     if (form.invalid) {
@@ -106,8 +94,6 @@ export class GestisciServizi implements OnInit {
       });
     }
   }
-
-  // ── Eliminazione ──────────────────────────────────────────────
   chiediConfermaEliminazione(s: servizio): void { this.eliminaTarget.set(s); }
   annullaEliminazione(): void { this.eliminaTarget.set(null); }
 

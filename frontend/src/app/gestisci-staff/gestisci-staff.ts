@@ -14,14 +14,10 @@ import { cliente } from './interfacce/cliente_i';
 export class GestisciStaff implements OnInit {
 
   private readonly clienteServices = inject(ClienteServices);
-
-  // ── Dati ──────────────────────────────────────────────────────
   utenti            = signal<cliente[]>([]);
   ricerca           = signal('');
   caricamento       = signal(true);
   erroreCaricamento = signal('');
-
-  // ── Modale crea / modifica ────────────────────────────────────
   modaleAperto   = signal(false);
   modaleModalita = signal<'crea' | 'modifica'>('crea');
   formError      = signal('');
@@ -30,11 +26,7 @@ export class GestisciStaff implements OnInit {
   utenteForm: Partial<cliente> = {};
   mostraPassword = signal(false);
   private passwordOriginale = '';
-
-  // ── Conferma eliminazione ─────────────────────────────────────
   eliminaTarget = signal<cliente | null>(null);
-
-  // ── Ricerca ───────────────────────────────────────────────────
   get utentiFiltrati(): cliente[] {
     const q = this.ricerca().trim().toLowerCase();
     if (!q) return this.utenti();
@@ -60,13 +52,11 @@ export class GestisciStaff implements OnInit {
       },
       error: (err) => {
         console.error('Errore caricamento utenti', err);
-        this.erroreCaricamento.set('Impossibile caricare gli utenti. Riprova più tardi.');
+        this.erroreCaricamento.set('Impossibile caricare gli utenti. Riprova piÃ¹ tardi.');
         this.caricamento.set(false);
       }
     });
   }
-
-  // ── Apertura modale ───────────────────────────────────────────
   apriModaleCreazione(): void {
     this.modaleModalita.set('crea');
     this.utenteForm = { NOME: '', COGNOME: '', MAIL: '', PASS: '', TELEFONO: '', DATANASCITA: '', ADMIN: false };
@@ -92,8 +82,6 @@ export class GestisciStaff implements OnInit {
     this.formError.set('');
     this.mostraPassword.set(false);
   }
-
-  // ── Salvataggio ───────────────────────────────────────────────
   salvaUtente(form: NgForm): void {
     this.formError.set('');
     if (form.invalid) {
@@ -116,7 +104,6 @@ export class GestisciStaff implements OnInit {
         }
       });
     } else {
-      // Se la password viene lasciata vuota in modifica, mantieni quella esistente
       const daInviare: cliente = {
         ...(this.utenteForm as cliente),
         PASS: this.utenteForm.PASS ? this.utenteForm.PASS : this.passwordOriginale
@@ -138,8 +125,6 @@ export class GestisciStaff implements OnInit {
       });
     }
   }
-
-  // ── Eliminazione ──────────────────────────────────────────────
   chiediConfermaEliminazione(u: cliente): void { this.eliminaTarget.set(u); }
   annullaEliminazione(): void                  { this.eliminaTarget.set(null); }
 
