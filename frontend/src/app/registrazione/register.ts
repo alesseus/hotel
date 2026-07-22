@@ -106,7 +106,7 @@ export class Register implements OnInit {
     };
 
     this.http.post<{ message: string }>(this.apiUrl, payload)
-      .pipe(timeout(15000))
+      .pipe(timeout(40000))
       .subscribe({
         next: () => {
           this.isLoading      = false;

@@ -1,6 +1,7 @@
 package com.geak.hotel.Controller;
 
 import java.time.LocalDate;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class AuthController {
 
     @PostMapping("login")
     public ResponseEntity<?> login(@Validated @RequestBody LoginRequest request) {
-        Optional<Cliente> optional = clientiRepository.findByMAILIgnoreCase(request.getCodice());
+        Optional<Cliente> optional = clientiRepository.findByMAILIgnoreCase(request.getEmail());
 
         if (optional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenziali non valide");
@@ -44,8 +45,7 @@ public class AuthController {
         LoginResponse response = new LoginResponse(
                 String.valueOf(cliente.getIDCLIENTE()),
                 cliente.getMAIL(),
-                cliente.getADMIN()
-        );
+                cliente.getADMIN());
 
         return ResponseEntity.ok(response);
     }
@@ -67,6 +67,6 @@ public class AuthController {
 
         clientiRepository.save(cliente);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body("Registrazione completata");
+        return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("message", "Registrazione completata"));
     }
 }
