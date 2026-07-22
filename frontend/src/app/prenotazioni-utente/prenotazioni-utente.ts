@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -8,7 +8,7 @@ import { prenotazione } from '../prenotazione/interfacce/prenotazione_i';
 
 @Component({
   selector: 'app-prenotazioni-utente',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, DatePipe],
   templateUrl: './prenotazioni-utente.html',
   styleUrl: './prenotazioni-utente.css'
 })
@@ -154,7 +154,7 @@ export class PrenotazioniUtente implements OnInit {
     });
   }
 
-  formatData(d: Date | string | null | undefined): string {
+  formatData(d: Date | string): string {
     if (!d) return 'â€”';
     return new Date(d).toLocaleDateString('it-IT');
   }
