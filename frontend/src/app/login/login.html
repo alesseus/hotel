@@ -30,7 +30,7 @@
                     <label for="password">Password</label>
                     <div class="input-with-toggle">
                         <input [type]="showPassword() ? 'text' : 'password'" id="password" name="password"
-                            [ngModel]="password()" (ngModelChange)="password.set($event)" required minlength="6" placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+                            [ngModel]="password()" (ngModelChange)="password.set($event)" required minlength="6" placeholder="••••••••"
                             #passwordField="ngModel" [class.invalid]="passwordField.invalid && passwordField.touched">
                         <button type="button" class="toggle-eye" (click)="togglePassword()"
                             [attr.aria-label]="showPassword() ? 'Nascondi' : 'Mostra'">
@@ -62,7 +62,7 @@
 
                 <button type="submit" [disabled]="loginForm.invalid || loading()">
                     @if (loading()) {
-                    Accesso in corsoâ€¦
+                    Accesso in corso…
                     } @else {
                     Accedi
                     }

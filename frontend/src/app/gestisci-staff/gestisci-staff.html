@@ -118,7 +118,7 @@
                    id="pass" name="PASS"
                    [(ngModel)]="utenteForm.PASS"
                    [required]="modaleModalita() === 'crea'"
-                   placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢">
+                   placeholder="••••••••">
             <button type="button" class="toggle-eye" (click)="mostraPassword.update(v => !v)"
                     [attr.aria-label]="mostraPassword() ? 'Nascondi password' : 'Mostra password'">
               @if (mostraPassword()) {
@@ -138,7 +138,7 @@
 
           <label class="checkbox-inline">
             <input type="checkbox" name="ADMIN" [(ngModel)]="utenteForm.ADMIN">
-            Ãˆ amministratore
+            È amministratore
           </label>
 
           @if (formError()) {
@@ -171,7 +171,7 @@
 
       <div class="modal-body">
         <p>Sei sicuro di voler eliminare l'utente <strong>{{ eliminaTarget()!.MAIL }}</strong>?
-           L'operazione non Ã¨ reversibile.</p>
+           L'operazione non è reversibile.</p>
       </div>
 
       <div class="modal-footer">

@@ -148,7 +148,7 @@ export class GestisciStanza implements OnInit, OnDestroy {
       next: (data) => { this.stanze.set(data); this.caricamento.set(false); },
       error: (err) => {
         console.error('Errore caricamento stanze', err);
-        this.erroreCaricamento.set('Impossibile caricare le stanze. Riprova piÃ¹ tardi.');
+        this.erroreCaricamento.set('Impossibile caricare le stanze. Riprova più tardi.');
         this.caricamento.set(false);
       }
     });
@@ -224,7 +224,7 @@ export class GestisciStanza implements OnInit, OnDestroy {
     });
   }
   formatData(d: string): string {
-    if (!d) return 'â€”';
+    if (!d) return '—';
     const [y, m, g] = d.split('-').map(Number);
     return new Date(y, m - 1, g).toLocaleDateString('it-IT');
   }

@@ -11,7 +11,7 @@
 
     <div class="caparra-box">
       <span>Importo da pagare</span>
-      <span class="caparra-importo">â‚¬{{ caparra() }}</span>
+      <span class="caparra-importo">€{{ caparra() }}</span>
       <small>Caparra non rimborsabile (10% del totale)</small>
     </div>
 
@@ -92,7 +92,7 @@
 
       <div class="pagamento-actions">
         <button type="submit" class="primary" [disabled]="pagamentoForm.invalid || !scadenzaValida()">
-          Paga â‚¬{{ caparra() }}
+          Paga €{{ caparra() }}
         </button>
         <button type="button" class="secondary" (click)="metodoPagamento.set('')">
           Cambia metodo
@@ -144,7 +144,7 @@
         </div>
         <div class="bonifico-row">
           <span>Importo</span>
-          <span>â‚¬{{ caparra() }}</span>
+          <span>€{{ caparra() }}</span>
         </div>
         <p class="bonifico-nota">Invia la ricevuta del bonifico via email per confermare la prenotazione.</p>
       </div>
@@ -192,7 +192,7 @@
   <div class="pagamento-successo">
     <div class="success-icon">âœ“</div>
     <h2>Prenotazione confermata!</h2>
-    <p>La tua prenotazione Ã¨ stata registrata con successo.</p>
+    <p>La tua prenotazione è stata registrata con successo.</p>
     <p class="success-redirect">Sarai reindirizzato alla home tra {{ conto() }}...</p>
   </div>
   }

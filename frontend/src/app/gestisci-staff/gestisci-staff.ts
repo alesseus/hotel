@@ -52,7 +52,7 @@ export class GestisciStaff implements OnInit {
       },
       error: (err) => {
         console.error('Errore caricamento utenti', err);
-        this.erroreCaricamento.set('Impossibile caricare gli utenti. Riprova piÃ¹ tardi.');
+        this.erroreCaricamento.set('Impossibile caricare gli utenti. Riprova più tardi.');
         this.caricamento.set(false);
       }
     });

@@ -62,12 +62,12 @@
               <tr>
                 <td>{{ p.IDPRE }}</td>
                 <td>{{ p.NOME }} {{ p.COGNOME }}</td>
-                <td>{{ p.EMAIL || 'â€”' }}</td>
-                <td>{{ p.TELEFONO || 'â€”' }}</td>
+                <td>{{ p.EMAIL || '—' }}</td>
+                <td>{{ p.TELEFONO || '—' }}</td>
                 <td>{{ p.IDSTANZA ? ('Stanza #' + p.IDSTANZA) : 'Solo SPA' }}</td>
                 <td>{{ formatData(p.CHECK_IN) }}</td>
                 <td>{{ formatData(p.CHECK_OUT) }}</td>
-                <td>â‚¬ {{ p.TOTALE | number:'1.2-2' }}</td>
+                <td>€ {{ p.TOTALE | number:'1.2-2' }}</td>
                 <td>
                   <span class="badge-stato"
                         [class.stato-confermata]="p.STATO?.toLowerCase() === 'confermata'"
@@ -186,7 +186,7 @@
                 <option [ngValue]="null">-- Seleziona stanza --</option>
                 @for (s of stanzeFiltrate; track s.IDSTANZA) {
                   <option [ngValue]="s.IDSTANZA">
-                    #{{ s.IDSTANZA }} â€” {{ s.DIMENSIONE }} | {{ s.CAPACITA }} posti | â‚¬{{ s.COSTO }}/notte
+                    #{{ s.IDSTANZA }} — {{ s.DIMENSIONE }} | {{ s.CAPACITA }} posti | €{{ s.COSTO }}/notte
                   </option>
                 }
               </select>
@@ -209,12 +209,12 @@
                     <span>{{ stanzaSelezionata()!.DIMENSIONE }}</span>
                   </div>
                   <div class="detail-row">
-                    <span class="detail-label">CapacitÃ </span>
+                    <span class="detail-label">Capacità</span>
                     <span>{{ stanzaSelezionata()!.CAPACITA }} persone</span>
                   </div>
                   <div class="detail-row">
                     <span class="detail-label">Costo</span>
-                    <span>â‚¬ {{ stanzaSelezionata()!.COSTO | number:'1.2-2' }} / notte</span>
+                    <span>€ {{ stanzaSelezionata()!.COSTO | number:'1.2-2' }} / notte</span>
                   </div>
                   <div class="detail-row">
                     <span class="detail-label">Stato</span>
@@ -262,14 +262,14 @@
                     <option [ngValue]="null">-- Seleziona servizio --</option>
                     @for (sv of servizi(); track sv.IDSERVIZIO) {
                       <option [ngValue]="sv.IDSERVIZIO">
-                        {{ sv.NOTE }} â€” â‚¬{{ sv.COSTO }}
+                        {{ sv.NOTE }} — €{{ sv.COSTO }}
                       </option>
                     }
                   </select>
 
                   @if (row.idServizio) {
                     <span class="servizio-costo">
-                      â‚¬ {{ (servizi() | servizioById: row.idServizio)?.COSTO | number:'1.2-2' }}
+                      € {{ (servizi() | servizioById: row.idServizio)?.COSTO | number:'1.2-2' }}
                     </span>
                   }
 
@@ -285,10 +285,10 @@
             <div class="form-group full-width">
               <label>Totale stimato</label>
               <div class="totale-display">
-                <span class="totale-value">â‚¬ {{ totaleCalcolato | number:'1.2-2' }}</span>
+                <span class="totale-value">€ {{ totaleCalcolato | number:'1.2-2' }}</span>
                 <span class="totale-hint">
                   @if (stanzaSelezionata() && form.CHECK_IN && form.CHECK_OUT) {
-                    Stanza â‚¬{{ stanzaSelezionata()!.COSTO }}/notte Ã— {{ calcolaNotti(form.CHECK_IN, form.CHECK_OUT) }} notti
+                    Stanza €{{ stanzaSelezionata()!.COSTO }}/notte × {{ calcolaNotti(form.CHECK_IN, form.CHECK_OUT) }} notti
                     @if (serviziSelezionati().length > 0) {
                       + {{ serviziSelezionati().length }} servizio/i
                     }
@@ -315,7 +315,7 @@
                 <p class="servizi-empty">Seleziona prima una stanza per poter aggiungere ospiti.</p>
               } @else {
                 <p class="servizi-empty">
-                  La stanza selezionata ha una capacitÃ  di {{ stanzaSelezionata()!.CAPACITA }} persone.
+                  La stanza selezionata ha una capacità di {{ stanzaSelezionata()!.CAPACITA }} persone.
                   Puoi aggiungere fino a {{ maxOspiti }} ospiti oltre all'intestatario ({{ ospiti().length }}/{{ maxOspiti }}).
                 </p>
               }
@@ -384,7 +384,7 @@
             <strong>#{{ eliminaTarget()!.IDPRE }}</strong> di
             <strong>{{ eliminaTarget()!.NOME }} {{ eliminaTarget()!.COGNOME }}</strong>?
           </p>
-          <p class="confirm-sub">Questa azione Ã¨ irreversibile.</p>
+          <p class="confirm-sub">Questa azione è irreversibile.</p>
         </div>
       </div>
 

@@ -42,7 +42,7 @@ export class GestisciServizi implements OnInit {
       },
       error: (err) => {
         console.error('Errore caricamento servizi', err);
-        this.erroreCaricamento.set('Impossibile caricare i servizi. Riprova piÃ¹ tardi.');
+        this.erroreCaricamento.set('Impossibile caricare i servizi. Riprova più tardi.');
         this.caricamento.set(false);
       }
     });

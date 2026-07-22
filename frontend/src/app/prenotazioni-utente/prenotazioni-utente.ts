@@ -155,7 +155,7 @@ export class PrenotazioniUtente implements OnInit {
   }
 
   formatData(d: Date | string | null): string {
-    if (!d) return 'â€”';
+    if (!d) return '—';
     return new Date(d).toLocaleDateString('it-IT');
   }
 

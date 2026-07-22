@@ -167,7 +167,7 @@ export class GestisciPrenotazione implements OnInit {
       next: (data) => { this.prenotazioni.set(data); this.caricamento.set(false); },
       error: (err)  => {
         console.error('Errore caricamento prenotazioni', err);
-        this.erroreCaricamento.set('Impossibile caricare le prenotazioni. Riprova piÃ¹ tardi.');
+        this.erroreCaricamento.set('Impossibile caricare le prenotazioni. Riprova più tardi.');
         this.caricamento.set(false);
       }
     });
@@ -369,7 +369,7 @@ export class GestisciPrenotazione implements OnInit {
   }
 
   formatData(d: string | Date | null | undefined): string {
-    if (!d) return 'â€”';
+    if (!d) return '—';
     return new Date(d).toLocaleDateString('it-IT');
   }
 

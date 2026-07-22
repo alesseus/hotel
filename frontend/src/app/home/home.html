@@ -1,7 +1,7 @@
 
 <section class="hero">
   <div class="hero-overlay">
-    <p class="hero-eyebrow">Portocervo Â· Dal 1987</p>
+    <p class="hero-eyebrow">Portocervo · Dal 1987</p>
     <h1>Blue Horizon Hotel</h1>
     <p class="hero-sub">Un rifugio di eleganza nel cuore della costa smeralda.<br>Camere esclusive, servizi su misura, esperienze indimenticabili.</p>
     <div class="hero-actions">
@@ -24,7 +24,7 @@
   </div>
   <div class="info-sep"></div>
   <div class="info-item">
-    <span class="info-num">4.9 â˜…</span>
+    <span class="info-num">4.9 ★</span>
     <span class="info-lbl">Valutazione</span>
   </div>
   <div class="info-sep"></div>
@@ -57,7 +57,7 @@
                 <span class="rec-nome">{{ rec.NOME }} {{ rec.COGNOME }}</span>
                 <div class="rec-stars">
                   @for (s of stellePerRating(rec.RATING); track $index) {
-                    <span [class.stella-gold]="s === 'â˜…'" [class.stella-vuota]="s === 'â˜†'">{{ s }}</span>
+                    <span [class.stella-gold]="s === '★'" [class.stella-vuota]="s === '☆'">{{ s }}</span>
                   }
                 </div>
               </div>
@@ -121,7 +121,7 @@
             <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
             <polyline points="22 4 12 14.01 9 11.01"/>
           </svg>
-          <p>Grazie! La tua recensione Ã¨ stata inviata con successo.</p>
+          <p>Grazie! La tua recensione è stata inviata con successo.</p>
         </div>
       } @else {
 
@@ -136,7 +136,7 @@
                         [class.attiva]="stellaAttiva(i)"
                         (mouseenter)="setHover(i)"
                         (click)="setRating(i)"
-                        [attr.aria-label]="'Dai ' + i + ' stelle su 5'">â˜…</button>
+                        [attr.aria-label]="'Dai ' + i + ' stelle su 5'">★</button>
               }
             </div>
             @if (recensioneForm.submitted && nuovoRating() === 0) {
@@ -154,7 +154,7 @@
               minlength="10"
               maxlength="600"
               rows="5"
-              placeholder="Racconta la tua esperienza al Blue Horizon Hotelâ€¦"
+              placeholder="Racconta la tua esperienza al Blue Horizon Hotel…"
               #descField="ngModel"
               [class.invalid]="descField.invalid && descField.touched">
             </textarea>
@@ -175,7 +175,7 @@
           <div class="modale-azioni">
             <button type="button" class="btn-annulla" (click)="chiudiModale()">Annulla</button>
             <button type="submit" class="btn-rec" [disabled]="invioInCorso()">
-              @if (invioInCorso()) { Invio in corsoâ€¦ } @else { Invia recensione }
+              @if (invioInCorso()) { Invio in corso… } @else { Invia recensione }
             </button>
           </div>
 

@@ -40,7 +40,7 @@ export class Home implements OnInit, OnDestroy {
   private readonly VISIBILI     = 3;
   private readonly INTERVALLO_MS = 5500;
   stellePerRating(rating: number): string[] {
-    return Array.from({ length: 5 }, (_, i) => i < rating ? 'â˜…' : 'â˜†');
+    return Array.from({ length: 5 }, (_, i) => i < rating ? '★' : '☆');
   }
   mostraModale  = signal(false);
   invioInCorso  = signal(false);
@@ -177,7 +177,7 @@ export class Home implements OnInit, OnDestroy {
         } else if (err.status === 0) {
           this.erroreInvio.set('Impossibile raggiungere il server. Controlla la connessione.');
         } else {
-          this.erroreInvio.set('Si Ã¨ verificato un errore. Riprova piÃ¹ tardi.');
+          this.erroreInvio.set('Si è verificato un errore. Riprova più tardi.');
         }
       }
     });

@@ -75,7 +75,7 @@
           <button class="secondary" type="button">Seleziona</button>
         </div>
         <div class="tipo-card tipo-card--featured" (click)="scegliTipo('stanza')">
-          <span class="tipo-badge">PiÃ¹ scelto</span>
+          <span class="tipo-badge">Più scelto</span>
           <span class="tipo-icon">
             <img src="../../assets/icons/hotel_room.png" alt="Hotel_room_icon">
           </span>
@@ -94,7 +94,7 @@
     <div class="scelta-wrapper">
       <div class="scelta-header">
         <h2>Scelta stanza</h2>
-        <p>Seleziona la stanza piÃ¹ adatta alle tue esigenze</p>
+        <p>Seleziona la stanza più adatta alle tue esigenze</p>
       </div>
 
       
@@ -113,7 +113,7 @@
         </div>
         @if (checkIn && checkOut && checkOut > checkIn) {
         <span class="date-notti-hint">
-          {{ notti }} nott{{ notti === 1 ? 'e' : 'i' }} â€” stanze disponibili: <strong>{{ stanzeDisponibili.length
+          {{ notti }} nott{{ notti === 1 ? 'e' : 'i' }} — stanze disponibili: <strong>{{ stanzeDisponibili.length
             }}</strong>
         </span>
         }
@@ -122,7 +122,7 @@
       
       <div class="filtri-bar">
         <div class="filtro-group">
-          <label>CapacitÃ  minima</label>
+          <label>Capacità minima</label>
           <select [(ngModel)]="filtroCapacita" name="filtroCapacita">
             <option [ngValue]="null">Tutte</option>
             <option [ngValue]="1">1+</option>
@@ -135,8 +135,8 @@
           <label>Prezzo</label>
           <select [(ngModel)]="filtroPrezzo" name="filtroPrezzo">
             <option [ngValue]="null">Nessun ordine</option>
-            <option value="asc">Dal piÃ¹ economico</option>
-            <option value="desc">Dal piÃ¹ costoso</option>
+            <option value="asc">Dal più economico</option>
+            <option value="desc">Dal più costoso</option>
           </select>
         </div>
         <button class="secondary filtro-reset" type="button" (click)="resetFiltri()">
@@ -153,8 +153,8 @@
           </div>
           <div class="stanza-info">
             <h4>{{ s.DESCRIZIONE || s.DIMENSIONE || 'Stanza ' + s.IDSTANZA }}</h4>
-            <p>Capienza: {{ s.CAPACITA }} Â· Stato: {{ s.STATO }}</p>
-            <div class="stanza-price">â‚¬{{ s.COSTO }}<span>/notte</span></div>
+            <p>Capienza: {{ s.CAPACITA }} · Stato: {{ s.STATO }}</p>
+            <div class="stanza-price">€{{ s.COSTO }}<span>/notte</span></div>
           </div>
           <div class="stanza-select-btn">Scegli</div>
         </div>
@@ -191,7 +191,7 @@
           <div class="servizio-info">
             <span class="servizio-nome">Servizio {{ s.NOTE }}</span>
           </div>
-          <span class="servizio-price">â‚¬{{ s.COSTO }}</span>
+          <span class="servizio-price">€{{ s.COSTO }}</span>
         </label>
         } @empty {
         <div class="list-empty">
@@ -223,7 +223,7 @@
             <input type="text" id="nome" name="nome" [(ngModel)]="nome" #nomeField="ngModel" required
               placeholder="Mario">
             @if (nomeField.invalid && (nomeField.touched || datiForm.submitted)) {
-            <small class="field-error">Il nome Ã¨ obbligatorio</small>
+            <small class="field-error">Il nome è obbligatorio</small>
             }
           </div>
           <div>
@@ -231,7 +231,7 @@
             <input type="text" id="cognome" name="cognome" [(ngModel)]="cognome" #cognomeField="ngModel" required
               placeholder="Rossi">
             @if (cognomeField.invalid && (cognomeField.touched || datiForm.submitted)) {
-            <small class="field-error">Il cognome Ã¨ obbligatorio</small>
+            <small class="field-error">Il cognome è obbligatorio</small>
             }
           </div>
         </div>
@@ -276,8 +276,8 @@
         <div class="ospiti-section">
           <h3>Altri ospiti</h3>
           <p class="ospiti-hint">
-            La stanza selezionata ha una capacitÃ  di {{ stanzaSelezionata?.CAPACITA }} persone.
-            Inserisci nome e cognome degli altri {{ numeroOspitiAggiuntivi }} ospiti (l'intestatario Ã¨ giÃ  incluso).
+            La stanza selezionata ha una capacità di {{ stanzaSelezionata?.CAPACITA }} persone.
+            Inserisci nome e cognome degli altri {{ numeroOspitiAggiuntivi }} ospiti (l'intestatario è già incluso).
           </p>
           @for (o of ospiti; track $index) {
           <div class="fields-2 ospite-row">
@@ -311,7 +311,7 @@
           @if (tipoPrenotazione === 'spa') {
           <div class="riepilogo-row">
             <span>Costo SPA</span>
-            <span>â‚¬{{ costoSpa }}</span>
+            <span>€{{ costoSpa }}</span>
           </div>
           }
           @if (stanzaSelezionata) {
@@ -322,11 +322,11 @@
           }
           <div class="riepilogo-row">
             <span>Check-in</span>
-            <span>{{ checkIn || 'â€”' }}</span>
+            <span>{{ checkIn || '—' }}</span>
           </div>
           <div class="riepilogo-row">
             <span>Check-out</span>
-            <span>{{ checkOut || 'â€”' }}</span>
+            <span>{{ checkOut || '—' }}</span>
           </div>
           @if (tipoPrenotazione === 'stanza') {
           <div class="riepilogo-row">
@@ -335,25 +335,25 @@
           </div>
           <div class="riepilogo-row">
             <span>Costo stanza</span>
-            <span>â‚¬{{ costoStanza }}</span>
+            <span>€{{ costoStanza }}</span>
           </div>
           }
           @if (serviziSelezionati.length > 0) {
           <div class="riepilogo-row">
             <span>Servizi extra</span>
-            <span>+â‚¬{{ costoServizi }}</span>
+            <span>+€{{ costoServizi }}</span>
           </div>
           }
           <div class="riepilogo-divider"></div>
           <div class="riepilogo-total">
             <span>Totale</span>
-            <span>â‚¬{{ totale }}</span>
+            <span>€{{ totale }}</span>
           </div>
           <div class="riepilogo-row riepilogo-caparra">
             <span>Caparra (10%, dovuta ora)</span>
-            <span>â‚¬{{ caparra }}</span>
+            <span>€{{ caparra }}</span>
           </div>
-          <small class="riepilogo-nota">La caparra non Ã¨ rimborsabile in caso di cancellazione.</small>
+          <small class="riepilogo-nota">La caparra non è rimborsabile in caso di cancellazione.</small>
         </div>
 
         @if (formError) {
@@ -362,7 +362,7 @@
 
         <div class="confirm-actions">
           <button type="submit" class="primary confirm-btn" [disabled]="invio">
-            {{ invio ? 'Invio in corso...' : 'Paga caparra e conferma (â‚¬' + caparra + ')' }}
+            {{ invio ? 'Invio in corso...' : 'Paga caparra e conferma (€' + caparra + ')' }}
           </button>
           <button type="button" class="secondary" (click)="step = tipoPrenotazione === 'spa' ? 0 : 2">
             â† Modifica

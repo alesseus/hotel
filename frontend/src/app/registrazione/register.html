@@ -71,7 +71,7 @@
                     <div class="input-with-toggle">
                         <input [type]="showPassword() ? 'text' : 'password'"
                             id="password" formControlName="password"
-                            placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+                            placeholder="••••••••"
                             autocomplete="new-password"
                             [class.invalid]="isInvalid('password')">
                         <button type="button" class="toggle-eye" (click)="togglePassword()"
@@ -99,7 +99,7 @@
                     <div class="input-with-toggle">
                         <input [type]="showConfermaPassword() ? 'text' : 'password'"
                             id="confermaPassword" formControlName="confermaPassword"
-                            placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+                            placeholder="••••••••"
                             autocomplete="new-password"
                             [class.invalid]="isInvalid('confermaPassword') || (registerForm.errors?.['passwordMismatch'] && registerForm.get('confermaPassword')?.dirty)">
                         <button type="button" class="toggle-eye" (click)="toggleConfermaPassword()"
@@ -161,7 +161,7 @@
 
                 <button type="submit" [disabled]="isLoading()">
                     @if (isLoading()) {
-                        Registrazione in corsoâ€¦
+                        Registrazione in corso…
                     } @else {
                         Crea Account
                     }
@@ -169,7 +169,7 @@
 
             </form>
 
-            <a class="forgot-link" routerLink="/login">Hai giÃ  un account? Accedi</a>
+            <a class="forgot-link" routerLink="/login">Hai già un account? Accedi</a>
 
         </div>
     </div>
