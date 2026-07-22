@@ -304,13 +304,20 @@
             <div class="form-group full-width">
               <div class="servizi-header">
                 <label>Ospiti (nome e cognome)</label>
-                <button class="btn-add-service" type="button" (click)="aggiungiOspite()">
+                <button class="btn-add-service" type="button"
+                        (click)="aggiungiOspite()"
+                        [disabled]="!puoAggiungereOspite">
                   + Aggiungi ospite
                 </button>
               </div>
 
-              @if (ospiti().length === 0) {
-                <p class="servizi-empty">Nessun ospite aggiunto. Clicca "+ Aggiungi ospite" per includerne uno.</p>
+              @if (!stanzaSelezionata()) {
+                <p class="servizi-empty">Seleziona prima una stanza per poter aggiungere ospiti.</p>
+              } @else {
+                <p class="servizi-empty">
+                  La stanza selezionata ha una capacitÃ  di {{ stanzaSelezionata()!.CAPACITA }} persone.
+                  Puoi aggiungere fino a {{ maxOspiti }} ospiti oltre all'intestatario ({{ ospiti().length }}/{{ maxOspiti }}).
+                </p>
               }
 
               @for (o of ospiti(); track $index) {

@@ -55,7 +55,7 @@
   background: var(--white); border-radius: var(--r-lg);
   box-shadow: var(--shadow-1); overflow-x: auto; border: 1px solid var(--navy-100);
 }
-.table-wrapper table { min-width: 1160px; }
+.table-wrapper table { min-width: 1400px; }
 .table-empty {
   text-align: center; padding: 48px 20px;
   color: var(--ink-faint); font-size: 0.88rem;
@@ -75,7 +75,7 @@
 .btn-reject        { color: #C0392B; border-color: #F5C6C2; background: transparent; }
 .btn-reject:hover:not(:disabled)  { background: #FEF2F0; border-color: #E57368; }
 .btn-confirm:disabled, .btn-reject:disabled { opacity: 0.5; cursor: not-allowed; }
-.actions-cell    { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.actions-cell    { display: flex; gap: 6px; align-items: center; flex-wrap: nowrap; white-space: nowrap; min-width: 360px; }
 
 
 

@@ -90,7 +90,7 @@ export class GestisciStanza implements OnInit, OnDestroy {
     return this.stanze().filter(s => {
       if (s.STATO?.toLowerCase() === 'manutenzione') return false;
       return this.prenotazioni().some(p => {
-        if (+p.IDSTANZA !== s.IDSTANZA) return false;           // â† cast numerico
+        if (+p.IDSTANZA !== s.IDSTANZA) return false;
         if (p.STATO?.toLowerCase() === 'cancellata') return false;
         return this.haConflitto(ci, co, p.CHECK_IN, p.CHECK_OUT);
       });

@@ -202,7 +202,7 @@ describe('Register', () => {
 
       component.onSubmit();
       expect(component.isLoading).toBeTrue();
-      tick(1500); // attende la simulazione async
+      tick(1500);
     }));
   });
   describe('isInvalid helper', () => {

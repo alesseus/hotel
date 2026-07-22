@@ -49,7 +49,19 @@ export class GestisciPrenotazione implements OnInit {
   serviziSelezionati = signal<number[]>([]);
   ospiti = signal<{ nome: string; cognome: string }[]>([]);
 
-  aggiungiOspite(): void { this.ospiti.update(l => [...l, { nome: '', cognome: '' }]); }
+  get maxOspiti(): number {
+    const cap = this.stanzaSelezionata()?.CAPACITA ?? 0;
+    return Math.max(0, cap - 1);
+  }
+
+  get puoAggiungereOspite(): boolean {
+    return !!this.stanzaSelezionata() && this.ospiti().length < this.maxOspiti;
+  }
+
+  aggiungiOspite(): void {
+    if (!this.puoAggiungereOspite) return;
+    this.ospiti.update(l => [...l, { nome: '', cognome: '' }]);
+  }
   rimuoviOspite(index: number): void { this.ospiti.update(l => l.filter((_, i) => i !== index)); }
   aggiornaOspiteNome(index: number, val: string): void {
     this.ospiti.update(l => { const c = [...l]; c[index] = { ...c[index], nome: val }; return c; });
@@ -172,6 +184,10 @@ export class GestisciPrenotazione implements OnInit {
   }
   onStanzaChange(id: number | null): void {
     this.stanzaSelezionata.set(id ? (this.stanze().find(s => s.IDSTANZA === +id) ?? null) : null);
+    const max = this.maxOspiti;
+    if (this.ospiti().length > max) {
+      this.ospiti.update(l => l.slice(0, max));
+    }
     this.aggiornaFormTotale();
   }
 
