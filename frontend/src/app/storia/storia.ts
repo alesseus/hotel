@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 
 interface GalleryImage {
   src: string;
@@ -10,6 +10,7 @@ interface GalleryImage {
   imports: [],
   templateUrl: './storia.html',
   styleUrl: './storia.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Storia implements OnInit, OnDestroy {
   images: GalleryImage[] = [
@@ -19,13 +20,13 @@ export class Storia implements OnInit, OnDestroy {
     { src: '/assets/images/gabriel-ghnassia-A9h6OsAxTyQ-unsplash.jpg', alt: 'Blue Horizon Hotel - 4' },
   ];
 
-  activeIndex = 0;
+  activeIndex = signal(0);
 
-  private readonly autoplayDelay = 4000; // ms
+  private readonly autoplayDelay = 4000;
   private autoplayTimer: ReturnType<typeof setInterval> | null = null;
 
   get activeImage(): GalleryImage {
-    return this.images[this.activeIndex];
+    return this.images[this.activeIndex()];
   }
 
   ngOnInit(): void {
@@ -37,17 +38,17 @@ export class Storia implements OnInit, OnDestroy {
   }
 
   setSlide(index: number): void {
-    this.activeIndex = index;
+    this.activeIndex.set(index);
     this.restartAutoplay();
   }
 
   prevSlide(): void {
-    this.activeIndex = (this.activeIndex - 1 + this.images.length) % this.images.length;
+    this.activeIndex.update(i => (i - 1 + this.images.length) % this.images.length);
     this.restartAutoplay();
   }
 
   nextSlide(): void {
-    this.activeIndex = (this.activeIndex + 1) % this.images.length;
+    this.activeIndex.update(i => (i + 1) % this.images.length);
     this.restartAutoplay();
   }
 
@@ -62,7 +63,7 @@ export class Storia implements OnInit, OnDestroy {
   private startAutoplay(): void {
     this.stopAutoplay();
     this.autoplayTimer = setInterval(() => {
-      this.activeIndex = (this.activeIndex + 1) % this.images.length;
+      this.activeIndex.update(i => (i + 1) % this.images.length);
     }, this.autoplayDelay);
   }
 

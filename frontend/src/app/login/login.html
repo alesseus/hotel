@@ -18,7 +18,7 @@
 
                 <div class="field-group">
                     <label for="email">Email</label>
-                    <input type="email" id="email" name="email" [(ngModel)]="email" required email
+                    <input type="email" id="email" name="email" [ngModel]="email()" (ngModelChange)="email.set($event)" required email
                         placeholder="mario.rossi@email.com" #emailField="ngModel"
                         [class.invalid]="emailField.invalid && emailField.touched">
                     @if (emailField.invalid && emailField.touched) {
@@ -29,11 +29,11 @@
                 <div class="field-group">
                     <label for="password">Password</label>
                     <div class="input-with-toggle">
-                        <input [type]="showPassword ? 'text' : 'password'" id="password" name="password"
-                            [(ngModel)]="password" required minlength="6" placeholder="••••••••"
+                        <input [type]="showPassword() ? 'text' : 'password'" id="password" name="password"
+                            [ngModel]="password()" (ngModelChange)="password.set($event)" required minlength="6" placeholder="••••••••"
                             #passwordField="ngModel" [class.invalid]="passwordField.invalid && passwordField.touched">
                         <button type="button" class="toggle-eye" (click)="togglePassword()"
-                            [attr.aria-label]="showPassword ? 'Nascondi' : 'Mostra'">
+                            [attr.aria-label]="showPassword() ? 'Nascondi' : 'Mostra'">
                             @if (showPassword) {
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                 stroke-linecap="round" stroke-linejoin="round">
@@ -56,12 +56,12 @@
                     }
                 </div>
 
-                @if (errorMessage) {
-                <div class="login-error">{{ errorMessage }}</div>
+                @if (errorMessage()) {
+                <div class="login-error">{{ errorMessage() }}</div>
                 }
 
-                <button type="submit" [disabled]="loginForm.invalid || loading">
-                    @if (loading) {
+                <button type="submit" [disabled]="loginForm.invalid || loading()">
+                    @if (loading()) {
                     Accesso in corso…
                     } @else {
                     Accedi

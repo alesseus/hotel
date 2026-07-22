@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal, computed } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal, computed } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule, NgForm } from '@angular/forms';
 import { PrenotazioneServices } from './Services/services';
@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
   imports: [FormsModule],
   templateUrl: './prenotazione.html',
   styleUrl: './prenotazione.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [PrenotazioneServices]
 })
 export class Prenotazione implements OnInit {

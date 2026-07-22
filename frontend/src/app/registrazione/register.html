@@ -69,14 +69,14 @@
                 <div class="field-group">
                     <label for="password">Password</label>
                     <div class="input-with-toggle">
-                        <input [type]="showPassword ? 'text' : 'password'"
+                        <input [type]="showPassword() ? 'text' : 'password'"
                             id="password" formControlName="password"
                             placeholder="••••••••"
                             autocomplete="new-password"
                             [class.invalid]="isInvalid('password')">
                         <button type="button" class="toggle-eye" (click)="togglePassword()"
-                            [attr.aria-label]="showPassword ? 'Nascondi' : 'Mostra'">
-                            @if (showPassword) {
+                            [attr.aria-label]="showPassword() ? 'Nascondi' : 'Mostra'">
+                            @if (showPassword()) {
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
                             } @else {
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
@@ -97,14 +97,14 @@
                 <div class="field-group">
                     <label for="confermaPassword">Conferma Password</label>
                     <div class="input-with-toggle">
-                        <input [type]="showConfermaPassword ? 'text' : 'password'"
+                        <input [type]="showConfermaPassword() ? 'text' : 'password'"
                             id="confermaPassword" formControlName="confermaPassword"
                             placeholder="••••••••"
                             autocomplete="new-password"
                             [class.invalid]="isInvalid('confermaPassword') || (registerForm.errors?.['passwordMismatch'] && registerForm.get('confermaPassword')?.dirty)">
                         <button type="button" class="toggle-eye" (click)="toggleConfermaPassword()"
-                            [attr.aria-label]="showConfermaPassword ? 'Nascondi' : 'Mostra'">
-                            @if (showConfermaPassword) {
+                            [attr.aria-label]="showConfermaPassword() ? 'Nascondi' : 'Mostra'">
+                            @if (showConfermaPassword()) {
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
                             } @else {
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
@@ -150,17 +150,17 @@
                 </div>
 
                 <!-- Errore globale -->
-                @if (errorMessage) {
-                    <div class="register-error">{{ errorMessage }}</div>
+                @if (errorMessage()) {
+                    <div class="register-error">{{ errorMessage() }}</div>
                 }
 
                 <!-- Successo -->
-                @if (successMessage) {
-                    <div class="register-success">{{ successMessage }}</div>
+                @if (successMessage()) {
+                    <div class="register-success">{{ successMessage() }}</div>
                 }
 
-                <button type="submit" [disabled]="isLoading">
-                    @if (isLoading) {
+                <button type="submit" [disabled]="isLoading()">
+                    @if (isLoading()) {
                         Registrazione in corso…
                     } @else {
                         Crea Account

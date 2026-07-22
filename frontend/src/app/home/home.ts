@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, signal } from '@angular/core';
+import { Component, OnInit, OnDestroy, signal, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -16,6 +16,7 @@ interface Recensione {
   imports: [RouterLink, FormsModule],
   templateUrl: './home.html',
   styleUrl: './home.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Home implements OnInit, OnDestroy {
 
@@ -29,10 +30,10 @@ export class Home implements OnInit, OnDestroy {
   recensioni = signal<Recensione[]>([]);
   recensioniVisibili = signal<Recensione[]>([]);
   indiceCorrente = 0;
-  caricamento = true;           // true finché il DB non risponde
+  caricamento = signal(true);
   private caroselloTimer: any;
-  private readonly VISIBILI    = 3;      // max card mostrate
-  private readonly INTERVALLO_MS = 5500; // ms tra uno scorrimento e l'altro
+  private readonly VISIBILI    = 3;
+  private readonly INTERVALLO_MS = 5500;
 
   // ── Stelle helper ─────────────────────────────────────────────
   stellePerRating(rating: number): string[] {
@@ -40,15 +41,15 @@ export class Home implements OnInit, OnDestroy {
   }
 
   // ── Stato modale ───────────────────────────────────────────────
-  mostraModale  = false;
-  invioInCorso  = false;
-  invioRiuscito = false;
-  erroreInvio   = '';
+  mostraModale  = signal(false);
+  invioInCorso  = signal(false);
+  invioRiuscito = signal(false);
+  erroreInvio   = signal('');
 
   // ── Campi form ─────────────────────────────────────────────────
-  nuovaDescrizione = '';
-  nuovoRating      = 0;
-  ratingHover      = 0;
+  nuovaDescrizione = signal('');
+  nuovoRating      = signal(0);
+  ratingHover      = signal(0);
 
   // ── Lifecycle ─────────────────────────────────────────────────
   ngOnInit(): void {
@@ -61,21 +62,20 @@ export class Home implements OnInit, OnDestroy {
 
   // ── Caricamento DB ────────────────────────────────────────────
   caricaRecensioni(): void {
-    this.caricamento = true;
+    this.caricamento.set(true);
     this.http.get<Recensione[]>('https://hotel-4n9x.onrender.com/recensione/lista').subscribe({
       next: (data) => {
-        this.caricamento = false;
+        this.caricamento.set(false);
         const mescolate = this.shuffle([...data]);
         this.recensioni.set(mescolate);
         this.indiceCorrente = 0;
         this.aggiornaVisibili();
-        // Avvia carosello solo se ci sono più card di quelle visibili
         if (mescolate.length > this.VISIBILI) {
           this.avviaCarosello();
         }
       },
       error: (err) => {
-        this.caricamento = false;
+        this.caricamento.set(false);
         console.error('Errore caricamento recensioni', err);
       }
     });
@@ -103,7 +103,6 @@ export class Home implements OnInit, OnDestroy {
       this.recensioniVisibili.set([]);
       return;
     }
-    // Mostra fino a VISIBILI card (meno se il DB ne ha meno)
     const quante = Math.min(this.VISIBILI, lista.length);
     const visibili: Recensione[] = [];
     for (let i = 0; i < quante; i++) {
@@ -133,12 +132,12 @@ export class Home implements OnInit, OnDestroy {
       return;
     }
     this.resetForm();
-    this.mostraModale = true;
+    this.mostraModale.set(true);
     document.body.style.overflow = 'hidden';
   }
 
   chiudiModale(): void {
-    this.mostraModale = false;
+    this.mostraModale.set(false);
     document.body.style.overflow = '';
   }
 
@@ -149,20 +148,20 @@ export class Home implements OnInit, OnDestroy {
   }
 
   // ── Stelle ────────────────────────────────────────────────────
-  setRating(valore: number): void  { this.nuovoRating = valore; }
-  setHover(valore: number): void   { this.ratingHover = valore; }
-  resetHover(): void               { this.ratingHover = 0; }
+  setRating(valore: number): void  { this.nuovoRating.set(valore); }
+  setHover(valore: number): void   { this.ratingHover.set(valore); }
+  resetHover(): void               { this.ratingHover.set(0); }
 
   stellaAttiva(indice: number): boolean {
-    return indice <= (this.ratingHover || this.nuovoRating);
+    return indice <= (this.ratingHover() || this.nuovoRating());
   }
 
   // ── Invio recensione ──────────────────────────────────────────
   inviaRecensione(form: NgForm): void {
-    if (form.invalid || this.nuovoRating === 0) return;
+    if (form.invalid || this.nuovoRating() === 0) return;
 
-    this.invioInCorso = true;
-    this.erroreInvio  = '';
+    this.invioInCorso.set(true);
+    this.erroreInvio.set('');
 
     const token = sessionStorage.getItem('token') ?? '';
     const headers = new HttpHeaders({
@@ -171,35 +170,35 @@ export class Home implements OnInit, OnDestroy {
     });
 
     const body = {
-      DESCRIZIONE: this.nuovaDescrizione.trim(),
-      RATING:      this.nuovoRating,
+      DESCRIZIONE: this.nuovaDescrizione().trim(),
+      RATING:      this.nuovoRating(),
       IDCLIENTE:   0
     };
 
     this.http.post('https://hotel-4n9x.onrender.com/recensione/aggiungi', body, { headers }).subscribe({
       next: () => {
-        this.invioInCorso  = false;
-        this.invioRiuscito = true;
+        this.invioInCorso.set(false);
+        this.invioRiuscito.set(true);
         this.fermaCarosello();
         this.caricaRecensioni();
         setTimeout(() => {
           this.chiudiModale();
-          this.invioRiuscito = false;
+          this.invioRiuscito.set(false);
         }, 1800);
       },
       error: () => {
-        this.invioInCorso = false;
-        this.erroreInvio  = 'Si è verificato un errore. Riprova più tardi.';
+        this.invioInCorso.set(false);
+        this.erroreInvio.set('Si è verificato un errore. Riprova più tardi.');
       }
     });
   }
 
   resetForm(): void {
-    this.nuovaDescrizione = '';
-    this.nuovoRating      = 0;
-    this.ratingHover      = 0;
-    this.invioRiuscito    = false;
-    this.erroreInvio      = '';
-    this.invioInCorso     = false;
+    this.nuovaDescrizione.set('');
+    this.nuovoRating.set(0);
+    this.ratingHover.set(0);
+    this.invioRiuscito.set(false);
+    this.erroreInvio.set('');
+    this.invioInCorso.set(false);
   }
 }

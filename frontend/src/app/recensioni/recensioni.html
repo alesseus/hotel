@@ -99,7 +99,7 @@
 <!-- ══════════════════════════════════════════════════════════════
      MODALE – Aggiungi recensione
 ══════════════════════════════════════════════════════════════ -->
-@if (mostraModale) {
+@if (mostraModale()) {
   <div class="modale-overlay" (click)="chiudiSuOverlay($event)" role="dialog" aria-modal="true" aria-labelledby="modale-titolo">
 
     <div class="modale-box">
@@ -119,7 +119,7 @@
       <div class="divider-gold modale-divider"></div>
 
       <!-- Successo -->
-      @if (invioRiuscito) {
+      @if (invioRiuscito()) {
         <div class="modale-successo">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                stroke-linecap="round" stroke-linejoin="round">
@@ -148,7 +148,7 @@
                 </button>
               }
             </div>
-            @if (recensioneForm.submitted && nuovoRating === 0) {
+            @if (recensioneForm.submitted && nuovoRating() === 0) {
               <span class="field-error">Seleziona almeno una stella</span>
             }
           </div>
@@ -159,7 +159,7 @@
             <textarea
               id="descrizione"
               name="descrizione"
-              [(ngModel)]="nuovaDescrizione"
+              [ngModel]="nuovaDescrizione()" (ngModelChange)="nuovaDescrizione.set($event)"
               required
               minlength="10"
               maxlength="600"
@@ -174,20 +174,20 @@
               } @else {
                 <span></span>
               }
-              <span class="char-count">{{ nuovaDescrizione.length }}/600</span>
+              <span class="char-count">{{ nuovaDescrizione().length }}/600</span>
             </div>
           </div>
 
           <!-- Errore globale -->
-          @if (erroreInvio) {
-            <div class="modale-errore">{{ erroreInvio }}</div>
+          @if (erroreInvio()) {
+            <div class="modale-errore">{{ erroreInvio() }}</div>
           }
 
           <!-- Azioni -->
           <div class="modale-azioni">
             <button type="button" class="btn-annulla" (click)="chiudiModale()">Annulla</button>
-            <button type="submit" class="btn-scopri" [disabled]="invioInCorso">
-              @if (invioInCorso) {
+            <button type="submit" class="btn-scopri" [disabled]="invioInCorso()">
+              @if (invioInCorso()) {
                 Invio in corso…
               } @else {
                 Invia recensione

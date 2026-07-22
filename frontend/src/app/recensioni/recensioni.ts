@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { RecensioneServices } from './Services/services';
@@ -10,7 +10,8 @@ import { Recensione } from './interfacce/recensione';
   imports: [FormsModule, RouterLink],
   templateUrl: './recensioni.html',
   styleUrl: './recensioni.css',
-  providers: [RecensioneServices]
+  providers: [RecensioneServices],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Recensioni implements OnInit {
 
@@ -22,18 +23,15 @@ export class Recensioni implements OnInit {
 
   listaRecensioni = signal(<Array<Recensione>>[]);
 
-  // ── Modale stato ──────────────────────────────────────────────
-  mostraModale = false;
-  invioInCorso  = false;
-  invioRiuscito = false;
-  erroreInvio   = '';
+  mostraModale  = signal(false);
+  invioInCorso  = signal(false);
+  invioRiuscito = signal(false);
+  erroreInvio   = signal('');
 
-  // ── Campi form recensione ──────────────────────────────────────
-  nuovaDescrizione = '';
-  nuovoRating      = 0;
-  ratingHover      = 0;
+  nuovaDescrizione = signal('');
+  nuovoRating      = signal(0);
+  ratingHover      = signal(0);
 
-  // ── Lifecycle ─────────────────────────────────────────────────
   ngOnInit(): void {
     this.caricaRecensioni();
   }
@@ -45,24 +43,22 @@ export class Recensioni implements OnInit {
     });
   }
 
-  // ── Auth helpers ───────────────────────────────────────────────
   isLoggato(): boolean {
     return this.authService.isLoggedIn();
   }
 
-  // ── Gestione modale ────────────────────────────────────────────
   apriModale(): void {
     if (!this.isLoggato()) {
       this.router.navigate(['/login']);
       return;
     }
     this.resetForm();
-    this.mostraModale = true;
+    this.mostraModale.set(true);
     document.body.style.overflow = 'hidden';
   }
 
   chiudiModale(): void {
-    this.mostraModale = false;
+    this.mostraModale.set(false);
     document.body.style.overflow = '';
   }
 
@@ -72,63 +68,51 @@ export class Recensioni implements OnInit {
     }
   }
 
-  // ── Stelle interattive ─────────────────────────────────────────
-  setRating(valore: number): void {
-    this.nuovoRating = valore;
-  }
-
-  setHover(valore: number): void {
-    this.ratingHover = valore;
-  }
-
-  resetHover(): void {
-    this.ratingHover = 0;
-  }
+  setRating(valore: number): void { this.nuovoRating.set(valore); }
+  setHover(valore: number): void  { this.ratingHover.set(valore); }
+  resetHover(): void              { this.ratingHover.set(0); }
 
   stellaAttiva(indice: number): boolean {
-    const riferimento = this.ratingHover || this.nuovoRating;
-    return indice <= riferimento;
+    return indice <= (this.ratingHover() || this.nuovoRating());
   }
 
-  // ── Invio recensione ───────────────────────────────────────────
   inviaRecensione(form: NgForm): void {
-    if (form.invalid || this.nuovoRating === 0) return;
+    if (form.invalid || this.nuovoRating() === 0) return;
 
-    this.invioInCorso = true;
-    this.erroreInvio  = '';
+    this.invioInCorso.set(true);
+    this.erroreInvio.set('');
 
     const nuovaRecensione: Recensione = {
       IDRECE:      0,
-      DESCRIZIONE: this.nuovaDescrizione.trim(),
-      RATING:      this.nuovoRating,
-      IDCLIENTE:   0   // il backend ricava l'ID dal token JWT
+      DESCRIZIONE: this.nuovaDescrizione().trim(),
+      RATING:      this.nuovoRating(),
+      IDCLIENTE:   0
     };
 
     this._RecensioniService.postUtente(nuovaRecensione).subscribe({
       next: () => {
-        this.invioInCorso  = false;
-        this.invioRiuscito = true;
+        this.invioInCorso.set(false);
+        this.invioRiuscito.set(true);
         this.caricaRecensioni();
         setTimeout(() => {
           this.chiudiModale();
-          this.invioRiuscito = false;
+          this.invioRiuscito.set(false);
         }, 1800);
       },
       error: () => {
-        this.invioInCorso = false;
-        this.erroreInvio  = 'Si è verificato un errore. Riprova più tardi.';
+        this.invioInCorso.set(false);
+        this.erroreInvio.set('Si è verificato un errore. Riprova più tardi.');
       }
     });
   }
 
-  // ── Utility ────────────────────────────────────────────────────
   resetForm(): void {
-    this.nuovaDescrizione = '';
-    this.nuovoRating      = 0;
-    this.ratingHover      = 0;
-    this.invioRiuscito    = false;
-    this.erroreInvio      = '';
-    this.invioInCorso     = false;
+    this.nuovaDescrizione.set('');
+    this.nuovoRating.set(0);
+    this.ratingHover.set(0);
+    this.invioRiuscito.set(false);
+    this.erroreInvio.set('');
+    this.invioInCorso.set(false);
   }
 
   stelleArray(rating: number): string[] {

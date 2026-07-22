@@ -39,7 +39,7 @@
       <!-- Thumbnails -->
       <div class="gallery-thumbs">
         @for (img of images; track img.src; let i = $index) {
-        <img [src]="img.src" [alt]="'Thumb ' + (i + 1)" class="gallery-thumb" [class.active]="i === activeIndex"
+        <img [src]="img.src" [alt]="'Thumb ' + (i + 1)" class="gallery-thumb" [class.active]="i === activeIndex()"
           (click)="setSlide(i)">
         }
       </div>

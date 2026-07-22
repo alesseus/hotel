@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { FormsModule, NgForm } from '@angular/forms';
 import { DecimalPipe } from '@angular/common';
@@ -13,6 +13,7 @@ import { ServizioByIdPipe } from './pipes/servizio-by-id.pipe';
   imports: [RouterLink, FormsModule, DecimalPipe, ServizioByIdPipe],
   templateUrl: './gestisci-prenotazione.html',
   styleUrl: './gestisci-prenotazione.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [GestisciPrenotazioneServices]
 })
 export class GestisciPrenotazione implements OnInit {

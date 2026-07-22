@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from './Services/auth.service';
@@ -8,30 +8,31 @@ import { AuthService } from './Services/auth.service';
   imports: [FormsModule, RouterLink],
   templateUrl: './login.html',
   styleUrl: './login.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Login implements OnInit {
 
-  email = '';
-  password = '';
-  loading = false;
-  errorMessage = '';
-  showPassword = false;
+  email = signal('');
+  password = signal('');
+  loading = signal(false);
+  errorMessage = signal('');
+  showPassword = signal(false);
 
   constructor(private router: Router, private authService: AuthService) { }
-  
-  togglePassword(): void {   
-    this.showPassword = !this.showPassword;
+
+  togglePassword(): void {
+    this.showPassword.update(v => !v);
   }
 
   onSubmit(form: NgForm): void {
     if (form.invalid) return;
 
-    this.loading = true;
-    this.errorMessage = '';
+    this.loading.set(true);
+    this.errorMessage.set('');
 
-    this.authService.login(this.email, this.password).subscribe({
+    this.authService.login(this.email(), this.password()).subscribe({
       next: (response) => {
-        this.loading = false;
+        this.loading.set(false);
         this.authService.salvaSessione(response);
 
         if (response.admin) {
@@ -41,8 +42,8 @@ export class Login implements OnInit {
         }
       },
       error: () => {
-        this.loading = false;
-        this.errorMessage = 'Credenziali non valide. Riprova.';
+        this.loading.set(false);
+        this.errorMessage.set('Credenziali non valide. Riprova.');
       }
     });
   }
@@ -56,5 +57,4 @@ export class Login implements OnInit {
       }
     }
   }
-
 }

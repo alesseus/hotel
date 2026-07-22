@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, OnDestroy, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, OnDestroy, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { FormsModule, NgForm } from '@angular/forms';
 import { StanzaServices, prenotazioneMin } from './Services/services';
@@ -10,6 +10,7 @@ import { Subscription, interval } from 'rxjs';
   imports: [RouterLink, FormsModule],
   templateUrl: './gestisci-stanza.html',
   styleUrl: './gestisci-stanza.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [StanzaServices]
 })
 export class GestisciStanza implements OnInit, OnDestroy {

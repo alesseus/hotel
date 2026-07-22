@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PrenotazioneServices } from '../prenotazione/Services/services';
@@ -10,28 +10,28 @@ import emailjs from '@emailjs/browser';
   imports: [FormsModule],
   templateUrl: './pagamento.html',
   styleUrl: './pagamento.css',
-  providers: [PrenotazioneServices]
+  providers: [PrenotazioneServices],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Pagamento implements OnInit {
 
-  caparra = 0;
-  prenotazionePending: prenotazione | null = null;
+  caparra = signal(0);
+  prenotazionePending = signal<prenotazione | null>(null);
 
-  metodoPagamento: 'carta' | 'bonifico' | '' = '';
+  metodoPagamento = signal<'carta' | 'bonifico' | ''>('');
 
-  nomeTitolare = '';
-  numeroCarta  = '';
-  scadenza     = '';
-  cvv          = '';
+  nomeTitolare = signal('');
+  numeroCarta  = signal('');
+  scadenza     = signal('');
+  cvv          = signal('');
 
-  stato: 'form' | 'loading' | 'successo' | 'errore' = 'form';
-  erroreMsg = '';
-  conto = 3;
+  stato = signal<'form' | 'loading' | 'successo' | 'errore'>('form');
+  erroreMsg = signal('');
+  conto = signal(3);
 
   constructor(
     private router: Router,
     private prenotazioneServices: PrenotazioneServices,
-    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -43,8 +43,8 @@ export class Pagamento implements OnInit {
       return;
     }
 
-    this.prenotazionePending = JSON.parse(raw);
-    this.caparra = parseFloat(cap);
+    this.prenotazionePending.set(JSON.parse(raw));
+    this.caparra.set(parseFloat(cap));
   }
 
   formatScadenza(event: Event): void {
@@ -54,13 +54,13 @@ export class Pagamento implements OnInit {
       val = val.slice(0, 2) + '/' + val.slice(2, 4);
     }
     input.value = val;
-    this.scadenza = val;
+    this.scadenza.set(val);
   }
 
   scadenzaValida(): boolean {
-    if (this.metodoPagamento !== 'carta') return true;
-    if (!/^\d{2}\/\d{2}$/.test(this.scadenza)) return false;
-    const [mm, yy] = this.scadenza.split('/').map(Number);
+    if (this.metodoPagamento() !== 'carta') return true;
+    if (!/^\d{2}\/\d{2}$/.test(this.scadenza())) return false;
+    const [mm, yy] = this.scadenza().split('/').map(Number);
     if (mm < 1 || mm > 12) return false;
     const now = new Date();
     const annoCorrente = now.getFullYear() % 100;
@@ -71,7 +71,7 @@ export class Pagamento implements OnInit {
   }
 
   private inviaMailConferma(): void {
-    const p = this.prenotazionePending!;
+    const p = this.prenotazionePending()!;
     emailjs.send(
       'service_cvv0ac7',
       'template_lphmeb9',
@@ -94,32 +94,28 @@ export class Pagamento implements OnInit {
   paga(form: NgForm): void {
     if (form.invalid || !this.scadenzaValida()) return;
 
-    this.stato = 'loading';
-    this.cdr.detectChanges();
+    this.stato.set('loading');
 
     setTimeout(() => {
-      this.prenotazioneServices.postUtente(this.prenotazionePending!).subscribe({
-        next: (res) => {
+      this.prenotazioneServices.postUtente(this.prenotazionePending()!).subscribe({
+        next: () => {
           this.inviaMailConferma();
           sessionStorage.removeItem('prenotazione_pending');
           sessionStorage.removeItem('caparra');
-          this.stato = 'successo';
-          this.conto = 3;
-          this.cdr.detectChanges();
+          this.stato.set('successo');
+          this.conto.set(3);
 
           const interval = setInterval(() => {
-            this.conto--;
-            this.cdr.detectChanges();
-            if (this.conto === 0) {
+            this.conto.update(c => c - 1);
+            if (this.conto() === 0) {
               clearInterval(interval);
               this.router.navigate(['/']);
             }
           }, 1000);
         },
-        error: (err) => {
-          this.stato = 'errore';
-          this.erroreMsg = 'Errore durante la conferma della prenotazione. Riprova.';
-          this.cdr.detectChanges();
+        error: () => {
+          this.stato.set('errore');
+          this.erroreMsg.set('Errore durante la conferma della prenotazione. Riprova.');
         }
       });
     }, 800);

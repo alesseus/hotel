@@ -6,25 +6,25 @@
     <p>Inserisci i dati per completare la prenotazione</p>
   </div>
 
-  @if (stato === 'form' || stato === 'errore') {
+  @if (stato() === 'form' || stato() === 'errore') {
   <div class="pagamento-card">
 
     <div class="caparra-box">
       <span>Importo da pagare</span>
-      <span class="caparra-importo">€{{ caparra }}</span>
+      <span class="caparra-importo">€{{ caparra() }}</span>
       <small>Caparra non rimborsabile (10% del totale)</small>
     </div>
 
     <!-- Scelta metodo -->
-    @if (!metodoPagamento) {
+    @if (!metodoPagamento()) {
     <div class="metodo-scelta">
       <p class="metodo-titolo">Scegli il metodo di pagamento</p>
       <div class="metodo-opzioni">
-        <button class="metodo-btn" (click)="metodoPagamento = 'carta'">
+        <button class="metodo-btn" (click)="metodoPagamento.set('carta')">
           <span class="metodo-icon">💳</span>
           <span>Carta di credito / debito</span>
         </button>
-        <button class="metodo-btn" (click)="metodoPagamento = 'bonifico'">
+        <button class="metodo-btn" (click)="metodoPagamento.set('bonifico')">
           <span class="metodo-icon">🏦</span>
           <span>Bonifico bancario</span>
         </button>
@@ -33,7 +33,7 @@
     }
 
     <!-- Form carta -->
-    @if (metodoPagamento === 'carta') {
+    @if (metodoPagamento() === 'carta') {
     <form #pagamentoForm="ngForm" (ngSubmit)="paga(pagamentoForm)" novalidate>
 
       <div class="field-group">
@@ -82,15 +82,15 @@
         </div>
       </div>
 
-      @if (stato === 'errore') {
-      <div class="pagamento-error">{{ erroreMsg }}</div>
+      @if (stato() === 'errore') {
+      <div class="pagamento-error">{{ erroreMsg() }}</div>
       }
 
       <div class="pagamento-actions">
         <button type="submit" class="primary" [disabled]="pagamentoForm.invalid || !scadenzaValida()">
-          Paga €{{ caparra }}
+          Paga €{{ caparra() }}
         </button>
-        <button type="button" class="secondary" (click)="metodoPagamento = ''">
+        <button type="button" class="secondary" (click)="metodoPagamento.set('')">
           Cambia metodo
         </button>
         <button type="button" class="secondary" (click)="annulla()">Annulla</button>
@@ -121,7 +121,7 @@
     }
 
     <!-- Bonifico -->
-    @if (metodoPagamento === 'bonifico') {
+    @if (metodoPagamento() === 'bonifico') {
     <form #bonificoForm="ngForm" (ngSubmit)="paga(bonificoForm)" novalidate>
 
       <div class="bonifico-box">
@@ -140,7 +140,7 @@
         </div>
         <div class="bonifico-row">
           <span>Importo</span>
-          <span>€{{ caparra }}</span>
+          <span>€{{ caparra() }}</span>
         </div>
         <p class="bonifico-nota">Invia la ricevuta del bonifico via email per confermare la prenotazione.</p>
       </div>
@@ -157,15 +157,15 @@
         }
       </div>
 
-      @if (stato === 'errore') {
-      <div class="pagamento-error">{{ erroreMsg }}</div>
+      @if (stato() === 'errore') {
+      <div class="pagamento-error">{{ erroreMsg() }}</div>
       }
 
       <div class="pagamento-actions">
         <button type="submit" class="primary" [disabled]="bonificoForm.invalid">
           Conferma prenotazione
         </button>
-        <button type="button" class="secondary" (click)="metodoPagamento = ''">
+        <button type="button" class="secondary" (click)="metodoPagamento.set('')">
           Cambia metodo
         </button>
         <button type="button" class="secondary" (click)="annulla()">Annulla</button>
@@ -177,19 +177,19 @@
   </div>
   }
 
-  @if (stato === 'loading') {
+  @if (stato() === 'loading') {
   <div class="pagamento-loading">
     <div class="spinner"></div>
     <p>Elaborazione in corso...</p>
   </div>
   }
 
-  @if (stato === 'successo') {
+  @if (stato() === 'successo') {
   <div class="pagamento-successo">
     <div class="success-icon">✓</div>
     <h2>Prenotazione confermata!</h2>
     <p>La tua prenotazione è stata registrata con successo.</p>
-    <p class="success-redirect">Sarai reindirizzato alla home tra {{ conto }}...</p>
+    <p class="success-redirect">Sarai reindirizzato alla home tra {{ conto() }}...</p>
   </div>
   }
 

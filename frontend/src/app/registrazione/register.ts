@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
@@ -43,15 +43,16 @@ function etaMinimaValidator(ctrl: AbstractControl): ValidationErrors | null {
   imports: [CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: './register.html',
   styleUrl: './register.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Register implements OnInit {
   registerForm!: FormGroup;
 
-  isLoading = false;
-  successMessage = '';
-  errorMessage = '';
-  showPassword = false;
-  showConfermaPassword = false;
+  isLoading      = signal(false);
+  successMessage = signal('');
+  errorMessage   = signal('');
+  showPassword         = signal(false);
+  showConfermaPassword = signal(false);
 
   maxDate = new Date().toISOString().split('T')[0];
 
@@ -81,8 +82,8 @@ export class Register implements OnInit {
     return !!(ctrl?.invalid && (ctrl.dirty || ctrl.touched));
   }
 
-  togglePassword(): void { this.showPassword = !this.showPassword; }
-  toggleConfermaPassword(): void { this.showConfermaPassword = !this.showConfermaPassword; }
+  togglePassword(): void { this.showPassword.update(v => !v); }
+  toggleConfermaPassword(): void { this.showConfermaPassword.update(v => !v); }
 
   onSubmit(): void {
     if (this.registerForm.invalid) {
@@ -90,9 +91,9 @@ export class Register implements OnInit {
       return;
     }
 
-    this.isLoading = true;
-    this.successMessage = '';
-    this.errorMessage = '';
+    this.isLoading.set(true);
+    this.successMessage.set('');
+    this.errorMessage.set('');
 
     const { nome, cognome, email, password, telefono, dataNascita } = this.registerForm.value;
 
@@ -109,15 +110,15 @@ export class Register implements OnInit {
       .pipe(timeout(40000))
       .subscribe({
         next: () => {
-          this.isLoading = false;
-          this.successMessage = "Registrazione completata!";
+          this.isLoading.set(false);
+          this.successMessage.set('Registrazione completata!');
           this.registerForm.reset();
         },
         error: (err) => {
-          this.isLoading = false;
-          this.errorMessage = err?.status === 409
+          this.isLoading.set(false);
+          this.errorMessage.set(err?.status === 409
             ? 'Questa email è già registrata.'
-            : (err?.error?.message ?? 'Si è verificato un errore durante la registrazione. Riprova più tardi.');
+            : (err?.error?.message ?? 'Si è verificato un errore durante la registrazione. Riprova più tardi.'));
         }
       });
   }

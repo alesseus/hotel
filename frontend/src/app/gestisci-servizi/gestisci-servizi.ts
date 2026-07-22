@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { FormsModule, NgForm } from '@angular/forms';
 import { DecimalPipe } from '@angular/common';
@@ -10,6 +10,7 @@ import { servizio } from './interfacce/servizi_i';
   imports: [RouterLink, FormsModule, DecimalPipe],
   templateUrl: './gestisci-servizi.html',
   styleUrl: './gestisci-servizi.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [ServizioServices]
 })
 export class GestisciServizi implements OnInit {
