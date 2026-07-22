@@ -33,13 +33,15 @@ public class AuthController {
         Optional<Cliente> optional = clientiRepository.findByMAILIgnoreCase(request.getEmail());
 
         if (optional.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenziali non valide");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("message", "Credenziali non valide"));
         }
 
         Cliente cliente = optional.get();
 
         if (!cliente.getPASS().equals(request.getPassword())) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenziali non valide");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("message", "Credenziali non valide"));
         }
 
         LoginResponse response = new LoginResponse(
@@ -53,7 +55,8 @@ public class AuthController {
     @PostMapping("register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
         if (clientiRepository.findByMAILIgnoreCase(request.getEmail()).isPresent()) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Email già registrata");
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(Map.of("message", "Email già registrata"));
         }
 
         Cliente cliente = new Cliente();
@@ -67,6 +70,7 @@ public class AuthController {
 
         clientiRepository.save(cliente);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("message", "Registrazione completata"));
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(Map.of("message", "Registrazione completata"));
     }
 }
