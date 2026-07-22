@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -37,10 +38,10 @@ public class RecensioneController {
 		return RecensioneDependency;
 	}
 	
-	@RequestMapping("add")
-	public RecensioniSrv add(Recensione nuova) {
-		RecensioneDependency.addRecensione(nuova);
-		return RecensioneDependency;
+	@PostMapping("add")
+	public RecensioniSrv add(@RequestBody Recensione nuova) {
+	    RecensioneDependency.addRecensione(nuova);
+	    return RecensioneDependency;
 	}
 	
 	@RequestMapping(value = "cambia")
