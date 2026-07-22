@@ -1,13 +1,13 @@
 <div class="login-page">
 
-    <!-- Header -->
+    
     <div class="login-header">
         <h1>Accedi</h1>
         <div class="divider-gold"></div>
         <p>Inserisci le tue credenziali per accedere all'area riservata</p>
     </div>
 
-    <!-- Corpo -->
+    
     <div class="login-body">
         <div class="login-card">
 
@@ -30,7 +30,7 @@
                     <label for="password">Password</label>
                     <div class="input-with-toggle">
                         <input [type]="showPassword() ? 'text' : 'password'" id="password" name="password"
-                            [ngModel]="password()" (ngModelChange)="password.set($event)" required minlength="6" placeholder="••••••••"
+                            [ngModel]="password()" (ngModelChange)="password.set($event)" required minlength="6" placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
                             #passwordField="ngModel" [class.invalid]="passwordField.invalid && passwordField.touched">
                         <button type="button" class="toggle-eye" (click)="togglePassword()"
                             [attr.aria-label]="showPassword() ? 'Nascondi' : 'Mostra'">
@@ -62,7 +62,7 @@
 
                 <button type="submit" [disabled]="loginForm.invalid || loading()">
                     @if (loading()) {
-                    Accesso in corso…
+                    Accesso in corsoâ€¦
                     } @else {
                     Accedi
                     }

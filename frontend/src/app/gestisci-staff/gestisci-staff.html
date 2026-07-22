@@ -1,6 +1,6 @@
 <div class="gestisci-page">
 
-  <!-- Header -->
+  
   <div class="gestisci-header-band">
     <div>
       <h2>Gestione Utenti</h2>
@@ -10,7 +10,7 @@
     <button class="back-link" routerLink="/amministrazione">Pannello admin</button>
   </div>
 
-  <!-- Body -->
+  
   <div class="gestisci-wrapper">
 
     <div class="actions-bar">
@@ -55,8 +55,8 @@
                 <td>{{ u.TELEFONO }}</td>
                 <td><span class="badge-codice">{{ u.ADMIN ? 'Admin' : 'Cliente' }}</span></td>
                 <td class="table-actions">
-                  <button class="btn-icon" type="button" (click)="apriModaleModifica(u)" title="Modifica">✎</button>
-                  <button class="btn-icon btn-icon-danger" type="button" (click)="chiediConfermaEliminazione(u)" title="Elimina">🗑</button>
+                  <button class="btn-icon" type="button" (click)="apriModaleModifica(u)" title="Modifica">âœŽ</button>
+                  <button class="btn-icon btn-icon-danger" type="button" (click)="chiediConfermaEliminazione(u)" title="Elimina">ðŸ—‘</button>
                 </td>
               </tr>
             } @empty {
@@ -72,14 +72,14 @@
   </div>
 </div>
 
-<!-- ── Modale crea / modifica ─────────────────────────────────── -->
+
 @if (modaleAperto()) {
   <div class="modal-overlay" (click)="chiudiModale()">
     <div class="modal-box" (click)="$event.stopPropagation()">
 
       <div class="modal-header">
         <h3>{{ modaleModalita() === 'crea' ? 'Nuovo utente' : 'Modifica utente' }}</h3>
-        <button class="modal-close" type="button" (click)="chiudiModale()">✕</button>
+        <button class="modal-close" type="button" (click)="chiudiModale()">âœ•</button>
       </div>
 
       <form #utenteFormRef="ngForm" (ngSubmit)="salvaUtente(utenteFormRef)">
@@ -118,7 +118,7 @@
                    id="pass" name="PASS"
                    [(ngModel)]="utenteForm.PASS"
                    [required]="modaleModalita() === 'crea'"
-                   placeholder="••••••••">
+                   placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢">
             <button type="button" class="toggle-eye" (click)="mostraPassword.update(v => !v)"
                     [attr.aria-label]="mostraPassword() ? 'Nascondi password' : 'Mostra password'">
               @if (mostraPassword()) {
@@ -138,7 +138,7 @@
 
           <label class="checkbox-inline">
             <input type="checkbox" name="ADMIN" [(ngModel)]="utenteForm.ADMIN">
-            È amministratore
+            Ãˆ amministratore
           </label>
 
           @if (formError()) {
@@ -159,19 +159,19 @@
   </div>
 }
 
-<!-- ── Conferma eliminazione ─────────────────────────────────── -->
+
 @if (eliminaTarget()) {
   <div class="modal-overlay" (click)="annullaEliminazione()">
     <div class="modal-box modal-box-sm" (click)="$event.stopPropagation()">
 
       <div class="modal-header">
         <h3>Elimina utente</h3>
-        <button class="modal-close" type="button" (click)="annullaEliminazione()">✕</button>
+        <button class="modal-close" type="button" (click)="annullaEliminazione()">âœ•</button>
       </div>
 
       <div class="modal-body">
         <p>Sei sicuro di voler eliminare l'utente <strong>{{ eliminaTarget()!.MAIL }}</strong>?
-           L'operazione non è reversibile.</p>
+           L'operazione non Ã¨ reversibile.</p>
       </div>
 
       <div class="modal-footer">

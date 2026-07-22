@@ -1,36 +1,35 @@
-<!-- Nota: Le recensioni sono già integrate nella pagina Servizi (wireframe).
-     Questa pagina standalone rimane disponibile come route separata. -->
+
 <div class="recensioni-hero">
   <h1>Dicono di noi</h1>
   <div class="divider-gold"></div>
   <p>Oltre 2.000 ospiti soddisfatti. Leggi le loro esperienze al Blue Horizon Hotel.</p>
 </div>
 
-<!-- Score band -->
+
 <div class="score-band">
   <div class="score-big">
     <div class="score-number">4.9</div>
-    <div class="score-stars">★★★★★</div>
-    <div class="score-label">Valutazione media · 2.1k recensioni</div>
+    <div class="score-stars">â˜…â˜…â˜…â˜…â˜…</div>
+    <div class="score-label">Valutazione media Â· 2.1k recensioni</div>
   </div>
   <div class="score-breakdown">
     <div class="score-row">
-      <span>5 ★</span>
+      <span>5 â˜…</span>
       <div class="score-bar-track"><div class="score-bar-fill" style="width:88%"></div></div>
       <span class="score-pct">88%</span>
     </div>
     <div class="score-row">
-      <span>4 ★</span>
+      <span>4 â˜…</span>
       <div class="score-bar-track"><div class="score-bar-fill" style="width:9%"></div></div>
       <span class="score-pct">9%</span>
     </div>
     <div class="score-row">
-      <span>3 ★</span>
+      <span>3 â˜…</span>
       <div class="score-bar-track"><div class="score-bar-fill" style="width:2%"></div></div>
       <span class="score-pct">2%</span>
     </div>
     <div class="score-row">
-      <span>1-2 ★</span>
+      <span>1-2 â˜…</span>
       <div class="score-bar-track"><div class="score-bar-fill" style="width:1%"></div></div>
       <span class="score-pct">1%</span>
     </div>
@@ -54,35 +53,35 @@
         <p>{{ rec.DESCRIZIONE }}</p>
       </div>
     } @empty {
-      <!-- Fallback statico mentre i dati si caricano -->
+      
       <div class="recensione-card">
         <div class="recensione-header">
           <div class="recensione-avatar">LM</div>
-          <div class="stelle">★★★★★</div>
+          <div class="stelle">â˜…â˜…â˜…â˜…â˜…</div>
         </div>
         <p>Un soggiorno indimenticabile. La vista sul mare e il personale cordiale hanno reso tutto perfetto.</p>
-        <span class="recensione-autore">Laura M. · Milano</span>
+        <span class="recensione-autore">Laura M. Â· Milano</span>
       </div>
       <div class="recensione-card">
         <div class="recensione-header">
           <div class="recensione-avatar">MT</div>
-          <div class="stelle">★★★★★</div>
+          <div class="stelle">â˜…â˜…â˜…â˜…â˜…</div>
         </div>
         <p>Camere eleganti, colazione eccellente e una posizione invidiabile. Torneremo sicuramente.</p>
-        <span class="recensione-autore">Marco T. · Roma</span>
+        <span class="recensione-autore">Marco T. Â· Roma</span>
       </div>
       <div class="recensione-card">
         <div class="recensione-header">
           <div class="recensione-avatar">SR</div>
-          <div class="stelle">★★★★☆</div>
+          <div class="stelle">â˜…â˜…â˜…â˜…â˜†</div>
         </div>
         <p>Struttura curata nei minimi dettagli, servizio impeccabile. Un'esperienza di vero lusso.</p>
-        <span class="recensione-autore">Sofia R. · Torino</span>
+        <span class="recensione-autore">Sofia R. Â· Torino</span>
       </div>
     }
   </div>
 
-  <!-- ── CTA: bottone "Lascia una recensione" ── -->
+  
   <div class="recensioni-cta">
     @if (!isLoggato()) {
       <p class="cta-hint">
@@ -96,15 +95,13 @@
 </div>
 
 
-<!-- ══════════════════════════════════════════════════════════════
-     MODALE – Aggiungi recensione
-══════════════════════════════════════════════════════════════ -->
+
 @if (mostraModale()) {
   <div class="modale-overlay" (click)="chiudiSuOverlay($event)" role="dialog" aria-modal="true" aria-labelledby="modale-titolo">
 
     <div class="modale-box">
 
-      <!-- Header modale -->
+      
       <div class="modale-header">
         <h2 id="modale-titolo">La tua recensione</h2>
         <button class="modale-chiudi" (click)="chiudiModale()" aria-label="Chiudi modale">
@@ -118,7 +115,7 @@
 
       <div class="divider-gold modale-divider"></div>
 
-      <!-- Successo -->
+      
       @if (invioRiuscito()) {
         <div class="modale-successo">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -126,14 +123,14 @@
             <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
             <polyline points="22 4 12 14.01 9 11.01"/>
           </svg>
-          <p>Grazie! La tua recensione è stata inviata con successo.</p>
+          <p>Grazie! La tua recensione Ã¨ stata inviata con successo.</p>
         </div>
       } @else {
 
-        <!-- Form -->
+        
         <form #recensioneForm="ngForm" (ngSubmit)="inviaRecensione(recensioneForm)" novalidate>
 
-          <!-- Stelle -->
+          
           <div class="field-group">
             <label>Valutazione <span class="required">*</span></label>
             <div class="stelle-input" (mouseleave)="resetHover()">
@@ -144,7 +141,7 @@
                         (mouseenter)="setHover(i)"
                         (click)="setRating(i)"
                         [attr.aria-label]="'Dai ' + i + ' stelle su 5'">
-                  ★
+                  â˜…
                 </button>
               }
             </div>
@@ -153,7 +150,7 @@
             }
           </div>
 
-          <!-- Testo recensione -->
+          
           <div class="field-group">
             <label for="descrizione">Descrizione <span class="required">*</span></label>
             <textarea
@@ -164,7 +161,7 @@
               minlength="10"
               maxlength="600"
               rows="5"
-              placeholder="Racconta la tua esperienza al Blue Horizon Hotel…"
+              placeholder="Racconta la tua esperienza al Blue Horizon Hotelâ€¦"
               #descField="ngModel"
               [class.invalid]="descField.invalid && descField.touched">
             </textarea>
@@ -178,17 +175,17 @@
             </div>
           </div>
 
-          <!-- Errore globale -->
+          
           @if (erroreInvio()) {
             <div class="modale-errore">{{ erroreInvio() }}</div>
           }
 
-          <!-- Azioni -->
+          
           <div class="modale-azioni">
             <button type="button" class="btn-annulla" (click)="chiudiModale()">Annulla</button>
             <button type="submit" class="btn-scopri" [disabled]="invioInCorso()">
               @if (invioInCorso()) {
-                Invio in corso…
+                Invio in corsoâ€¦
               } @else {
                 Invia recensione
               }

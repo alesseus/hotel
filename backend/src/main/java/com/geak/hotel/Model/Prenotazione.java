@@ -20,8 +20,8 @@ public class Prenotazione {
 	private String EMAIL;
 	private String TELEFONO;
 	private Date DATANASCITA;
-	private long IDSTANZA;
-	private long IDSERVIZIO;
+	private Long IDSTANZA;
+	private Long IDSERVIZIO;
 	private double TOTALE;
 	private boolean SPA;
 	private String NOTE;
@@ -34,7 +34,7 @@ public class Prenotazione {
 	public Prenotazione() {}
 
 	public Prenotazione(long IDPRE, String NOME, String COGNOME, String EMAIL, String TELEFONO, Date DATANASCITA,
-			long IDSTANZA, long IDSERVIZIO, double TOTALE, double CAPARRA, boolean SPA, String NOTE, Date CHECK_IN, Date CHECK_OUT,
+			Long IDSTANZA, Long IDSERVIZIO, double TOTALE, double CAPARRA, boolean SPA, String NOTE, Date CHECK_IN, Date CHECK_OUT,
 			String STATO, String OSPITI) {
 		setIDPRE(IDPRE);
 		setNOME(NOME);
@@ -103,19 +103,19 @@ public class Prenotazione {
 		DATANASCITA = dATANASCITA;
 	}
 
-	public long getIDSTANZA() {
+	public Long getIDSTANZA() {
 		return IDSTANZA;
 	}
 
-	public void setIDSTANZA(long iDSTANZA) {
+	public void setIDSTANZA(Long iDSTANZA) {
 		IDSTANZA = iDSTANZA;
 	}
 
-	public long getIDSERVIZIO() {
+	public Long getIDSERVIZIO() {
 		return IDSERVIZIO;
 	}
 
-	public void setIDSERVIZIO(long iDSERVIZIO) {
+	public void setIDSERVIZIO(Long iDSERVIZIO) {
 		IDSERVIZIO = iDSERVIZIO;
 	}
 
@@ -184,5 +184,4 @@ public class Prenotazione {
 	}
 
 }
-
 

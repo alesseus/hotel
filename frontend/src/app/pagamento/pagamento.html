@@ -11,11 +11,11 @@
 
     <div class="caparra-box">
       <span>Importo da pagare</span>
-      <span class="caparra-importo">€{{ caparra() }}</span>
+      <span class="caparra-importo">â‚¬{{ caparra() }}</span>
       <small>Caparra non rimborsabile (10% del totale)</small>
     </div>
 
-    <!-- Scelta metodo -->
+    
     @if (!metodoPagamento()) {
     <div class="metodo-scelta">
       <p class="metodo-titolo">Scegli il metodo di pagamento</p>
@@ -36,7 +36,7 @@
     </div>
     }
 
-    <!-- Form carta -->
+    
     @if (metodoPagamento() === 'carta') {
     <form #pagamentoForm="ngForm" (ngSubmit)="paga(pagamentoForm)" novalidate>
 
@@ -92,7 +92,7 @@
 
       <div class="pagamento-actions">
         <button type="submit" class="primary" [disabled]="pagamentoForm.invalid || !scadenzaValida()">
-          Paga €{{ caparra() }}
+          Paga â‚¬{{ caparra() }}
         </button>
         <button type="button" class="secondary" (click)="metodoPagamento.set('')">
           Cambia metodo
@@ -124,7 +124,7 @@
     </form>
     }
 
-    <!-- Bonifico -->
+    
     @if (metodoPagamento() === 'bonifico') {
     <form #bonificoForm="ngForm" (ngSubmit)="paga(bonificoForm)" novalidate>
 
@@ -144,12 +144,12 @@
         </div>
         <div class="bonifico-row">
           <span>Importo</span>
-          <span>€{{ caparra() }}</span>
+          <span>â‚¬{{ caparra() }}</span>
         </div>
         <p class="bonifico-nota">Invia la ricevuta del bonifico via email per confermare la prenotazione.</p>
       </div>
 
-      <!-- Campo fittizio per simulare la conferma -->
+      
       <div class="field-group" style="margin-top: 16px">
         <label>Conferma di aver effettuato il bonifico</label>
         <input type="text" name="confermaBonifico" [(ngModel)]="nomeTitolare"
@@ -190,9 +190,9 @@
 
   @if (stato() === 'successo') {
   <div class="pagamento-successo">
-    <div class="success-icon">✓</div>
+    <div class="success-icon">âœ“</div>
     <h2>Prenotazione confermata!</h2>
-    <p>La tua prenotazione è stata registrata con successo.</p>
+    <p>La tua prenotazione Ã¨ stata registrata con successo.</p>
     <p class="success-redirect">Sarai reindirizzato alla home tra {{ conto() }}...</p>
   </div>
   }

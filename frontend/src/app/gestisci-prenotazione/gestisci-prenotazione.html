@@ -1,6 +1,6 @@
 <div class="gestisci-page">
 
-  <!-- Header -->
+  
   <div class="gestisci-header-band">
     <div>
       <h2>Gestione Prenotazioni</h2>
@@ -10,7 +10,7 @@
     <button class="back-link" routerLink="/amministrazione">Pannello admin</button>
   </div>
 
-  <!-- Body -->
+  
   <div class="gestisci-wrapper">
 
     <div class="actions-bar">
@@ -62,12 +62,12 @@
               <tr>
                 <td>{{ p.IDPRE }}</td>
                 <td>{{ p.NOME }} {{ p.COGNOME }}</td>
-                <td>{{ p.EMAIL || '—' }}</td>
-                <td>{{ p.TELEFONO || '—' }}</td>
-                <td>Stanza #{{ p.IDSTANZA }}</td>
+                <td>{{ p.EMAIL || 'â€”' }}</td>
+                <td>{{ p.TELEFONO || 'â€”' }}</td>
+                <td>{{ p.IDSTANZA ? ('Stanza #' + p.IDSTANZA) : 'Solo SPA' }}</td>
                 <td>{{ formatData(p.CHECK_IN) }}</td>
                 <td>{{ formatData(p.CHECK_OUT) }}</td>
-                <td>€ {{ p.TOTALE | number:'1.2-2' }}</td>
+                <td>â‚¬ {{ p.TOTALE | number:'1.2-2' }}</td>
                 <td>
                   <span class="badge-stato"
                         [class.stato-confermata]="p.STATO?.toLowerCase() === 'confermata'"
@@ -99,16 +99,14 @@
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════════════
-     MODALE CREA / MODIFICA
-     ══════════════════════════════════════════════════════ -->
+
 @if (modaleAperto()) {
   <div class="modal-backdrop" (click)="chiudiModale()">
     <div class="modal-box" (click)="$event.stopPropagation()">
 
       <div class="modal-header">
         <h3>{{ modalita() === 'crea' ? 'Nuova prenotazione' : 'Modifica prenotazione' }}</h3>
-        <button class="modal-close" type="button" (click)="chiudiModale()">✕</button>
+        <button class="modal-close" type="button" (click)="chiudiModale()">âœ•</button>
       </div>
 
       <form #prenotazioneForm="ngForm" (ngSubmit)="salva(prenotazioneForm)">
@@ -120,7 +118,7 @@
 
           <div class="form-grid">
 
-            <!-- ── Riga 1: Nome / Cognome ── -->
+            
             <div class="form-group">
               <label for="f-nome">Nome <span class="required">*</span></label>
               <input id="f-nome" type="text" name="NOME"
@@ -133,7 +131,7 @@
                      [(ngModel)]="form.COGNOME" required placeholder="Rossi">
             </div>
 
-            <!-- ── Riga 2: Email / Telefono ── -->
+            
             <div class="form-group">
               <label for="f-email">Email <span class="required">*</span></label>
               <input id="f-email" type="email" name="EMAIL"
@@ -146,7 +144,7 @@
                      [(ngModel)]="form.TELEFONO" placeholder="+39 000 0000000">
             </div>
 
-            <!-- ── Riga 3: Data nascita ── -->
+            
             <div class="form-group">
               <label for="f-nascita">Data di nascita</label>
               <input id="f-nascita" type="date" name="DATANASCITA"
@@ -155,7 +153,7 @@
 
             <div class="form-group"></div>
 
-            <!-- ── Riga 4: Check-in / Check-out ── -->
+            
             <div class="form-group">
               <label for="f-checkin">Check-in <span class="required">*</span></label>
               <input id="f-checkin" type="date" name="CHECK_IN"
@@ -178,7 +176,7 @@
               }
             </div>
 
-            <!-- ── Stanza select ── -->
+            
             <div class="form-group">
               <label for="f-stanza">Stanza <span class="required">*</span></label>
               <select id="f-stanza" name="IDSTANZA"
@@ -188,7 +186,7 @@
                 <option [ngValue]="null">-- Seleziona stanza --</option>
                 @for (s of stanzeFiltrate; track s.IDSTANZA) {
                   <option [ngValue]="s.IDSTANZA">
-                    #{{ s.IDSTANZA }} — {{ s.DIMENSIONE }} | {{ s.CAPACITA }} posti | €{{ s.COSTO }}/notte
+                    #{{ s.IDSTANZA }} â€” {{ s.DIMENSIONE }} | {{ s.CAPACITA }} posti | â‚¬{{ s.COSTO }}/notte
                   </option>
                 }
               </select>
@@ -202,7 +200,7 @@
               }
             </div>
 
-            <!-- ── Scheda dettaglio stanza (riga intera, condizionale) ── -->
+            
             @if (stanzaSelezionata()) {
               <div class="detail-card full-width">
                 <div class="detail-card-grid">
@@ -211,12 +209,12 @@
                     <span>{{ stanzaSelezionata()!.DIMENSIONE }}</span>
                   </div>
                   <div class="detail-row">
-                    <span class="detail-label">Capacità</span>
+                    <span class="detail-label">CapacitÃ </span>
                     <span>{{ stanzaSelezionata()!.CAPACITA }} persone</span>
                   </div>
                   <div class="detail-row">
                     <span class="detail-label">Costo</span>
-                    <span>€ {{ stanzaSelezionata()!.COSTO | number:'1.2-2' }} / notte</span>
+                    <span>â‚¬ {{ stanzaSelezionata()!.COSTO | number:'1.2-2' }} / notte</span>
                   </div>
                   <div class="detail-row">
                     <span class="detail-label">Stato</span>
@@ -242,7 +240,7 @@
               </div>
             }
 
-            <!-- ── Servizi multipli (riga intera) ── -->
+            
             <div class="form-group full-width">
               <div class="servizi-header">
                 <label>Servizi aggiuntivi</label>
@@ -264,33 +262,33 @@
                     <option [ngValue]="null">-- Seleziona servizio --</option>
                     @for (sv of servizi(); track sv.IDSERVIZIO) {
                       <option [ngValue]="sv.IDSERVIZIO">
-                        {{ sv.NOTE }} — €{{ sv.COSTO }}
+                        {{ sv.NOTE }} â€” â‚¬{{ sv.COSTO }}
                       </option>
                     }
                   </select>
 
                   @if (row.idServizio) {
                     <span class="servizio-costo">
-                      € {{ (servizi() | servizioById: row.idServizio)?.COSTO | number:'1.2-2' }}
+                      â‚¬ {{ (servizi() | servizioById: row.idServizio)?.COSTO | number:'1.2-2' }}
                     </span>
                   }
 
                   <button class="btn-remove-service" type="button"
                           (click)="rimuoviServizio(row.index); aggiornaFormTotale()">
-                    ✕
+                    âœ•
                   </button>
                 </div>
               }
             </div>
 
-            <!-- ── Totale calcolato dinamicamente (riga intera, read-only) ── -->
+            
             <div class="form-group full-width">
               <label>Totale stimato</label>
               <div class="totale-display">
-                <span class="totale-value">€ {{ totaleCalcolato | number:'1.2-2' }}</span>
+                <span class="totale-value">â‚¬ {{ totaleCalcolato | number:'1.2-2' }}</span>
                 <span class="totale-hint">
                   @if (stanzaSelezionata() && form.CHECK_IN && form.CHECK_OUT) {
-                    Stanza €{{ stanzaSelezionata()!.COSTO }}/notte × {{ calcolaNotti(form.CHECK_IN, form.CHECK_OUT) }} notti
+                    Stanza â‚¬{{ stanzaSelezionata()!.COSTO }}/notte Ã— {{ calcolaNotti(form.CHECK_IN, form.CHECK_OUT) }} notti
                     @if (serviziSelezionati().length > 0) {
                       + {{ serviziSelezionati().length }} servizio/i
                     }
@@ -302,7 +300,7 @@
               <input type="hidden" name="TOTALE" [ngModel]="totaleCalcolato">
             </div>
 
-            <!-- ── Ospiti (nome + cognome) ── -->
+            
             <div class="form-group full-width">
               <div class="servizi-header">
                 <label>Ospiti (nome e cognome)</label>
@@ -329,13 +327,13 @@
                          placeholder="Cognome">
                   <button class="btn-remove-service" type="button"
                           (click)="rimuoviOspite($index)">
-                    ✕
+                    âœ•
                   </button>
                 </div>
               }
             </div>
 
-            <!-- ── Note (riga intera) ── -->
+            
             <div class="form-group full-width">
               <label for="f-note">Note</label>
               <textarea id="f-note" name="NOTE"
@@ -359,16 +357,14 @@
   </div>
 }
 
-<!-- ══════════════════════════════════════════════════════
-     MODALE CONFERMA ELIMINA
-     ══════════════════════════════════════════════════════ -->
+
 @if (eliminaTarget()) {
   <div class="modal-backdrop" (click)="annullaEliminazione()">
     <div class="modal-box modal-box--sm" (click)="$event.stopPropagation()">
 
       <div class="modal-header">
         <h3>Conferma eliminazione</h3>
-        <button class="modal-close" type="button" (click)="annullaEliminazione()">✕</button>
+        <button class="modal-close" type="button" (click)="annullaEliminazione()">âœ•</button>
       </div>
 
       <div class="modal-body">
@@ -381,7 +377,7 @@
             <strong>#{{ eliminaTarget()!.IDPRE }}</strong> di
             <strong>{{ eliminaTarget()!.NOME }} {{ eliminaTarget()!.COGNOME }}</strong>?
           </p>
-          <p class="confirm-sub">Questa azione è irreversibile.</p>
+          <p class="confirm-sub">Questa azione Ã¨ irreversibile.</p>
         </div>
       </div>
 

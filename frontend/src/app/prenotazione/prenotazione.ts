@@ -23,19 +23,16 @@ export class Prenotazione implements OnInit {
 
   constructor(private _PrenotazioneServices: PrenotazioneServices) {}
 
-  // ── Wizard ────────────────────────────────────────────────────
   step = 0;
   tipoPrenotazione: 'spa' | 'stanza' | '' = '';
   formError = '';
   confermata = false;
   invio = false;
 
-  // ── Dati remoti ───────────────────────────────────────────────
   tutteLeStanze = signal<stanza[]>([]);
   serviziDisponibili = signal<servizio[]>([]);
   listaPrenotazioni = signal<prenotazione[]>([]);
 
-  // ── Filtro stanze ─────────────────────────────────────────────
   filtroCapacita: number | null = null;
   filtroPrezzo: 'asc' | 'desc' | null = null;
 
@@ -47,7 +44,6 @@ export class Prenotazione implements OnInit {
   }
 
   onCheckInChange(): void {
-    // Resetta checkout e stanza se la data non è più valida
     if (this.checkOut && this.checkIn && this.checkOut <= this.checkIn) {
       this.checkOut = '';
     }
@@ -55,7 +51,6 @@ export class Prenotazione implements OnInit {
   }
 
   onCheckOutChange(): void {
-    // Se si cambia checkout, deseleziona la stanza (potrebbe non essere più disponibile)
     this.stanzaSelezionata = null;
   }
 
@@ -66,10 +61,8 @@ export class Prenotazione implements OnInit {
     let risultato = this.tutteLeStanze().filter(s => {
       const stato = s.STATO?.toLowerCase() ?? '';
 
-      // Escludi sempre stanze in manutenzione o occupate (a prescindere dalle date)
       if (stato === 'manutenzione' || stato === 'occupata') return false;
 
-      // Se le date sono inserite, controlla sovrapposizione con prenotazioni attive
       if (ci && co && co > ci) {
         const conflitto = this.listaPrenotazioni().some(p => {
           if (p.IDSTANZA !== s.IDSTANZA) return false;
@@ -82,7 +75,6 @@ export class Prenotazione implements OnInit {
         return !conflitto;
       }
 
-      // Senza date: mostra solo le stanze con stato 'libera'
       return stato === 'libera';
     });
 
@@ -102,11 +94,9 @@ export class Prenotazione implements OnInit {
     this.filtroPrezzo = null;
   }
 
-  // ── Selezioni ─────────────────────────────────────────────────
   stanzaSelezionata: stanza | null = null;
   serviziSelezionati: servizio[] = [];
 
-  // ── Form dati ─────────────────────────────────────────────────
   nome = '';
   cognome = '';
   email = '';
@@ -116,7 +106,6 @@ export class Prenotazione implements OnInit {
   checkOut = '';
   note = '';
 
-  // ─────────────────────────────────────────────────────────────
   ngOnInit(): void {
     this.caricaStanze();
     this.caricaServizi();
@@ -140,9 +129,15 @@ export class Prenotazione implements OnInit {
     });
   }
 
-  // ── Wizard methods ────────────────────────────────────────────
   scegliTipo(tipo: 'spa' | 'stanza'): void {
     this.tipoPrenotazione = tipo;
+    if (tipo === 'spa') {
+      this.stanzaSelezionata = null;
+      this.checkIn = '';
+      this.checkOut = '';
+      this.ospiti = [];
+      this.serviziSelezionati = [];
+    }
     this.step = tipo === 'spa' ? 3 : 1;
   }
 
@@ -152,9 +147,6 @@ export class Prenotazione implements OnInit {
     this.step = 2;
   }
 
-  // ── Ospiti aggiuntivi (in base alla capacità della stanza) ────
-  // L'intestatario (nome/cognome) è il primo ospite: qui gestiamo gli
-  // ospiti aggiuntivi fino a riempire la capacità della stanza.
   ospiti: { nome: string; cognome: string }[] = [];
 
   get numeroOspitiAggiuntivi(): number {
@@ -171,8 +163,6 @@ export class Prenotazione implements OnInit {
     this.ospiti = nuovi;
   }
 
-  // Costruisce la stringa OSPITI: elenco "Nome Cognome" separati da ","
-  // include l'intestatario come primo ospite.
   private buildOspiti(): string {
     const lista: string[] = [];
     const intest = `${this.nome} ${this.cognome}`.trim();
@@ -197,7 +187,6 @@ export class Prenotazione implements OnInit {
     return this.serviziSelezionati.some(x => x.IDSERVIZIO === s.IDSERVIZIO);
   }
 
-  // ── Calcolo totale ────────────────────────────────────────────
   get notti(): number {
     if (!this.checkIn || !this.checkOut) return 0;
     const inD = new Date(this.checkIn);
@@ -235,7 +224,6 @@ export class Prenotazione implements OnInit {
     return +(this.totale * 0.10).toFixed(2);
   }
 
-  // ── Submit ────────────────────────────────────────────────────
   confermaPrenotazione(form: NgForm): void {
     this.formError = '';
 
@@ -255,17 +243,17 @@ export class Prenotazione implements OnInit {
       COGNOME: this.cognome,
       EMAIL: this.email,
       TELEFONO: this.telefono,
-      DATANASCITA: new Date(this.dataNascita),
-      IDSTANZA: this.stanzaSelezionata?.IDSTANZA ?? 0,
+      DATANASCITA: this.dataNascita ? new Date(this.dataNascita) : null,
+      IDSTANZA: this.tipoPrenotazione === 'stanza' ? (this.stanzaSelezionata?.IDSTANZA ?? null) : null,
       IDSERVIZIO: this.tipoPrenotazione === 'spa'
-        ? (this.spaServizio?.IDSERVIZIO ?? 0)
-        : (this.serviziSelezionati[0]?.IDSERVIZIO ?? 0),
+        ? (this.spaServizio?.IDSERVIZIO ?? null)
+        : (this.serviziSelezionati[0]?.IDSERVIZIO ?? null),
       TOTALE: this.totale,
       CAPARRA: this.caparra,
       SPA: this.tipoPrenotazione === 'spa',
-      NOTE: this.note,
-      CHECK_IN: new Date(this.checkIn),
-      CHECK_OUT: new Date(this.checkOut),
+      NOTE: this.note?.trim() || (this.tipoPrenotazione === 'spa' ? 'solo spa' : ''),
+      CHECK_IN: this.tipoPrenotazione === 'stanza' && this.checkIn ? new Date(this.checkIn) : null,
+      CHECK_OUT: this.tipoPrenotazione === 'stanza' && this.checkOut ? new Date(this.checkOut) : null,
       STATO: 'In attesa',
       OSPITI: this.buildOspiti()
     };

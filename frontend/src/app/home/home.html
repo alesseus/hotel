@@ -1,7 +1,7 @@
-<!-- HERO -->
+
 <section class="hero">
   <div class="hero-overlay">
-    <p class="hero-eyebrow">Portocervo · Dal 1987</p>
+    <p class="hero-eyebrow">Portocervo Â· Dal 1987</p>
     <h1>Blue Horizon Hotel</h1>
     <p class="hero-sub">Un rifugio di eleganza nel cuore della costa smeralda.<br>Camere esclusive, servizi su misura, esperienze indimenticabili.</p>
     <div class="hero-actions">
@@ -11,7 +11,7 @@
   </div>
 </section>
 
-<!-- INFO BAND -->
+
 <div class="info-band">
   <div class="info-item">
     <span class="info-num">50+</span>
@@ -24,7 +24,7 @@
   </div>
   <div class="info-sep"></div>
   <div class="info-item">
-    <span class="info-num">4.9 ★</span>
+    <span class="info-num">4.9 â˜…</span>
     <span class="info-lbl">Valutazione</span>
   </div>
   <div class="info-sep"></div>
@@ -34,20 +34,20 @@
   </div>
 </div>
 
-<!-- RECENSIONI DAL DB -->
+
 <div class="recensioni-strip">
   <div class="recensioni-strip-inner">
     <h2>Recensioni</h2>
     <div class="divider-gold"></div>
 
-    <!-- 1. Caricamento in corso -->
+    
     @if (caricamento()) {
       <div class="rec-empty">
         <div class="rec-spinner"></div>
       </div>
     }
 
-    <!-- 2. DB risposto, recensioni presenti → carosello -->
+    
     @else if (recensioniVisibili().length > 0) {
       <div class="rec-grid">
         @for (rec of recensioniVisibili(); track rec.IDRECE) {
@@ -57,7 +57,7 @@
                 <span class="rec-nome">{{ rec.NOME }} {{ rec.COGNOME }}</span>
                 <div class="rec-stars">
                   @for (s of stellePerRating(rec.RATING); track $index) {
-                    <span [class.stella-gold]="s === '★'" [class.stella-vuota]="s === '☆'">{{ s }}</span>
+                    <span [class.stella-gold]="s === 'â˜…'" [class.stella-vuota]="s === 'â˜†'">{{ s }}</span>
                   }
                 </div>
               </div>
@@ -68,7 +68,7 @@
       </div>
     }
 
-    <!-- 3. DB risposto, nessuna recensione -->
+    
     @else {
       <div class="rec-empty">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
@@ -79,7 +79,7 @@
       </div>
     }
 
-    <!-- CTA -->
+    
     <div class="rec-cta">
       @if (!isLoggato()) {
         <p class="rec-cta-hint">
@@ -94,9 +94,7 @@
 </div>
 
 
-<!-- ══════════════════════════════════════════════════════════════
-     MODALE – Aggiungi recensione
-══════════════════════════════════════════════════════════════ -->
+
 @if (mostraModale()) {
   <div class="modale-overlay" (click)="chiudiSuOverlay($event)"
        role="dialog" aria-modal="true" aria-labelledby="modale-titolo">
@@ -123,7 +121,7 @@
             <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
             <polyline points="22 4 12 14.01 9 11.01"/>
           </svg>
-          <p>Grazie! La tua recensione è stata inviata con successo.</p>
+          <p>Grazie! La tua recensione Ã¨ stata inviata con successo.</p>
         </div>
       } @else {
 
@@ -138,7 +136,7 @@
                         [class.attiva]="stellaAttiva(i)"
                         (mouseenter)="setHover(i)"
                         (click)="setRating(i)"
-                        [attr.aria-label]="'Dai ' + i + ' stelle su 5'">★</button>
+                        [attr.aria-label]="'Dai ' + i + ' stelle su 5'">â˜…</button>
               }
             </div>
             @if (recensioneForm.submitted && nuovoRating() === 0) {
@@ -156,7 +154,7 @@
               minlength="10"
               maxlength="600"
               rows="5"
-              placeholder="Racconta la tua esperienza al Blue Horizon Hotel…"
+              placeholder="Racconta la tua esperienza al Blue Horizon Hotelâ€¦"
               #descField="ngModel"
               [class.invalid]="descField.invalid && descField.touched">
             </textarea>
@@ -177,7 +175,7 @@
           <div class="modale-azioni">
             <button type="button" class="btn-annulla" (click)="chiudiModale()">Annulla</button>
             <button type="submit" class="btn-rec" [disabled]="invioInCorso()">
-              @if (invioInCorso()) { Invio in corso… } @else { Invia recensione }
+              @if (invioInCorso()) { Invio in corsoâ€¦ } @else { Invia recensione }
             </button>
           </div>
 

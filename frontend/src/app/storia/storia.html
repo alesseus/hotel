@@ -1,20 +1,20 @@
 <div class="storia-page">
 
-  <!-- Hero -->
+  
   <div class="storia-hero">
     <h1>La nostra storia</h1>
     <div class="divider-gold"></div>
   </div>
 
-  <!-- Layout 2 colonne: foto sx, testo dx -->
+  
   <div class="storia-layout">
 
-    <!-- Colonna sx: galleria foto -->
+    
     <div class="storia-gallery" (mouseenter)="pauseAutoplay()" (mouseleave)="resumeAutoplay()">
 
       <div class="gallery-frame">
 
-        <!-- Immagine Principale -->
+        
         <img [src]="activeImage.src" [alt]="activeImage.alt" class="gallery-main-img">
 
         <div class="gallery-controls">
@@ -36,7 +36,7 @@
         </div>
       </div>
 
-      <!-- Thumbnails -->
+      
       <div class="gallery-thumbs">
         @for (img of images; track img.src; let i = $index) {
         <img [src]="img.src" [alt]="'Thumb ' + (i + 1)" class="gallery-thumb" [class.active]="i === activeIndex()"
@@ -45,19 +45,19 @@
       </div>
     </div>
 
-    <!-- Colonna dx: testo storia -->
+    
     <div class="storia-content">
       <p class="storia-eyebrow">Dal 1987</p>
       <h2>Una tradizione di eccellenza</h2>
       <div class="divider"></div>
 
       <p>Il Blue Horizon Hotel nasce nel cuore di Portocervo con una visione semplice: offrire un rifugio di eleganza e
-        tranquillità in una delle località di mare più belle e raffinate del mondo.</p>
-      <p>Fondato con passione per l'ospitalità autentica, il nostro hotel unisce l'architettura classica italiana ai
-        comfort più moderni, creando un'esperienza unica per ogni ospite.</p>
+        tranquillitÃ  in una delle localitÃ  di mare piÃ¹ belle e raffinate del mondo.</p>
+      <p>Fondato con passione per l'ospitalitÃ  autentica, il nostro hotel unisce l'architettura classica italiana ai
+        comfort piÃ¹ moderni, creando un'esperienza unica per ogni ospite.</p>
       <p>Nel corso degli anni abbiamo accolto ospiti da tutto il mondo, crescendo senza mai perdere l'attenzione al
         dettaglio che ci ha sempre contraddistinti.</p>
-      <p>Oggi il Blue Horizon è il luogo dove il tuo viaggio diventa un ricordo indelebile.</p>
+      <p>Oggi il Blue Horizon Ã¨ il luogo dove il tuo viaggio diventa un ricordo indelebile.</p>
 
       <div class="storia-milestone">
         <div class="milestone-item">
