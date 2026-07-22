@@ -20,13 +20,6 @@ public class Recensione {
 	public Recensione() {
 	}
 
-	public Recensione(long IDRECE, String DESCRIZIONE, int RATING, long IDCLIENTE) {
-		setIDRECE(IDRECE);
-		setDESCRIZIONE(DESCRIZIONE);
-		setRATING(RATING);
-		setIDCLIENTE(IDCLIENTE);
-	}
-
 	public long getIDRECE() {
 		return IDRECE;
 	}
