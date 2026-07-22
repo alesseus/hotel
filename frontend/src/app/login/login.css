@@ -1,4 +1,4 @@
-
+/* ── LOGIN ────────────────────────────────────────────────────── */
 :host { display: block; }
 
 .login-page {
@@ -8,7 +8,7 @@
   background: var(--bg);
 }
 
-
+/* ── Header ── */
 .login-header {
   background: linear-gradient(135deg, var(--navy-950) 0%, var(--navy-800) 100%);
   padding: 6px 40px 48px;
@@ -36,7 +36,7 @@
   margin: 0 auto;
 }
 
-
+/* ── Corpo centrato ── */
 .login-body {
   flex: 1;
   display: flex;
@@ -45,7 +45,7 @@
   padding: 56px 20px 72px;
 }
 
-
+/* ── Card ── */
 .login-card {
   background: var(--white);
   border-radius: var(--r-xl);
@@ -72,7 +72,7 @@
   object-fit: contain;
 }
 
-
+/* ── Campi ── */
 .field-group {
   display: flex;
   flex-direction: column;
@@ -116,7 +116,7 @@
   box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.10);
 }
 
-
+/* Input con toggle occhio */
 .input-with-toggle {
   position: relative;
   display: flex;
@@ -147,7 +147,7 @@
   stroke: currentColor;
 }
 
-
+/* ── Messaggio di errore campo ── */
 .field-error {
   font-size: 0.75rem;
   color: #c0392b;
@@ -155,7 +155,7 @@
   letter-spacing: 0.02em;
 }
 
-
+/* ── Errore globale ── */
 .login-error {
   background: rgba(192, 57, 43, 0.07);
   border: 1px solid rgba(192, 57, 43, 0.22);
@@ -167,7 +167,7 @@
   text-align: center;
 }
 
-
+/* ── Bottone submit ── */
 .login-card button[type="submit"] {
   width: 100%;
   justify-content: center;
@@ -184,7 +184,7 @@
   box-shadow: none !important;
 }
 
-
+/* ── Link password dimenticata ── */
 .forgot-link {
   display: block;
   text-align: center;
@@ -200,7 +200,7 @@
   color: var(--navy-700);
 }
 
-
+/* ── Responsive ── */
 @media (max-width: 480px) {
   .login-header { padding: 40px 20px 36px; }
   .login-body { padding: 40px 16px 60px; }

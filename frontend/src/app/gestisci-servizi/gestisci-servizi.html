@@ -1,6 +1,6 @@
 <div class="gestisci-page">
 
-  
+  <!-- Header -->
   <div class="gestisci-header-band">
     <div>
       <h2>Gestione Servizi</h2>
@@ -10,7 +10,7 @@
     <button class="back-link" routerLink="/amministrazione">Pannello admin</button>
   </div>
 
-  
+  <!-- Body -->
   <div class="gestisci-wrapper">
 
     <div class="actions-bar">
@@ -34,7 +34,7 @@
           <tr>
             <th>ID</th>
             <th>Note</th>
-            <th>Costo (â‚¬)</th>
+            <th>Costo (€)</th>
             <th>Azioni</th>
           </tr>
         </thead>
@@ -48,10 +48,10 @@
               <tr>
                 <td>{{ s.IDSERVIZIO }}</td>
                 <td>{{ s.NOTE }}</td>
-                <td>â‚¬{{ s.COSTO | number:'1.2-2' }}</td>
+                <td>€{{ s.COSTO | number:'1.2-2' }}</td>
                 <td class="table-actions">
-                  <button class="btn-icon" type="button" (click)="apriModaleModifica(s)" title="Modifica">âœŽ</button>
-                  <button class="btn-icon btn-icon-danger" type="button" (click)="chiediConfermaEliminazione(s)" title="Elimina">ðŸ—‘</button>
+                  <button class="btn-icon" type="button" (click)="apriModaleModifica(s)" title="Modifica">✎</button>
+                  <button class="btn-icon btn-icon-danger" type="button" (click)="chiediConfermaEliminazione(s)" title="Elimina">🗑</button>
                 </td>
               </tr>
             } @empty {
@@ -67,14 +67,14 @@
   </div>
 </div>
 
-
+<!-- ── Modale crea / modifica ─────────────────────────────────── -->
 @if (modaleAperto()) {
   <div class="modal-overlay" (click)="chiudiModale()">
     <div class="modal-box" (click)="$event.stopPropagation()">
 
       <div class="modal-header">
         <h3>{{ modaleModalita() === 'crea' ? 'Nuovo servizio' : 'Modifica servizio' }}</h3>
-        <button class="modal-close" type="button" (click)="chiudiModale()">âœ•</button>
+        <button class="modal-close" type="button" (click)="chiudiModale()">✕</button>
       </div>
 
       <form #servizioFormRef="ngForm" (ngSubmit)="salvaServizio(servizioFormRef)">
@@ -84,7 +84,7 @@
           <textarea id="note" name="NOTE" rows="3"
                     [(ngModel)]="servizioForm.NOTE" placeholder="Descrizione del servizio..."></textarea>
 
-          <label for="costo">Costo (â‚¬)</label>
+          <label for="costo">Costo (€)</label>
           <input type="number" id="costo" name="COSTO" min="0" step="0.01"
                  [(ngModel)]="servizioForm.COSTO" required placeholder="0.00">
 
@@ -106,19 +106,19 @@
   </div>
 }
 
-
+<!-- ── Conferma eliminazione ─────────────────────────────────── -->
 @if (eliminaTarget()) {
   <div class="modal-overlay" (click)="annullaEliminazione()">
     <div class="modal-box modal-box-sm" (click)="$event.stopPropagation()">
 
       <div class="modal-header">
         <h3>Elimina servizio</h3>
-        <button class="modal-close" type="button" (click)="annullaEliminazione()">âœ•</button>
+        <button class="modal-close" type="button" (click)="annullaEliminazione()">✕</button>
       </div>
 
       <div class="modal-body">
         <p>Sei sicuro di voler eliminare il servizio <strong>#{{ eliminaTarget()!.IDSERVIZIO }}</strong>?
-           L'operazione non Ã¨ reversibile.</p>
+           L'operazione non è reversibile.</p>
       </div>
 
       <div class="modal-footer">

@@ -21,10 +21,14 @@ public class ServizioController {
 
     @Autowired
     private ServiziSrv serv;
+
+    // GET /servizio/elenco
     @GetMapping("elenco")
     public List<Servizio> elencoServizio() {
         return serv.getAllServizi();
     }
+
+    // GET /servizio/elenco/{IDSERVIZIO}
     @GetMapping("elenco/{IDSERVIZIO}")
     public Servizio tornaServ(@PathVariable Long IDSERVIZIO) {
         return serv.getAllServizi().stream()
@@ -32,16 +36,22 @@ public class ServizioController {
                 .findFirst()
                 .get();
     }
+
+    // POST /servizio/add
     @PostMapping("add")
     public List<Servizio> add(@RequestBody Servizio agg) {
         serv.addServizio(agg);
         return serv.getAllServizi();
     }
+
+    // PUT /servizio/aggiorna
     @PutMapping("aggiorna")
     public List<Servizio> aggiorna(@RequestBody Servizio aggiornato) {
         serv.aggServizio(aggiornato);
         return serv.getAllServizi();
     }
+
+    // DELETE /servizio/elimina/{id}
     @DeleteMapping("elimina/{id}")
     public List<Servizio> elimina(@PathVariable Long id) {
         serv.delServ(id);

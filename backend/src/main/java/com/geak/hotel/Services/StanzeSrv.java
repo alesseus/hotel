@@ -12,15 +12,23 @@ import com.geak.hotel.Repository.StanzeRepo;
 public class StanzeSrv {
 	@Autowired
 	private StanzeRepo stanzaRepo;
+	
+	// lista stanze
 	public List<Stanza> getAllStanza(){
 		return stanzaRepo.findAll();
 	}
+	
+	// aggiungi stanza
 	public void addStanza(Stanza nuovaStanza) {
 		stanzaRepo.save(nuovaStanza);
 	}
+
+	// aggiorna stanza (save fa update se IDSTANZA esiste già)
 	public void aggStanza(Stanza stanzaAggiornata) {
 		stanzaRepo.save(stanzaAggiornata);
 	}
+
+	// elimina stanza
 	public void delStanza(Long id) {
 		stanzaRepo.deleteById(id);
 	}

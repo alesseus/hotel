@@ -41,7 +41,7 @@
 
             {{ p.STATO }}
           </span>
-          <span class="card-totale">â‚¬{{ p.TOTALE }}</span>
+          <span class="card-totale">€{{ p.TOTALE }}</span>
         </div>
 
         <div class="card-body">
@@ -69,7 +69,7 @@
           }
           <div class="card-row">
             <span>Caparra pagata</span>
-            <span>â‚¬{{ p.CAPARRA }}</span>
+            <span>€{{ p.CAPARRA }}</span>
           </div>
         </div>
 
@@ -87,7 +87,7 @@
 
   </div>
 
-  
+  <!-- Modale modifica -->
   @if (modaleAperto && prenotazioneSelezionata) {
   <div class="overlay" (click)="chiudiModale()">
     <div class="modale" (click)="$event.stopPropagation()">
@@ -120,7 +120,7 @@
           <div class="ospiti-head">
             <label>Ospiti (nome e cognome)</label>
           </div>
-          <p class="ospiti-empty">Puoi modificare i dati degli ospiti inseriti; non Ã¨ possibile aggiungerne o rimuoverne.</p>
+          <p class="ospiti-empty">Puoi modificare i dati degli ospiti inseriti; non è possibile aggiungerne o rimuoverne.</p>
           @for (o of formOspiti; track $index) {
           <div class="fields-2 ospite-row">
             <div class="field-group">
@@ -152,7 +152,7 @@
   </div>
   }
 
-  
+  <!-- Modale conferma cancellazione -->
   @if (cancellaTarget) {
   <div class="overlay" (click)="annullaCancella()">
     <div class="modale modale-cancella" (click)="$event.stopPropagation()">
@@ -161,11 +161,11 @@
       </div>
       <h3>Cancella prenotazione</h3>
       <p>Stai per cancellare questa prenotazione.</p>
-      <p class="avviso-caparra">La caparra di <strong>â‚¬{{ cancellaTarget.CAPARRA }}</strong> non sarÃ  rimborsata.</p>
+      <p class="avviso-caparra">La caparra di <strong>€{{ cancellaTarget.CAPARRA }}</strong> non sarà rimborsata.</p>
 
       <div class="modale-actions">
         <button class="btn-cancella-confirm" [disabled]="cancellaInCorso" (click)="confermaCancella()">
-          {{ cancellaInCorso ? 'Cancellazione...' : 'SÃ¬, cancella' }}
+          {{ cancellaInCorso ? 'Cancellazione...' : 'Sì, cancella' }}
         </button>
         <button class="secondary" (click)="annullaCancella()">Torna indietro</button>
       </div>

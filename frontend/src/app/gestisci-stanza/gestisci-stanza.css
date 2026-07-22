@@ -1,6 +1,6 @@
 @import url('../gestisci-prenotazione/gestisci-prenotazione.css');
 
-
+/* ── Tabella: righe + celle ── */
 .table-wrapper table {
   min-width: 700px;
   width: 100%;
@@ -39,7 +39,7 @@
   font-style: italic;
 }
 
-
+/* Badge stato */
 .badge {
   display: inline-block;
   padding: 4px 12px;
@@ -52,7 +52,7 @@
 .badge-no   { background: #FDECEA; color: #C0392B; }
 .badge-warn { background: #FFF3CD; color: #856404; }
 
-
+/* Azioni riga */
 .table-actions {
   display: flex;
   gap: 8px;
@@ -74,7 +74,7 @@
 .btn-icon:hover { background: var(--navy-50); border-color: var(--navy-400); transform: translateY(-1px); }
 .btn-icon-danger:hover { background: #FEF2F0; border-color: #E57368; }
 
-
+/* ── Errore ── */
 .form-error-banner {
   background: #fdecea;
   color: #d33;
@@ -85,9 +85,9 @@
   margin-bottom: 16px;
 }
 
-
-
-
+/* ══════════════════════════════════════════════════════════ */
+/* MODALE                                                      */
+/* ══════════════════════════════════════════════════════════ */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -191,9 +191,9 @@
   .modal-body .fields-2 { grid-template-columns: 1fr; }
 }
 
-
-
-
+/* ══════════════════════════════════════════════════════════ */
+/* DATE FILTER BAR                                             */
+/* ══════════════════════════════════════════════════════════ */
 .date-filter-bar {
   display: flex;
   flex-direction: column;
@@ -282,7 +282,7 @@
   background: #f0f0f0;
 }
 
-
+/* Summary pills */
 .date-filter-summary {
   display: flex;
   align-items: center;
@@ -311,9 +311,9 @@
 .summary-pill-green  { background: #E6F4EA; color: #1E7E34; }
 .summary-pill-yellow { background: #FFF3CD; color: #856404; }
 
-
-
-
+/* ══════════════════════════════════════════════════════════ */
+/* GRUPPI STANZE (vista filtrata)                              */
+/* ══════════════════════════════════════════════════════════ */
 .gruppo-stanze {
   margin-bottom: 24px;
   border-radius: 10px;

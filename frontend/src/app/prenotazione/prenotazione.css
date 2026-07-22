@@ -1,9 +1,9 @@
-
+/* ── PRENOTAZIONE — wizard multi-step ────────────────────────── */
 :host { display: block; }
 
 .prenota-page { background: var(--bg); min-height: 100%; }
 
-
+/* ── Hero con progress ── */
 .prenota-hero {
   background: linear-gradient(135deg, var(--navy-950) 0%, var(--navy-800) 100%);
   padding: 52px 40px 44px;
@@ -12,7 +12,7 @@
 .prenota-hero h1 { color: var(--white); margin-bottom: 10px; }
 .prenota-hero .divider-gold { margin: 0 auto 28px; }
 
-
+/* Progress bar */
 .progress-bar {
   display: flex;
   align-items: center;
@@ -68,12 +68,12 @@
   margin-bottom: 22px;
 }
 
-
+/* ── Step panels ── */
 .step-panel {
   animation: fadeUp 0.4s var(--ease) both;
 }
 
-
+/* ── STEP 0: Scelta tipo ── */
 .tipo-wrapper {
   max-width: 640px;
   margin: 0 auto;
@@ -123,7 +123,7 @@
 .tipo-card h3 { font-size: 1.3rem; color: var(--navy-900); }
 .tipo-card p { font-size: 0.86rem; color: var(--ink-soft); }
 
-
+/* ── STEP 1: Scelta stanza grid ── */
 .scelta-wrapper {
   max-width: 1080px;
   margin: 0 auto;
@@ -184,7 +184,7 @@
   transition: opacity var(--fast);
 }
 
-
+/* Placeholder card stile wireframe */
 .stanza-placeholder {
   background: var(--navy-50);
   min-height: 220px;
@@ -192,7 +192,7 @@
 }
 .stanza-placeholder:hover { transform: none; border-color: var(--navy-100); box-shadow: var(--shadow-1); }
 
-
+/* ── STEP 2: Servizi ── */
 .servizi-list {
   display: flex;
   flex-direction: column;
@@ -224,7 +224,7 @@
   white-space: nowrap;
 }
 
-
+/* ── STEP 3: Confirm (form + riepilogo affiancati) ── */
 .confirm-wrapper {
   display: grid;
   grid-template-columns: 1fr 380px;
@@ -269,7 +269,7 @@
   margin-bottom: 14px;
 }
 
-
+/* Riepilogo */
 .riepilogo-box {
   background: var(--navy-50);
   border: 1px solid var(--navy-100);
@@ -309,14 +309,14 @@
 .confirm-btn { width: 100%; justify-content: center; padding: 14px; }
 .confirm-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
-
+/* Step nav */
 .step-nav {
   display: flex;
   gap: 12px;
   justify-content: flex-start;
 }
 
-
+/* ── Schermata di successo ── */
 .success-wrapper {
   max-width: 480px;
   margin: 0 auto;
@@ -377,7 +377,7 @@
   font-size: 0.82rem;
 }
 
-
+/* Animazioni */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(16px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -395,7 +395,7 @@
   .confirm-wrapper { grid-template-columns: 1fr; padding: 40px 20px 56px; }
   .fields-2 { grid-template-columns: 1fr; }
 }
-
+/* ── Date picker bar (step 1) ── */
 .date-picker-bar {
   display: flex;
   align-items: flex-end;

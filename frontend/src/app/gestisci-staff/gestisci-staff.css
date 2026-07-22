@@ -1,6 +1,6 @@
 @import url('../gestisci-stanza/gestisci-stanza.css');
 
-
+/* Badge ruolo (Admin / Cliente) */
 .badge-codice {
   display: inline-block;
   padding: 3px 10px;
@@ -13,7 +13,7 @@
   text-transform: uppercase;
 }
 
-
+/* Campo password con toggle occhio */
 .password-field {
   position: relative;
   display: flex;
@@ -50,7 +50,7 @@ label .required {
   margin-left: 2px;
 }
 
-
+/* Checkbox "È amministratore" */
 .checkbox-inline {
   display: flex;
   align-items: center;
@@ -66,7 +66,7 @@ label .required {
   cursor: pointer;
 }
 
-
+/* Checkbox ruolo amministratore */
 .modal-body .form-check {
   margin-top: 16px;
   justify-content: flex-start;

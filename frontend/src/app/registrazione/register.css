@@ -1,5 +1,5 @@
-
-
+/* ── REGISTER ──────────────────────────────────────────────────── */
+/* Struttura CSS copiata da login.css — stesse variabili globali   */
 :host { display: block; }
 
 .register-page {
@@ -9,7 +9,7 @@
   background: var(--bg);
 }
 
-
+/* ── Header ── */
 .register-header {
   background: linear-gradient(135deg, var(--navy-950) 0%, var(--navy-800) 100%);
   padding: 6px 40px 48px;
@@ -37,7 +37,7 @@
   margin: 0 auto;
 }
 
-
+/* ── Corpo centrato ── */
 .register-body {
   flex: 1;
   display: flex;
@@ -46,7 +46,7 @@
   padding: 56px 20px 72px;
 }
 
-
+/* ── Card ── */
 .register-card {
   background: var(--white);
   border-radius: var(--r-xl);
@@ -54,7 +54,7 @@
   box-shadow: var(--shadow-2);
   padding: 54px 34px 46px;
   width: 100%;
-  max-width: 520px;        
+  max-width: 520px;        /* leggermente più larga della login per i campi in coppia */
   animation: fadeUp 0.45s var(--ease) both;
 }
 
@@ -73,7 +73,7 @@
   object-fit: contain;
 }
 
-
+/* ── Riga a due colonne (Nome+Cognome, Telefono+Data) ── */
 .field-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -84,8 +84,8 @@
   .field-row { grid-template-columns: 1fr; gap: 0; }
 }
 
-
-
+/* ── Campi ── */
+/* Identici a login.css: stesse misure, stesse variabili */
 .field-group {
   display: flex;
   flex-direction: column;
@@ -130,7 +130,7 @@
   box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.10);
 }
 
-
+/* Input con toggle — mantiene gli stessi padding e fa spazio all'occhio */
 .input-with-toggle {
   position: relative;
   display: flex;
@@ -161,7 +161,7 @@
   stroke: currentColor;
 }
 
-
+/* ── Suggerimento campo ── */
 .field-hint {
   font-size: 0.75rem;
   color: var(--ink-faint);
@@ -169,8 +169,8 @@
   letter-spacing: 0.02em;
 }
 
-
-
+/* ── Messaggio di errore campo ── */
+/* Copiato identico da login.css */
 .field-error {
   font-size: 0.75rem;
   color: #c0392b;
@@ -178,8 +178,8 @@
   letter-spacing: 0.02em;
 }
 
-
-
+/* ── Errore globale ── */
+/* Copiato identico da login.css */
 .register-error {
   background: rgba(192, 57, 43, 0.07);
   border: 1px solid rgba(192, 57, 43, 0.22);
@@ -191,7 +191,7 @@
   text-align: center;
 }
 
-
+/* ── Successo globale ── */
 .register-success {
   background: rgba(34, 139, 69, 0.07);
   border: 1px solid rgba(34, 139, 69, 0.25);
@@ -203,8 +203,8 @@
   text-align: center;
 }
 
-
-
+/* ── Bottone submit ── */
+/* Dimensioni identiche a login.css — il colore viene dal global button style */
 .register-card button[type="submit"] {
   width: 100%;
   justify-content: center;
@@ -221,8 +221,8 @@
   box-shadow: none !important;
 }
 
-
-
+/* ── Link in fondo alla card ── */
+/* Identico a .forgot-link di login.css */
 .forgot-link {
   display: block;
   text-align: center;
@@ -239,8 +239,8 @@
   color: var(--navy-700);
 }
 
-
-
+/* ── Responsive ── */
+/* Stesse breakpoint di login.css */
 @media (max-width: 480px) {
   .register-header { padding: 40px 20px 36px; }
   .register-body   { padding: 40px 16px 60px; }

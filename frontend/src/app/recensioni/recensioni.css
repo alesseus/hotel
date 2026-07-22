@@ -1,7 +1,7 @@
-
+/* ── RECENSIONI ───────────────────────────────────────────────── */
 :host { display: block; }
 
-
+/* Hero */
 .recensioni-hero {
   background: linear-gradient(135deg, var(--navy-950) 0%, var(--navy-800) 100%);
   padding: 72px 40px 64px;
@@ -11,7 +11,7 @@
 .recensioni-hero .divider-gold { margin: 0 auto 16px; }
 .recensioni-hero p { color: var(--navy-200); max-width: 480px; margin: 0 auto; }
 
-
+/* Score band */
 .score-band {
   display: flex;
   justify-content: center;
@@ -39,7 +39,7 @@
 .score-bar-fill { height: 100%; background: linear-gradient(90deg, var(--navy-700), var(--navy-400)); border-radius: 3px; }
 .score-pct { font-weight: 600; color: var(--navy-800); min-width: 28px; text-align: right; font-size: 0.78rem; }
 
-
+/* Grid */
 .recensioni-wrapper {
   max-width: 1080px;
   margin: 0 auto;
@@ -104,7 +104,7 @@
   padding-top: 12px;
 }
 
-
+/* ── CTA – bottone "Lascia una recensione" ─────────────────────── */
 .recensioni-cta {
   text-align: center;
   padding: 48px 0 0;
@@ -126,7 +126,7 @@
 }
 .cta-hint a:hover { text-decoration: underline; }
 
-
+/* Bottone stile "Scopri i Servizi" */
 .btn-scopri {
   display: inline-block;
   padding: 14px 36px;
@@ -152,7 +152,9 @@
   cursor: not-allowed;
 }
 
-
+/* ══════════════════════════════════════════════════════════════
+   MODALE
+══════════════════════════════════════════════════════════════ */
 .modale-overlay {
   position: fixed;
   inset: 0;
@@ -189,7 +191,7 @@
   to   { transform: translateY(0);    opacity: 1; }
 }
 
-
+/* Header modale */
 .modale-header {
   display: flex;
   align-items: center;
@@ -223,7 +225,7 @@
   margin: 0 0 28px 0 !important;
 }
 
-
+/* Campi form */
 .field-group {
   display: flex;
   flex-direction: column;
@@ -276,7 +278,7 @@
   margin-left: auto;
 }
 
-
+/* Stelle interattive */
 .stelle-input {
   display: flex;
   gap: 6px;
@@ -295,7 +297,7 @@
 .stella-btn.attiva { color: var(--gold-500, #c9a84c); }
 .stella-btn:hover  { transform: scale(1.18); }
 
-
+/* Errori */
 .field-error {
   font-size: 0.78rem;
   color: #e53e3e;
@@ -312,7 +314,7 @@
   margin-bottom: 20px;
 }
 
-
+/* Successo */
 .modale-successo {
   display: flex;
   flex-direction: column;
@@ -333,7 +335,7 @@
   margin: 0;
 }
 
-
+/* Azioni modale */
 .modale-azioni {
   display: flex;
   justify-content: flex-end;
@@ -360,7 +362,7 @@
   border-color: var(--navy-400, #6b8cae);
 }
 
-
+/* ── Responsive ─────────────────────────────────────────────── */
 @media (max-width: 768px) {
   .recensioni-hero  { padding: 52px 20px 48px; }
   .score-band       { padding: 24px 20px; gap: 28px; }

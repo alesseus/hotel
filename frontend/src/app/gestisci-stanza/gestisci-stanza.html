@@ -1,6 +1,6 @@
 <div class="gestisci-page">
 
-  
+  <!-- Header -->
   <div class="gestisci-header-band">
     <div>
       <h2>Gestione Stanze</h2>
@@ -10,7 +10,7 @@
     <button class="back-link" routerLink="/amministrazione">Pannello admin</button>
   </div>
 
-  
+  <!-- Body -->
   <div class="gestisci-wrapper">
 
     <div class="actions-bar">
@@ -27,7 +27,7 @@
       </div>
     </div>
 
-    
+    <!-- ── Filtro disponibilità: date dalle prenotazioni esistenti ── -->
     <div class="date-filter-bar">
       <div class="date-filter-intro">
         <span class="date-filter-label-title">
@@ -63,15 +63,15 @@
         @if (filtroCheckIn() || filtroCheckOut()) {
         <button class="btn-clear-dates" type="button"
           (click)="filtroCheckIn.set(''); filtroCheckOut.set('')">
-          âœ• Rimuovi filtro
+          ✕ Rimuovi filtro
         </button>
         }
       </div>
 
       @if (filtroAttivo) {
       <div class="date-filter-summary">
-        Periodo: <strong>{{ formatData(filtroCheckIn()) }}</strong> â†’ <strong>{{ formatData(filtroCheckOut()) }}</strong>
-        &nbsp;Â·&nbsp;
+        Periodo: <strong>{{ formatData(filtroCheckIn()) }}</strong> → <strong>{{ formatData(filtroCheckOut()) }}</strong>
+        &nbsp;·&nbsp;
         <span class="summary-pill summary-pill-red"> Occupate: {{ stanzeOccupatePeriodo.length }}</span>
         <span class="summary-pill summary-pill-green"> Disponibili: {{ stanzeDisponibiliPeriodo.length }}</span>
         <span class="summary-pill summary-pill-yellow"> Manutenzione: {{ stanzeInManutenzione.length }}</span>
@@ -83,12 +83,12 @@
     <div class="form-error-banner">{{ erroreCaricamento() }}</div>
     }
 
-    
-    
-    
+    <!-- ════════════════════════════════════════════════════════ -->
+    <!-- VISTA A 3 GRUPPI — attiva solo con il filtro applicato  -->
+    <!-- ════════════════════════════════════════════════════════ -->
     @if (filtroAttivo) {
 
-    
+    <!-- Stanze Occupate -->
     <div class="gruppo-stanze">
       <div class="gruppo-header gruppo-header-red">
 
@@ -99,10 +99,10 @@
         <table>
           <thead>
             <tr>
-              <th>NÂ° Stanza</th>
+              <th>N° Stanza</th>
               <th>Tipo</th>
               <th>Capienza</th>
-              <th>Prezzo / notte (â‚¬)</th>
+              <th>Prezzo / notte (€)</th>
               <th>Piano</th>
             </tr>
           </thead>
@@ -115,7 +115,7 @@
               <td>{{ s.IDSTANZA }}</td>
               <td>{{ s.DESCRIZIONE || s.DIMENSIONE }}</td>
               <td>{{ s.CAPACITA }}</td>
-              <td>â‚¬{{ s.COSTO }}</td>
+              <td>€{{ s.COSTO }}</td>
               <td>{{ s.DIMENSIONE }}</td>
             </tr>
             }
@@ -124,7 +124,7 @@
       </div>
     </div>
 
-    
+    <!-- Stanze Disponibili -->
     <div class="gruppo-stanze">
       <div class="gruppo-header gruppo-header-green">
 
@@ -135,10 +135,10 @@
         <table>
           <thead>
             <tr>
-              <th>NÂ° Stanza</th>
+              <th>N° Stanza</th>
               <th>Tipo</th>
               <th>Capienza</th>
-              <th>Prezzo / notte (â‚¬)</th>
+              <th>Prezzo / notte (€)</th>
               <th>Piano</th>
             </tr>
           </thead>
@@ -151,7 +151,7 @@
               <td>{{ s.IDSTANZA }}</td>
               <td>{{ s.DESCRIZIONE || s.DIMENSIONE }}</td>
               <td>{{ s.CAPACITA }}</td>
-              <td>â‚¬{{ s.COSTO }}</td>
+              <td>€{{ s.COSTO }}</td>
               <td>{{ s.DIMENSIONE }}</td>
             </tr>
             }
@@ -160,7 +160,7 @@
       </div>
     </div>
 
-    
+    <!-- Stanze in Manutenzione -->
     <div class="gruppo-stanze">
       <div class="gruppo-header gruppo-header-yellow">
 
@@ -171,10 +171,10 @@
         <table>
           <thead>
             <tr>
-              <th>NÂ° Stanza</th>
+              <th>N° Stanza</th>
               <th>Tipo</th>
               <th>Capienza</th>
-              <th>Prezzo / notte (â‚¬)</th>
+              <th>Prezzo / notte (€)</th>
               <th>Piano</th>
             </tr>
           </thead>
@@ -187,7 +187,7 @@
               <td>{{ s.IDSTANZA }}</td>
               <td>{{ s.DESCRIZIONE || s.DIMENSIONE }}</td>
               <td>{{ s.CAPACITA }}</td>
-              <td>â‚¬{{ s.COSTO }}</td>
+              <td>€{{ s.COSTO }}</td>
               <td>{{ s.DIMENSIONE }}</td>
             </tr>
             }
@@ -198,17 +198,17 @@
 
     } @else {
 
-    
-    
-    
+    <!-- ════════════════════════════════════════════════════════ -->
+    <!-- ELENCO GENERALE — senza colonna stato, senza azioni     -->
+    <!-- ════════════════════════════════════════════════════════ -->
     <div class="table-wrapper">
       <table>
         <thead>
           <tr>
-            <th>NÂ° Stanza</th>
+            <th>N° Stanza</th>
             <th>Tipo</th>
             <th>Capienza</th>
-            <th>Prezzo / notte (â‚¬)</th>
+            <th>Prezzo / notte (€)</th>
             <th>Piano</th>
             <th>Azioni</th>
           </tr>
@@ -224,12 +224,12 @@
             <td>{{ s.IDSTANZA }}</td>
             <td>{{ s.DESCRIZIONE || s.DIMENSIONE }}</td>
             <td>{{ s.CAPACITA }}</td>
-            <td>â‚¬{{ s.COSTO }}</td>
+            <td>€{{ s.COSTO }}</td>
             <td>{{ s.DIMENSIONE }}</td>
             <td class="table-actions">
-              <button class="btn-icon" type="button" (click)="apriModaleModifica(s)" title="Modifica">âœŽ</button>
+              <button class="btn-icon" type="button" (click)="apriModaleModifica(s)" title="Modifica">✎</button>
               <button class="btn-icon btn-icon-danger" type="button" (click)="chiediConfermaEliminazione(s)"
-                title="Elimina">ðŸ—‘</button>
+                title="Elimina">🗑</button>
             </td>
           </tr>
           } @empty {
@@ -253,7 +253,7 @@
 
       <div class="modal-header">
         <h3>{{ modaleModalita() === 'crea' ? 'Nuova stanza' : 'Modifica stanza' }}</h3>
-        <button class="modal-close" type="button" (click)="chiudiModale()">âœ•</button>
+        <button class="modal-close" type="button" (click)="chiudiModale()">✕</button>
       </div>
 
       <form #stanzaFormRef="ngForm" (ngSubmit)="salvaStanza(stanzaFormRef)">
@@ -268,7 +268,7 @@
             <div>
               <label for="dimensione">Piano / Dimensione</label>
               <input type="text" id="dimensione" name="dimensione" [(ngModel)]="stanzaForm.DIMENSIONE" required
-                placeholder="Piano 2 Â· 25mq">
+                placeholder="Piano 2 · 25mq">
             </div>
           </div>
 
@@ -279,7 +279,7 @@
                 placeholder="2">
             </div>
             <div>
-              <label for="costo">Prezzo / notte (â‚¬)</label>
+              <label for="costo">Prezzo / notte (€)</label>
               <input type="number" id="costo" name="costo" min="0" step="0.01" [(ngModel)]="stanzaForm.COSTO" required
                 placeholder="120">
             </div>
@@ -309,20 +309,20 @@
   </div>
   }
 
-  
-  
-  
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <!-- CONFERMA ELIMINAZIONE                                       -->
+  <!-- ══════════════════════════════════════════════════════════ -->
   @if (eliminaTarget()) {
   <div class="modal-overlay" (click)="annullaEliminazione()">
     <div class="modal-box modal-box-sm" (click)="$event.stopPropagation()">
       <div class="modal-header">
         <h3>Elimina stanza</h3>
-        <button class="modal-close" type="button" (click)="annullaEliminazione()">âœ•</button>
+        <button class="modal-close" type="button" (click)="annullaEliminazione()">✕</button>
       </div>
       <div class="modal-body">
         <p>Sei sicuro di voler eliminare la stanza
           <strong>{{ eliminaTarget()!.DESCRIZIONE || eliminaTarget()!.DIMENSIONE }}</strong>?
-          L'operazione non Ã¨ reversibile.
+          L'operazione non è reversibile.
         </p>
       </div>
       <div class="modal-footer">

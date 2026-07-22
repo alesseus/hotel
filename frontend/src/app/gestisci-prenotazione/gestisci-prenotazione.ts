@@ -19,12 +19,16 @@ import { ServizioByIdPipe } from './pipes/servizio-by-id.pipe';
 export class GestisciPrenotazione implements OnInit {
 
   private readonly srv = inject(GestisciPrenotazioneServices);
+
+  // ── Dati ──────────────────────────────────────────────────────
   prenotazioni = signal<prenotazione[]>([]);
   stanze       = signal<stanza[]>([]);
   servizi      = signal<servizio[]>([]);
 
   caricamento       = signal(true);
   erroreCaricamento = signal('');
+
+  // ── Ricerca ───────────────────────────────────────────────────
   ricerca = signal('');
 
   get prenotazioniFiltrate(): prenotazione[] {
@@ -37,6 +41,8 @@ export class GestisciPrenotazione implements OnInit {
       String(p.IDPRE).includes(q)
     );
   }
+
+  // ── Modale form (crea / modifica) ─────────────────────────────
   modaleAperto = signal(false);
   modalita     = signal<'crea' | 'modifica'>('crea');
   formError    = signal('');
@@ -46,7 +52,11 @@ export class GestisciPrenotazione implements OnInit {
 
   stanzaSelezionata  = signal<stanza | null>(null);
   servizioSelezionato = signal<servizio | null>(null);
+
+  // ── Multi-servizio ────────────────────────────────────────────
   serviziSelezionati = signal<number[]>([]);
+
+  // ── Ospiti (nome + cognome) ───────────────────────────────────
   ospiti = signal<{ nome: string; cognome: string }[]>([]);
 
   aggiungiOspite(): void { this.ospiti.update(l => [...l, { nome: '', cognome: '' }]); }
@@ -75,6 +85,8 @@ export class GestisciPrenotazione implements OnInit {
       .filter(s => s.length > 0)
       .join(', ');
   }
+
+  // ── Min date per checkout ─────────────────────────────────────
   get checkOutMin(): string {
     const ci = this.form.CHECK_IN;
     if (!ci) return '';
@@ -82,9 +94,16 @@ export class GestisciPrenotazione implements OnInit {
     d.setDate(d.getDate() + 1);
     return d.toISOString().slice(0, 10);
   }
+
+  // ── Stanze disponibili nell'intervallo selezionato ────────────
   get stanzeFiltrate(): stanza[] {
     const ci = this.form.CHECK_IN ? new Date(this.form.CHECK_IN as any) : null;
     const co = this.form.CHECK_OUT ? new Date(this.form.CHECK_OUT as any) : null;
+
+    // In modifica, la stanza già assegnata a QUESTA prenotazione deve restare
+    // sempre selezionabile: non va esclusa solo perché il suo STATO è
+    // 'Occupata' (spesso proprio a causa di questa stessa prenotazione) o
+    // perché, ricaricando i dati, risulta ancora "in conflitto" con se stessa.
     const idStanzaCorrente = this.modalita() === 'modifica' ? this.form.IDSTANZA : null;
 
     if (!ci || !co || co <= ci) {
@@ -143,8 +162,12 @@ export class GestisciPrenotazione implements OnInit {
   get serviziRows(): { index: number; idServizio: number | null }[] {
     return this.serviziSelezionati().map((id, i) => ({ index: i, idServizio: id }));
   }
+
+  // ── Conferma elimina ──────────────────────────────────────────
   eliminaTarget   = signal<prenotazione | null>(null);
   eliminaInCorso  = signal(false);
+
+  // ─────────────────────────────────────────────────────────────
   ngOnInit(): void { this.caricaTutto(); }
 
   caricaTutto(): void {
@@ -155,7 +178,7 @@ export class GestisciPrenotazione implements OnInit {
       next: (data) => { this.prenotazioni.set(data); this.caricamento.set(false); },
       error: (err)  => {
         console.error('Errore caricamento prenotazioni', err);
-        this.erroreCaricamento.set('Impossibile caricare le prenotazioni. Riprova piÃ¹ tardi.');
+        this.erroreCaricamento.set('Impossibile caricare le prenotazioni. Riprova più tardi.');
         this.caricamento.set(false);
       }
     });
@@ -170,6 +193,8 @@ export class GestisciPrenotazione implements OnInit {
       error: (err)  => console.error('Errore caricamento servizi', err)
     });
   }
+
+  // ── Dropdown helpers ──────────────────────────────────────────
   onStanzaChange(id: number | null): void {
     this.stanzaSelezionata.set(id ? (this.stanze().find(s => s.IDSTANZA === +id) ?? null) : null);
     this.aggiornaFormTotale();
@@ -190,6 +215,8 @@ export class GestisciPrenotazione implements OnInit {
 
   onDataChange():      void { this.aggiornaFormTotale(); }
   aggiornaFormTotale(): void { setTimeout(() => { this.form.TOTALE = this.totaleCalcolato; }, 0); }
+
+  // ── Apertura modali ───────────────────────────────────────────
   apriModaleCreazione(): void {
     this.modalita.set('crea');
     this.form = this.vuota();
@@ -227,6 +254,9 @@ export class GestisciPrenotazione implements OnInit {
     this.ospiti.set([]);
     this.formError.set('');
   }
+
+
+  // ── Salva (crea o modifica) ───────────────────────────────────
   salva(ngForm: NgForm): void {
     this.formError.set('');
 
@@ -244,6 +274,9 @@ export class GestisciPrenotazione implements OnInit {
     const totale   = this.totaleCalcolato;
     const caparra  = +(totale * 0.10).toFixed(2);
     const idServizioFirst = this.serviziSelezionati().find(id => id != null) ?? null;
+
+    // Costruiamo il payload esplicitamente per evitare campi undefined
+    // che causerebbero errori 500 lato backend
     const payload: Partial<prenotazione> = {
       IDPRE:       this.form.IDPRE ?? 0,
       NOME:        this.form.NOME        ?? '',
@@ -283,6 +316,8 @@ export class GestisciPrenotazione implements OnInit {
       }
     });
   }
+
+  // ── Conferma / Rifiuta prenotazione ───────────────────────────
   cambiaStatoInCorso = signal<number | null>(null);
 
   confermaPrenotazione(p: prenotazione): void { this.cambiaStato(p, 'Confermata'); }
@@ -305,6 +340,8 @@ export class GestisciPrenotazione implements OnInit {
       }
     });
   }
+
+  // ── Elimina ───────────────────────────────────────────────────
   apriConfermaEliminazione(p: prenotazione): void { this.eliminaTarget.set(p); }
 
   annullaEliminazione():                     void { this.eliminaTarget.set(null); }
@@ -328,6 +365,8 @@ export class GestisciPrenotazione implements OnInit {
       }
     });
   }
+
+  // ── Utilità ───────────────────────────────────────────────────
   vuota(): Partial<prenotazione> {
     return {
       NOME: '', COGNOME: '', EMAIL: '', TELEFONO: '',
@@ -353,7 +392,7 @@ export class GestisciPrenotazione implements OnInit {
   }
 
   formatData(d: string | Date | undefined): string {
-    if (!d) return 'â€”';
+    if (!d) return '—';
     return new Date(d).toLocaleDateString('it-IT');
   }
 

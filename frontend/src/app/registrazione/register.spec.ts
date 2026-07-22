@@ -16,6 +16,10 @@ describe('Register', () => {
     await fixture.whenStable();
     fixture.detectChanges();
   });
+
+  // ---------------------------------------------------------------------------
+  // Creazione componente
+  // ---------------------------------------------------------------------------
   it('should create', () => {
     expect(component).toBeTruthy();
   });
@@ -35,6 +39,10 @@ describe('Register', () => {
   it('should be invalid when empty', () => {
     expect(component.registerForm.invalid).toBeTrue();
   });
+
+  // ---------------------------------------------------------------------------
+  // Validazione – Nome
+  // ---------------------------------------------------------------------------
   describe('nome field', () => {
     it('should be invalid when empty', () => {
       component.f['nome'].setValue('');
@@ -56,6 +64,10 @@ describe('Register', () => {
       expect(component.f['nome'].valid).toBeTrue();
     });
   });
+
+  // ---------------------------------------------------------------------------
+  // Validazione – Cognome
+  // ---------------------------------------------------------------------------
   describe('cognome field', () => {
     it('should be invalid when empty', () => {
       component.f['cognome'].setValue('');
@@ -67,6 +79,10 @@ describe('Register', () => {
       expect(component.f['cognome'].valid).toBeTrue();
     });
   });
+
+  // ---------------------------------------------------------------------------
+  // Validazione – Email
+  // ---------------------------------------------------------------------------
   describe('email field', () => {
     it('should be invalid when empty', () => {
       component.f['email'].setValue('');
@@ -83,6 +99,10 @@ describe('Register', () => {
       expect(component.f['email'].valid).toBeTrue();
     });
   });
+
+  // ---------------------------------------------------------------------------
+  // Validazione – Password
+  // ---------------------------------------------------------------------------
   describe('password field', () => {
     it('should be invalid when empty', () => {
       component.f['password'].setValue('');
@@ -114,6 +134,10 @@ describe('Register', () => {
       expect(component.f['password'].valid).toBeTrue();
     });
   });
+
+  // ---------------------------------------------------------------------------
+  // Validazione – Conferma Password
+  // ---------------------------------------------------------------------------
   describe('password match validator', () => {
     it('should fail when passwords do not match', () => {
       component.f['password'].setValue('Password1@');
@@ -127,6 +151,10 @@ describe('Register', () => {
       expect(component.registerForm.hasError('passwordMismatch')).toBeFalse();
     });
   });
+
+  // ---------------------------------------------------------------------------
+  // Validazione – Telefono
+  // ---------------------------------------------------------------------------
   describe('telefono field', () => {
     it('should be invalid when empty', () => {
       component.f['telefono'].setValue('');
@@ -143,6 +171,10 @@ describe('Register', () => {
       expect(component.f['telefono'].valid).toBeTrue();
     });
   });
+
+  // ---------------------------------------------------------------------------
+  // Validazione – Data di nascita
+  // ---------------------------------------------------------------------------
   describe('dataNascita field', () => {
     it('should be invalid when empty', () => {
       component.f['dataNascita'].setValue('');
@@ -168,6 +200,10 @@ describe('Register', () => {
       expect(component.f['dataNascita'].valid).toBeTrue();
     });
   });
+
+  // ---------------------------------------------------------------------------
+  // Toggle visibilità password
+  // ---------------------------------------------------------------------------
   describe('password visibility toggles', () => {
     it('should toggle showPassword', () => {
       expect(component.showPassword).toBeFalse();
@@ -183,6 +219,10 @@ describe('Register', () => {
       expect(component.showConfermaPassword).toBeTrue();
     });
   });
+
+  // ---------------------------------------------------------------------------
+  // Invio form
+  // ---------------------------------------------------------------------------
   describe('onSubmit', () => {
     it('should mark all fields as touched when form is invalid', async () => {
       await component.onSubmit();
@@ -192,6 +232,7 @@ describe('Register', () => {
     });
 
     it('should set isLoading to true during submission', fakeAsync(() => {
+      // Riempi il form con dati validi
       component.f['nome'].setValue('Mario');
       component.f['cognome'].setValue('Rossi');
       component.f['email'].setValue('mario.rossi@email.it');
@@ -205,6 +246,10 @@ describe('Register', () => {
       tick(1500); // attende la simulazione async
     }));
   });
+
+  // ---------------------------------------------------------------------------
+  // isInvalid helper
+  // ---------------------------------------------------------------------------
   describe('isInvalid helper', () => {
     it('should return false for a pristine untouched field', () => {
       expect(component.isInvalid('nome')).toBeFalse();

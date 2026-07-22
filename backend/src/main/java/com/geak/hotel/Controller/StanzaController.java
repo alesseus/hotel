@@ -33,16 +33,22 @@ public class StanzaController {
 		return tutte.stream().filter(
 				stanzaLetto -> stanzaLetto.getIDSTANZA() == IDSTANZA).findFirst().get();
 	}
+	
+	// Inserimento nuova stanza
 	@PostMapping("add")
 	public List<Stanza> inserisci(@RequestBody Stanza nuova){
 		camera.addStanza(nuova);
 		return camera.getAllStanza();
 	}
+
+	// Aggiornamento stanza esistente
 	@PutMapping("aggiorna")
 	public List<Stanza> aggiorna(@RequestBody Stanza stanzaAggiornata){
 		camera.aggStanza(stanzaAggiornata);
 		return camera.getAllStanza();
 	}
+
+	// Eliminazione stanza
 	@DeleteMapping("elimina/{IDSTANZA}")
 	public List<Stanza> elimina(@PathVariable Long IDSTANZA){
 		camera.delStanza(IDSTANZA);

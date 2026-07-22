@@ -137,7 +137,7 @@ input.invalid { border-color: #d33; }
   to   { transform: scale(1); opacity: 1; }
 }
 
-
+/* ── Metodo pagamento ── */
 .metodo-titolo {
   font-family: var(--font-body, inherit);
   font-size: 0.85rem;
@@ -173,7 +173,7 @@ input.invalid { border-color: #d33; }
 }
 .metodo-icon { font-size: 1.4rem; }
 
-
+/* ── Bonifico ── */
 .bonifico-box {
   background: var(--navy-50);
   border: 1px solid var(--navy-100);

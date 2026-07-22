@@ -1,13 +1,13 @@
 <div class="register-page">
 
-    
+    <!-- Header — struttura identica a login -->
     <div class="register-header">
         <h1>Registrati</h1>
         <div class="divider-gold"></div>
         <p>Crea il tuo account per accedere all'area riservata</p>
     </div>
 
-    
+    <!-- Corpo -->
     <div class="register-body">
         <div class="register-card">
 
@@ -17,7 +17,7 @@
 
             <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" novalidate>
 
-                
+                <!-- Nome + Cognome -->
                 <div class="field-row">
                     <div class="field-group">
                         <label for="nome">Nome</label>
@@ -50,7 +50,7 @@
                     </div>
                 </div>
 
-                
+                <!-- Email -->
                 <div class="field-group">
                     <label for="email">Email</label>
                     <input type="email" id="email" formControlName="email"
@@ -65,13 +65,13 @@
                     }
                 </div>
 
-                
+                <!-- Password -->
                 <div class="field-group">
                     <label for="password">Password</label>
                     <div class="input-with-toggle">
                         <input [type]="showPassword() ? 'text' : 'password'"
                             id="password" formControlName="password"
-                            placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+                            placeholder="••••••••"
                             autocomplete="new-password"
                             [class.invalid]="isInvalid('password')">
                         <button type="button" class="toggle-eye" (click)="togglePassword()"
@@ -93,13 +93,13 @@
                     }
                 </div>
 
-                
+                <!-- Conferma Password -->
                 <div class="field-group">
                     <label for="confermaPassword">Conferma Password</label>
                     <div class="input-with-toggle">
                         <input [type]="showConfermaPassword() ? 'text' : 'password'"
                             id="confermaPassword" formControlName="confermaPassword"
-                            placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+                            placeholder="••••••••"
                             autocomplete="new-password"
                             [class.invalid]="isInvalid('confermaPassword') || (registerForm.errors?.['passwordMismatch'] && registerForm.get('confermaPassword')?.dirty)">
                         <button type="button" class="toggle-eye" (click)="toggleConfermaPassword()"
@@ -118,7 +118,7 @@
                     }
                 </div>
 
-                
+                <!-- Telefono + Data di nascita -->
                 <div class="field-row">
                     <div class="field-group">
                         <label for="telefono">Telefono</label>
@@ -149,19 +149,19 @@
                     </div>
                 </div>
 
-                
+                <!-- Errore globale -->
                 @if (errorMessage()) {
                     <div class="register-error">{{ errorMessage() }}</div>
                 }
 
-                
+                <!-- Successo -->
                 @if (successMessage()) {
                     <div class="register-success">{{ successMessage() }}</div>
                 }
 
                 <button type="submit" [disabled]="isLoading()">
                     @if (isLoading()) {
-                        Registrazione in corsoâ€¦
+                        Registrazione in corso…
                     } @else {
                         Crea Account
                     }
@@ -169,7 +169,7 @@
 
             </form>
 
-            <a class="forgot-link" routerLink="/login">Hai giÃ  un account? Accedi</a>
+            <a class="forgot-link" routerLink="/login">Hai già un account? Accedi</a>
 
         </div>
     </div>

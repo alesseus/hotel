@@ -1,8 +1,11 @@
-
+/* ============================================================
+   BLUE HORIZON HOTEL — Design System
+   Palette dal logo: Navy #1B2E5E, Bianco #FFFFFF, Oro #C9A84C
+   ============================================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Montserrat:wght@300;400;500;600&display=swap');
 
-
+/* ── Token palette ── */
 :root {
   --navy-900:   #0D1A38;
   --navy-800:   #1B2E5E;
@@ -38,7 +41,7 @@
   --transition: 0.25s ease;
 }
 
-
+/* ── Reset & Base ── */
 *, *::before, *::after {
   margin: 0;
   padding: 0;
@@ -54,7 +57,7 @@ html, body {
   -webkit-font-smoothing: antialiased;
 }
 
-
+/* ── Typography ── */
 h1, h2, h3 {
   font-family: var(--font-display);
   font-weight: 600;
@@ -75,7 +78,7 @@ a {
 }
 a:hover { color: var(--gold-500); }
 
-
+/* ── NAV / HEADER globale ── */
 nav,
 app-root > nav,
 header nav {
@@ -111,7 +114,7 @@ header nav a.active {
   border-bottom-color: var(--gold-500);
 }
 
-
+/* ── HEADER (app shell) ── */
 header {
   background: var(--navy-900);
   padding: 20px 40px;
@@ -130,7 +133,7 @@ header h1 {
   letter-spacing: 0.06em;
 }
 
-
+/* ── FOOTER ── */
 footer,
 app-root > footer {
   display: flex;
@@ -152,7 +155,7 @@ footer a {
 
 footer a:hover { color: var(--gold-400) !important; }
 
-
+/* ── BOTTONE PRENOTA (header) ── */
 .btn-prenota,
 button[routerlink="/prenotazione"] {
   position: absolute;
@@ -181,13 +184,13 @@ button[routerlink="/prenotazione"]:hover {
   box-shadow: 0 6px 20px rgba(201,168,76,0.45);
 }
 
-
+/* ── MAIN ── */
 main {
   flex: 1;
   padding: 40px 24px;
 }
 
-
+/* ── CARD generica ── */
 .card {
   background: var(--white);
   border-radius: var(--radius-lg);
@@ -202,7 +205,7 @@ main {
   transform: translateY(-3px);
 }
 
-
+/* ── DASHBOARD amministrazione ── */
 .dashboard {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -258,7 +261,7 @@ main {
   letter-spacing: 0.04em;
 }
 
-
+/* ── MAPPA "Dove siamo" ── */
 .mappa-section {
   display: flex;
   justify-content: center;
@@ -300,7 +303,7 @@ main {
 }
 
 .mappa-header h2::before {
-  content: "ðŸ“";
+  content: "📍";
   font-size: 1.2rem;
 }
 
@@ -339,7 +342,7 @@ main {
   transition: background var(--transition), color var(--transition), transform var(--transition);
 }
 
-.mappa-footer a::after { content: "â†—"; transition: transform var(--transition); }
+.mappa-footer a::after { content: "↗"; transition: transform var(--transition); }
 
 .mappa-footer a:hover {
   background: var(--gold-500);
@@ -349,7 +352,7 @@ main {
 
 .mappa-footer a:hover::after { transform: translate(2px, -2px); }
 
-
+/* ── FORM globali ── */
 form {
   background: var(--white);
   border-radius: var(--radius-lg);
@@ -390,7 +393,7 @@ input:focus, select:focus, textarea:focus {
   background: var(--white);
 }
 
-
+/* ── BOTTONI globali ── */
 button,
 .btn {
   font-family: var(--font-body);
@@ -405,7 +408,7 @@ button,
   transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
 }
 
-
+/* Primario — oro */
 button.primary,
 .btn-primary,
 button[type="submit"] {
@@ -421,7 +424,7 @@ button[type="submit"]:hover {
   box-shadow: 0 6px 20px rgba(201,168,76,0.4);
 }
 
-
+/* Secondario — navy outline */
 button.secondary,
 .btn-secondary {
   background: transparent;
@@ -435,7 +438,7 @@ button.secondary:hover,
   transform: translateY(-2px);
 }
 
-
+/* Pericoloso — soft red */
 button.danger,
 .btn-danger {
   background: #C0392B;
@@ -447,7 +450,7 @@ button.danger:hover,
   transform: translateY(-2px);
 }
 
-
+/* ── TABELLE amministrazione ── */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -486,7 +489,7 @@ tbody td {
   color: var(--text-dark);
 }
 
-
+/* ── BADGE/STATUS ── */
 .badge {
   display: inline-block;
   font-size: 0.7rem;
@@ -502,7 +505,7 @@ tbody td {
 .badge-danger  { background: #FDDEDE; color: #7B1A1A; }
 .badge-info    { background: var(--navy-100); color: var(--navy-800); }
 
-
+/* ── PAGE WRAPPER utility ── */
 .page-wrapper {
   max-width: 1100px;
   margin: 0 auto;
@@ -523,7 +526,7 @@ tbody td {
   margin-bottom: 40px;
 }
 
-
+/* Divisore oro decorativo */
 .divider-gold {
   width: 52px;
   height: 3px;
@@ -532,7 +535,7 @@ tbody td {
   margin: 12px 0 32px;
 }
 
-
+/* ── RESPONSIVE ── */
 @media (max-width: 768px) {
   header { padding: 16px 20px; }
 

@@ -1,7 +1,7 @@
-
+/* ── SERVIZI (+ Recensioni in fondo) ─────────────────────────── */
 :host { display: block; }
 
-
+/* Hero band */
 .servizi-hero {
   background: linear-gradient(135deg, var(--navy-950) 0%, var(--navy-800) 100%);
   padding: 64px 40px 56px;
@@ -11,7 +11,7 @@
 .servizi-hero .divider-gold { margin: 0 auto 18px; }
 .servizi-hero p { color: var(--navy-200); max-width: 480px; margin: 0 auto; }
 
-
+/* Griglia servizi */
 .services-container {
   max-width: 1080px;
   margin: 0 auto;
@@ -70,7 +70,7 @@
 .service-card h3 { font-size: 1.2rem; color: var(--navy-900); margin-bottom: 10px; }
 .service-card p  { font-size: 0.88rem; line-height: 1.7; }
 
-
+/* ── Sezione Recensioni ─────────────────────────────────────── */
 .recensioni-strip {
   background: linear-gradient(135deg, var(--navy-900) 0%, var(--navy-950) 100%);
   padding: 72px 40px 80px;

@@ -1,9 +1,9 @@
-
+/* ── COME RAGGIUNGERCI ── 2 colonne: info sx + mappa dx ────────── */
 :host { display: block; }
 
 .dovesiamo-page { background: var(--bg); }
 
-
+/* Hero */
 .dove-hero {
   background: linear-gradient(135deg, var(--navy-950) 0%, var(--navy-800) 100%);
   padding: 60px 40px 52px;
@@ -12,7 +12,7 @@
 .dove-hero h1 { color: var(--white); margin-bottom: 12px; }
 .dove-hero .divider-gold { margin: 0 auto; }
 
-
+/* Layout 2 colonne */
 .dove-body {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -23,7 +23,7 @@
   align-items: start;
 }
 
-
+/* ── Come arrivare ── */
 .dove-info h2 { margin-bottom: 6px; }
 .dove-info .divider { margin: 14px 0 28px; }
 
@@ -52,7 +52,7 @@
 .arrive-item h4 { font-size: 0.88rem; font-weight: 600; color: var(--navy-900); margin-bottom: 4px; }
 .arrive-item p { font-size: 0.84rem; color: var(--ink-soft); margin: 0; line-height: 1.55; }
 
-
+/* Indirizzo */
 .dove-address {
   display: flex;
   align-items: flex-start;
@@ -65,7 +65,7 @@
 .dove-address div strong { display: block; color: var(--white); font-size: 0.92rem; margin-bottom: 4px; }
 .dove-address div p { color: var(--navy-300); font-size: 0.84rem; margin: 0; }
 
-
+/* ── Mappa ── */
 .mappa-card {
   background: var(--white);
   border-radius: var(--r-xl);

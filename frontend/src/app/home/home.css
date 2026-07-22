@@ -1,10 +1,10 @@
-
+/* ── HOME ─────────────────────────────────────────────────────── */
 :host { display: block; }
 
-
+/* Hero — grande immagine fullscreen con overlay info */
 .hero {
   position: relative;
-  min-height: calc(100vh - 62px); 
+  min-height: calc(100vh - 62px); /* altezza viewport meno header */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -19,7 +19,7 @@
     url('/assets/images/sfondo_home.avif') center / cover no-repeat;
 }
 
-
+/* Overlay testo */
 .hero-overlay {
   position: relative;
   z-index: 2;
@@ -104,7 +104,7 @@
   transform: translateY(-2px);
 }
 
-
+/* Info band (wireframe: Nome e info sotto hero) */
 .info-band {
   display: flex;
   align-items: center;
@@ -147,7 +147,7 @@
   flex-shrink: 0;
 }
 
-
+/*Recensioni*/
 
 .recensioni-strip {
   background: linear-gradient(135deg, var(--navy-900) 0%, var(--navy-950) 100%);
@@ -177,7 +177,7 @@
 }
 .rec-card:hover { background: rgba(255,255,255,0.10); transform: translateY(-4px); }
 
-
+/* Animazione fade-in ad ogni scorrimento */
 .rec-card-animate {
   animation: cardFadeIn 0.7s ease both;
 }
@@ -227,7 +227,7 @@
   color: var(--navy-300);
 }
 
-
+/* Stato vuoto / caricamento */
 .rec-empty {
   display: flex;
   flex-direction: column;
@@ -250,7 +250,7 @@
   text-align: center;
 }
 
-
+/* Spinner di caricamento */
 .rec-spinner {
   width: 36px;
   height: 36px;
@@ -271,7 +271,7 @@
 }
 
 
-
+/* Animazione */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(24px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -291,7 +291,7 @@
 }
 
 
-
+/* ── CTA recensioni ───────────────────────────────────────────── */
 .rec-cta {
   display: flex;
   flex-direction: column;
@@ -312,7 +312,7 @@
 }
 .rec-cta-hint a:hover { text-decoration: underline; }
 
-
+/* Bottone stile "Scopri i servizi" adattato al fondo scuro */
 .btn-rec {
   display: inline-block;
   padding: 14px 38px;
@@ -338,7 +338,9 @@
   cursor: not-allowed;
 }
 
-
+/* ══════════════════════════════════════════════════════════════
+   MODALE
+══════════════════════════════════════════════════════════════ */
 .modale-overlay {
   position: fixed;
   inset: 0;
@@ -405,7 +407,7 @@
 
 .modale-divider { margin: 0 0 28px !important; }
 
-
+/* Campi */
 .field-group {
   display: flex;
   flex-direction: column;
@@ -454,7 +456,7 @@
   margin-left: auto;
 }
 
-
+/* Stelle interattive */
 .stelle-input { display: flex; gap: 4px; }
 
 .stella-btn {
@@ -486,7 +488,7 @@
   margin-bottom: 20px;
 }
 
-
+/* Successo */
 .modale-successo {
   display: flex;
   flex-direction: column;
@@ -503,7 +505,7 @@
   margin: 0;
 }
 
-
+/* Azioni modale */
 .modale-azioni {
   display: flex;
   justify-content: flex-end;

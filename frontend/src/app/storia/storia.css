@@ -1,9 +1,9 @@
-
+/* ── STORIA ── due colonne: gallery sx + testo dx ─────────────── */
 :host { display: block; }
 
 .storia-page { background: var(--bg); }
 
-
+/* Hero */
 .storia-hero {
   background: linear-gradient(135deg, var(--navy-950) 0%, var(--navy-800) 100%);
   padding: 60px 40px 52px;
@@ -12,7 +12,7 @@
 .storia-hero h1 { color: var(--white); margin-bottom: 12px; }
 .storia-hero .divider-gold { margin: 0 auto; }
 
-
+/* Layout 2 colonne */
 .storia-layout {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -23,7 +23,7 @@
   align-items: start;
 }
 
-
+/* ── Galleria ── */
 .storia-gallery { position: sticky; top: 80px; }
 
 .gallery-frame {
@@ -85,7 +85,7 @@
   color: rgba(255,255,255,0.65);
 }
 
-
+/* Thumbnails */
 .gallery-thumbs {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -109,7 +109,7 @@
 .gallery-thumb.active { border-color: var(--navy-600); }
 .gallery-thumb:hover { opacity: 0.80; }
 
-
+/* ── Testo storia ── */
 .storia-content { }
 
 .storia-eyebrow {
@@ -130,7 +130,7 @@
 }
 .storia-content p:last-of-type { margin-bottom: 36px; }
 
-
+/* Milestone strip */
 .storia-milestone {
   display: flex;
   gap: 0;
@@ -165,7 +165,7 @@
   color: var(--ink-faint);
 }
 
-
+/* Reset di sicurezza per immagini future */
 .storia-page img {
   max-width: 100%;
   display: block;

@@ -19,6 +19,8 @@ export class PrenotazioniUtente implements OnInit {
   prenotazioni = signal<prenotazione[]>([]);
   caricamento = signal(true);
   errore = signal('');
+
+  // Modale modifica
   modaleAperto = false;
   prenotazioneSelezionata: prenotazione | null = null;
   formNome = '';
@@ -28,6 +30,9 @@ export class PrenotazioniUtente implements OnInit {
   formOspiti: { nome: string; cognome: string }[] = [];
   invio = false;
   formError = '';
+
+
+  // Modale conferma cancellazione
   cancellaTarget: prenotazione | null = null;
   cancellaInCorso = false;
 
@@ -60,6 +65,8 @@ export class PrenotazioniUtente implements OnInit {
       }
     });
   }
+
+  // ── Modifica ──────────────────────────────────────────────────
   apriModifica(p: prenotazione): void {
     this.prenotazioneSelezionata = p;
     this.formNome = p.NOME;
@@ -70,6 +77,8 @@ export class PrenotazioniUtente implements OnInit {
     this.formError = '';
     this.modaleAperto = true;
   }
+
+  // ── Ospiti (solo modifica dei dati, no aggiunta/rimozione) ────
   private parseOspiti(ospiti: string | undefined): { nome: string; cognome: string }[] {
 
     if (!ospiti) return [];
@@ -127,6 +136,8 @@ export class PrenotazioniUtente implements OnInit {
       }
     });
   }
+
+  // ── Cancellazione ─────────────────────────────────────────────
   apriCancella(p: prenotazione): void {
     this.cancellaTarget = p;
   }
@@ -155,7 +166,7 @@ export class PrenotazioniUtente implements OnInit {
   }
 
   formatData(d: Date | string): string {
-    if (!d) return 'â€”';
+    if (!d) return '—';
     return new Date(d).toLocaleDateString('it-IT');
   }
 

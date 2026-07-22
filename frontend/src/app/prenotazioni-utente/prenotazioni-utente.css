@@ -20,7 +20,7 @@
   padding: 48px 20px 72px;
 }
 
-
+/* ── Stati ── */
 .stato-box {
   text-align: center;
   padding: 60px 20px;
@@ -41,7 +41,7 @@
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-
+/* ── Lista prenotazioni ── */
 .prenotazioni-list {
   display: flex;
   flex-direction: column;
@@ -124,7 +124,7 @@
 }
 .btn-cancella:hover { background: #d33; color: var(--white); }
 
-
+/* ── Overlay / Modale ── */
 .overlay {
   position: fixed;
   inset: 0;
@@ -169,7 +169,7 @@ input.invalid { border-color: #d33; }
 }
 .modale-actions button { flex: 1; justify-content: center; }
 
-
+/* Modale cancellazione */
 .modale-cancella { text-align: center; }
 .cancella-icon { font-size: 2.5rem; margin-bottom: 12px; }
 .avviso-caparra {
@@ -205,7 +205,7 @@ input.invalid { border-color: #d33; }
   .modale { padding: 24px 20px; }
 }
 
-
+/* ── Ospiti (modale modifica) ── */
 .ospiti-block { margin-top: 14px; }
 .ospiti-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
 .ospiti-head label { font-weight: 600; font-size: 0.85rem; }
