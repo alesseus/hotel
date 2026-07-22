@@ -21,11 +21,15 @@
       <p class="metodo-titolo">Scegli il metodo di pagamento</p>
       <div class="metodo-opzioni">
         <button class="metodo-btn" (click)="metodoPagamento.set('carta')">
-          <span class="metodo-icon">💳</span>
+          <span class="metodo-icon">
+            <img src="../../assets/icons/credit-card.png" alt="Credit_Card_icon" style="vertical-align: middle; font-size: 1em;" >
+          </span>
           <span>Carta di credito / debito</span>
         </button>
         <button class="metodo-btn" (click)="metodoPagamento.set('bonifico')">
-          <span class="metodo-icon">🏦</span>
+          <span class="metodo-icon">
+            <img src="../../assets/icons/bank.png" alt="Bank_icon" style="vertical-align: middle; font-size: 1em;" >
+          </span>
           <span>Bonifico bancario</span>
         </button>
       </div>
