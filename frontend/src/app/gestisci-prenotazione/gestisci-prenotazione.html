@@ -1,6 +1,5 @@
 <div class="gestisci-page">
 
-  <!-- Header -->
   <div class="gestisci-header-band">
     <div>
       <h2>Gestione Prenotazioni</h2>
@@ -10,7 +9,6 @@
     <button class="back-link" routerLink="/amministrazione">Pannello admin</button>
   </div>
 
-  <!-- Body -->
   <div class="gestisci-wrapper">
 
     <div class="actions-bar">
@@ -99,9 +97,6 @@
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════════════
-     MODALE CREA / MODIFICA
-     ══════════════════════════════════════════════════════ -->
 @if (modaleAperto()) {
   <div class="modal-backdrop" (click)="chiudiModale()">
     <div class="modal-box" (click)="$event.stopPropagation()">
@@ -119,8 +114,6 @@
           }
 
           <div class="form-grid">
-
-            <!-- ── Riga 1: Nome / Cognome ── -->
             <div class="form-group">
               <label for="f-nome">Nome <span class="required">*</span></label>
               <input id="f-nome" type="text" name="NOME"
@@ -133,7 +126,6 @@
                      [(ngModel)]="form.COGNOME" required placeholder="Rossi">
             </div>
 
-            <!-- ── Riga 2: Email / Telefono ── -->
             <div class="form-group">
               <label for="f-email">Email <span class="required">*</span></label>
               <input id="f-email" type="email" name="EMAIL"
@@ -146,7 +138,6 @@
                      [(ngModel)]="form.TELEFONO" placeholder="+39 000 0000000">
             </div>
 
-            <!-- ── Riga 3: Data nascita ── -->
             <div class="form-group">
               <label for="f-nascita">Data di nascita</label>
               <input id="f-nascita" type="date" name="DATANASCITA"
@@ -154,8 +145,6 @@
             </div>
 
             <div class="form-group"></div>
-
-            <!-- ── Riga 4: Check-in / Check-out ── -->
             <div class="form-group">
               <label for="f-checkin">Check-in <span class="required">*</span></label>
               <input id="f-checkin" type="date" name="CHECK_IN"
@@ -178,7 +167,6 @@
               }
             </div>
 
-            <!-- ── Stanza select ── -->
             <div class="form-group">
               <label for="f-stanza">Stanza <span class="required">*</span></label>
               <select id="f-stanza" name="IDSTANZA"
@@ -202,7 +190,6 @@
               }
             </div>
 
-            <!-- ── Scheda dettaglio stanza (riga intera, condizionale) ── -->
             @if (stanzaSelezionata()) {
               <div class="detail-card full-width">
                 <div class="detail-card-grid">
@@ -242,7 +229,6 @@
               </div>
             }
 
-            <!-- ── Servizi multipli (riga intera) ── -->
             <div class="form-group full-width">
               <div class="servizi-header">
                 <label>Servizi aggiuntivi</label>
@@ -283,7 +269,6 @@
               }
             </div>
 
-            <!-- ── Totale calcolato dinamicamente (riga intera, read-only) ── -->
             <div class="form-group full-width">
               <label>Totale stimato</label>
               <div class="totale-display">
@@ -302,7 +287,6 @@
               <input type="hidden" name="TOTALE" [ngModel]="totaleCalcolato">
             </div>
 
-            <!-- ── Ospiti (nome + cognome) ── -->
             <div class="form-group full-width">
               <div class="servizi-header">
                 <label>Ospiti (nome e cognome)</label>
@@ -335,7 +319,6 @@
               }
             </div>
 
-            <!-- ── Note (riga intera) ── -->
             <div class="form-group full-width">
               <label for="f-note">Note</label>
               <textarea id="f-note" name="NOTE"
@@ -359,9 +342,6 @@
   </div>
 }
 
-<!-- ══════════════════════════════════════════════════════
-     MODALE CONFERMA ELIMINA
-     ══════════════════════════════════════════════════════ -->
 @if (eliminaTarget()) {
   <div class="modal-backdrop" (click)="annullaEliminazione()">
     <div class="modal-box modal-box--sm" (click)="$event.stopPropagation()">

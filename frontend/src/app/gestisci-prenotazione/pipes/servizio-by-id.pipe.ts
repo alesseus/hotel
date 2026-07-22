@@ -4,7 +4,7 @@ import { servizio } from '../interfacce/servizio_i';
 @Pipe({
   name: 'servizioById',
   standalone: true,
-  pure: false   // il segnale servizi() può cambiare in modo reattivo
+  pure: false 
 })
 export class ServizioByIdPipe implements PipeTransform {
   transform(servizi: servizio[], id: number | null): servizio | undefined {

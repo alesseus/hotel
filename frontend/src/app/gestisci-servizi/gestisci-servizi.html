@@ -1,6 +1,5 @@
 <div class="gestisci-page">
 
-  <!-- Header -->
   <div class="gestisci-header-band">
     <div>
       <h2>Gestione Servizi</h2>
@@ -10,7 +9,6 @@
     <button class="back-link" routerLink="/amministrazione">Pannello admin</button>
   </div>
 
-  <!-- Body -->
   <div class="gestisci-wrapper">
 
     <div class="actions-bar">
@@ -67,7 +65,6 @@
   </div>
 </div>
 
-<!-- ── Modale crea / modifica ─────────────────────────────────── -->
 @if (modaleAperto()) {
   <div class="modal-overlay" (click)="chiudiModale()">
     <div class="modal-box" (click)="$event.stopPropagation()">
@@ -106,7 +103,6 @@
   </div>
 }
 
-<!-- ── Conferma eliminazione ─────────────────────────────────── -->
 @if (eliminaTarget()) {
   <div class="modal-overlay" (click)="annullaEliminazione()">
     <div class="modal-box modal-box-sm" (click)="$event.stopPropagation()">
