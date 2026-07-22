@@ -249,17 +249,20 @@
         <label for="dataNascita">Data di nascita</label>
         <input type="date" id="dataNascita" name="dataNascita" [(ngModel)]="dataNascita">
 
+        @if (tipoPrenotazione !== 'spa') {
         <div class="fields-2">
           <div>
             <label for="checkIn">Check-in</label>
-            <input type="date" id="checkIn" name="checkIn" [(ngModel)]="checkIn" #checkInField="ngModel" required>
+            <input type="date" id="checkIn" name="checkIn" [(ngModel)]="checkIn" #checkInField="ngModel"
+              [required]="tipoPrenotazione !== 'spa'">
             @if (checkInField.invalid && (checkInField.touched || datiForm.submitted)) {
             <small class="field-error">Seleziona la data di check-in</small>
             }
           </div>
           <div>
             <label for="checkOut">Check-out</label>
-            <input type="date" id="checkOut" name="checkOut" [(ngModel)]="checkOut" #checkOutField="ngModel" required>
+            <input type="date" id="checkOut" name="checkOut" [(ngModel)]="checkOut" #checkOutField="ngModel"
+              [required]="tipoPrenotazione !== 'spa'">
             @if (checkOutField.invalid && (checkOutField.touched || datiForm.submitted)) {
             <small class="field-error">Seleziona la data di check-out</small>
             }
@@ -268,6 +271,7 @@
               }
           </div>
         </div>
+        }
 
         @if (tipoPrenotazione === 'stanza' && numeroOspitiAggiuntivi > 0) {
         <br><br>

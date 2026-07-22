@@ -218,7 +218,7 @@ export class Prenotazione implements OnInit {
 
   get spaServizio(): servizio | undefined {
     return this.serviziDisponibili().find(s =>
-      s.NOTE?.toUpperCase().replace(/\./g, '') === 'SPA'
+      s.NOTE?.toUpperCase().replace(/\./g, '').includes('SPA')
     );
   }
 
@@ -249,23 +249,25 @@ export class Prenotazione implements OnInit {
       return;
     }
 
+    const isSpa = this.tipoPrenotazione === 'spa';
+
     const nuova: prenotazione = {
       IDPRE: 0,
       NOME: this.nome,
       COGNOME: this.cognome,
       EMAIL: this.email,
       TELEFONO: this.telefono,
-      DATANASCITA: new Date(this.dataNascita),
-      IDSTANZA: this.stanzaSelezionata?.IDSTANZA ?? 0,
-      IDSERVIZIO: this.tipoPrenotazione === 'spa'
-        ? (this.spaServizio?.IDSERVIZIO ?? 0)
-        : (this.serviziSelezionati[0]?.IDSERVIZIO ?? 0),
+      DATANASCITA: this.dataNascita ? new Date(this.dataNascita) : null,
+      IDSTANZA: this.stanzaSelezionata?.IDSTANZA ?? null,
+      IDSERVIZIO: isSpa
+        ? (this.spaServizio?.IDSERVIZIO ?? null)
+        : (this.serviziSelezionati[0]?.IDSERVIZIO ?? null),
       TOTALE: this.totale,
       CAPARRA: this.caparra,
-      SPA: this.tipoPrenotazione === 'spa',
+      SPA: isSpa,
       NOTE: this.note,
-      CHECK_IN: new Date(this.checkIn),
-      CHECK_OUT: new Date(this.checkOut),
+      CHECK_IN: isSpa || !this.checkIn   ? null : new Date(this.checkIn),
+      CHECK_OUT: isSpa || !this.checkOut ? null : new Date(this.checkOut),
       STATO: 'In attesa',
       OSPITI: this.buildOspiti()
     };
