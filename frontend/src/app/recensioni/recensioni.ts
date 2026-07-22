@@ -99,9 +99,16 @@ export class Recensioni implements OnInit {
           this.invioRiuscito.set(false);
         }, 1800);
       },
-      error: () => {
+      error: (err) => {
         this.invioInCorso.set(false);
-        this.erroreInvio.set('Si è verificato un errore. Riprova più tardi.');
+        console.error('Errore invio recensione:', err.status, err.error);
+        if (err.status === 401 || err.status === 403) {
+          this.erroreInvio.set('Sessione scaduta. Effettua di nuovo il login.');
+        } else if (err.status === 0) {
+          this.erroreInvio.set('Impossibile raggiungere il server. Controlla la connessione.');
+        } else {
+          this.erroreInvio.set('Si è verificato un errore. Riprova più tardi.');
+        }
       }
     });
   }

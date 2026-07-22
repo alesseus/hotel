@@ -186,12 +186,49 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 
+.rec-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.rec-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--gold-500);
+  color: var(--navy-900, #0d1b2a);
+  font-weight: 700;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  text-transform: uppercase;
+}
+
+.rec-autore-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.rec-nome {
+  font-size: 0.80rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: rgba(255,255,255,0.90);
+  text-transform: capitalize;
+}
+
 .rec-stars {
   font-size: 1rem;
   letter-spacing: 2px;
-  margin-bottom: 12px;
+  margin-bottom: 0;
 }
 .stella-gold { color: var(--gold-500); }
+.stella-vuota { color: rgba(255, 255, 255, 0.30); }
 
 .rec-card p {
   font-size: 0.90rem;
