@@ -196,9 +196,13 @@ export class Prenotazione implements OnInit {
   }
 
   get costoStanza(): number {
-    if (!this.stanzaSelezionata || this.tipoPrenotazione !== 'stanza') return 0;
-    return (this.stanzaSelezionata.COSTO * (this.stanzaSelezionata.CAPACITA ?? 1)) * this.notti;
-  }
+  if (!this.stanzaSelezionata || this.tipoPrenotazione !== 'stanza') return 0;
+  
+  const ospitiCompilati = this.ospiti.filter(o => o.nome.trim() || o.cognome.trim()).length;
+  const moltiplicatore = 1 + ospitiCompilati;
+  
+  return (this.stanzaSelezionata.COSTO * moltiplicatore) * this.notti;
+}
 
   get costoServizi(): number {
     return this.serviziSelezionati.reduce((sum, s) => sum + s.COSTO, 0);
