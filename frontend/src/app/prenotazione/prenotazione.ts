@@ -195,6 +195,7 @@ export class Prenotazione implements OnInit {
     return n > 0 ? n : 0;
   }
 
+  //ciao
   get costoStanza(): number {
   if (!this.stanzaSelezionata || this.tipoPrenotazione !== 'stanza') return 0;
   
